@@ -1,0 +1,56 @@
+# We want to run CI processes that can run independent of databricks as branch rules so that we dont # deploy at cost code that we already should know needs changing
+# such as linting, and unit test for python, maybe dab? verify
+# we run these on all pull request because if there is a hot fix it may not have passed through 
+# staging for example
+# qqqq check this is up to date
+name: CI - Pull Request Checks
+
+# Run CI on all pull requests
+on:
+  pull_request:
+    branches:
+      - '**'  # all branches
+
+jobs:
+  ci_checks:
+    name: "Linting, Unit Tests, DAB Verify"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Python
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      # Install dependencies used for linting and unit tests
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      # Run python unit tests
+      - name: Run Unit Tests
+        run: pytest tests/unit
+
+      # Run python lint
+      # qqqq on example used flake8 instead
+      # pyproject.toml will need configuring
+      - name: Run Linting
+        run: pylint src
+        
+      # qqqq to do run commit lint step and put in commit lint config
+      # see TELBlazor
+      - name: Commit lint
+      run: |
+          echo "Commit lint not implemented"
+          exit 1
+        
+      # qqqq to do run version generation step and put in commit lint config
+      # see TELBlazor
+      - name: Version Generation Test Run
+      run: |
+          echo "Version test run not implemented"
+          exit 1
