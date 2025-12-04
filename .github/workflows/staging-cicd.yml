@@ -1,0 +1,56 @@
+# Rely on ci.yml and branch rules to ensure bundle validation and linting
+# we are not going from staging straight to prod, because we use staging for manual testing as well
+name: Deploy to Databricks Staging and Trigger Tests in Databricks
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy_to_staging:
+    name: "Deploy Bundle to Stage Environment"
+    runs-on: ubuntu-latest
+    # qqqq need to set up my git env values
+    environment: staging
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+
+    steps:
+    # qqqq add a step to make a version number so can see its changed and print it as part of the job
+    #DAB_VERSION: "staging-${GITHUB_SHA::7}"  # short commit hash
+    # databricks bundle deploy --environment staging --version $DAB_VERSION
+    
+    
+      - uses: actions/checkout@v4
+      - uses: databricks/setup-cli@main
+      - name: Deploy bundle
+      # trigger target the staging deploy in databricks.yml
+        run: databricks bundle deploy -t staging --auto-approve
+        working-directory: .
+
+  testing:
+    name: "Integration Testing"
+    runs-on: ubuntu-latest
+    needs: deploy_to_staging
+    environment: staging
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        id: cache
+        name: Cache Python build
+        with:
+          python-version: "3.x"
+          cache-dependency-path: "requirements-dev.txt"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Integration Testing
+        run: pytest tests/integration
