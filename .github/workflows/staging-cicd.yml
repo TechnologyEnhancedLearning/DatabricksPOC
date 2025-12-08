@@ -13,7 +13,6 @@ jobs:
   deploy_to_staging:
     name: "Deploy Bundle to Stage Environment"
     runs-on: ubuntu-latest
-    # qqqq need to set up my git env values
     environment: staging
     env:
       DATABRICKS_HOST: ${{ vars.DBX_HOST }}
