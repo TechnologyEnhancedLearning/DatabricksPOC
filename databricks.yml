@@ -1,0 +1,173 @@
+
+########################################
+#### POC NOTES DELETE LATER ############
+########################################
+## Would have prefered use databrickscfg to hold host and sp names using custom values 
+## it can set profiles for built in values but not custom ones it seems
+## # qqqq secrets C:\Users\NM2.W9215KB2\.databrickscfg will need for git too
+##   # seems doesnt do cutom ones want to do
+##  # [staging]
+## #staging_host = -> in databricks yml host: ${workspace.staging_host}
+## #staging_env_sp_name = 
+## #staging_storage_name = 
+#######################################
+#### Differences expect for final varsion
+######################################
+## storage account per environment
+## different host for different databircks work spaces
+## will load wheels via artifacts when we have them
+## permission groups needed for admin of staging prod etc
+#######################################
+#### databrickscfg example with custom values didnt work we will only set the token in this file i think
+#########################################
+# [dev]
+# host = https://adb-295718430158257.17.azuredatabricks.net
+# token = dapi************************
+# dev_env_sp_name = b0326488-f6b0-4c0f-bf20-a091224bad83
+# dev_storage_name = unifiedrptdeltalake
+# test_var = foundatestvar
+########################################
+## Catalogs need to be unique because of the databricks metastore
+## We will set the catalogs to only be accessible from their corresponding workspace
+## that workspace will be linked to it own storage
+## dev_catalogs will have unique schema names per user prefixed with their username so that there is seperation for experimentation
+## staging_catalog and prod_catalog will have shared schema names
+## schema names will not be defined here, a recommended pattern is to have them mirror layer names bronze, silver ... transformations, followed by their "domain" (may not be the right word) e.g. ods
+## personal dabs should use personal auth but allow dev_user group view and dev_env_sp to manage it
+## prod staging dab permissions should be via gitactions on pull request using service priniciple
+## in future we should review permission on staging and prod as should be least privilege and done by service principles unless there is an issue
+## we should have no user name based permissions
+#######################################
+## ref [Evanaze example repo](https://github.com/evanaze/dbx-asset-bundle-deployment)
+########################################
+#### END POC NOTES DELETE LATER ##########
+########################################
+
+######################################
+## Databricks Asset Bundle Definition
+######################################
+## ...
+
+######################################
+
+bundle:
+  name: DatabricksPOC
+  uuid: ba682f8a-5d14-4ae7-a770-d6a359c0e835
+
+# Importing resources. These are split into their own files for modularity
+# qqqq comback may be a key place for dry
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+# Variable declarations. These variables are assigned in the dev/prod targets below.
+# Then made available to python scriplts via spark.conf.get("bundle.<variable_name>") once exposed by the yml running that file
+variables:
+  catalog:
+    description: Envirnoment specific catalog name
+  # schema:
+  #   default: qqqq-deleted-later
+  #  description: Actually setting this with vars but included due to an error
+  schema_prefix:
+    default: "" # to be used in dev only so staging prod have no prefix value
+    description: To prefix dev user schema names to allow multiple dev users to use same catalog with their own different schema names for development
+  env_name:
+    description: The environment name (dev, staging, prod)
+  storage_account:
+    description: Seperate databricks workspaces dedicated storage (dev, staging, prod)
+  # Storage principles id is used for name field in databricks.yml name the sp variable: <sp_name>_id
+  # be nice to hide these in the cfg, github has these in vars anyway not seen this done tried cfg file and not tried a config.yml [example proj with {{ dev_sp }}](https://github.com/evanaze/dbx-asset-bundle-deployment/blob/main/databricks.yml) ... not seeing databricks bundle deploy -t staging --var dev_sp= being specified in the cicd
+  dev_env_sp_id:
+    default: "b0326488-f6b0-4c0f-bf20-a091224bad83"
+  staging_env_sp_id:
+    default: "d588f2c8-0c0a-4ded-9da2-0663bf8dd994"
+  prod_env_sp_id:
+    default: "my-sp-id-jfsdkjhfjsdhfkjh"
+
+# qqqq will want later if many python files
+# artifacts:
+  # python_artifact:
+    # type: whl
+    # build: uv build --wheel
+
+# Deployment environments
+targets:
+  dev: 
+    # qqqq what is the process of developing and deploying dabs for own area.
+    # qqqq would it actually be staging with features against folders !!!!???
+
+    mode: development
+    # Deploy under own user not service principle
+    default: true
+    # This is the the default deployment workspace
+    workspace:
+      # profile means in gets set values from [dev] section of databrickscfg
+      profile: dev
+      # specify hosts in the databricks.yml not config for clarity
+      # dev databricks host
+      host: https://adb-295718430158257.17.azuredatabricks.net
+      # Dev root path under each users home directory
+      root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/dev
+    variables:
+      env_name: dev
+      catalog: dev_catalog
+      # only dev has schema prefix as its per user
+      #e.g. phil_ will become phil_bronze_ods if we do layer and domain? as our schema naming convention
+      schema_prefix: ${workspace.current_user.short_name}_
+      # dev storage account
+      storage_account:  unifiedrptdeltalake
+    permissions:
+    - level: CAN_MANAGE
+      service_principal_name: "${var.dev_env_sp_id}" 
+    - level: CAN_MANAGE
+      # Devs manage our own stuff
+      user_name: ${workspace.current_user.userName} 
+    - level: CAN_VIEW
+      # Devs can see each others stuff
+      group_name: dev_env_users
+
+
+
+  staging:
+    # Staging should purely be for investigation and testing prior to going to prod it runs in production mode so will run and constant updates and should be through github actions and service principle on successful pull request 
+    mode: production
+    workspace:
+      profile: staging
+      # staging databricks host
+      host: https://adb-295718430158257.17.azuredatabricks.net
+      root_path: /Workspace/.bundle/${bundle.name}/staging
+    variables:
+      env_name: staging
+      catalog: staging_catalog
+      # Staging storage account
+      storage_account:  unifiedrptdeltalake
+    permissions:
+      - user_name: philip.tate@nhs.net
+        level: CAN_MANAGE
+      - group_name: staging_env_users
+        level: CAN_VIEW
+      - service_principal_name: "${var.staging_env_sp_id}" 
+        level: CAN_MANAGE
+      
+
+  prod:
+    # Automatically deployed to via git actions and service principle minimal testing on deploy as previously run on staging
+    mode: production
+    workspace:
+      profile: prod
+      # prod databricks host
+      host: https://adb-295718430158257.17.azuredatabricks.net
+      root_path: /Workspace/.bundle/${bundle.name}/prod
+    variables:
+      # when 3 databricks it will be a share catalog name across the databricks
+      env_name: prod 
+      catalog: prod_catalog
+      # Prod storage account
+      storage_account: unifiedrptdeltalake
+    permissions:
+      - user_name: philip.tate@nhs.net
+        level: CAN_MANAGE
+      - group_name: prod_env_users
+        level: CAN_VIEW
+      - service_principal_name: "${var.prod_env_sp_id}" 
+        level: CAN_MANAGE
