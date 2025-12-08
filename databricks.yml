@@ -76,10 +76,11 @@ variables:
   storage_account:
     description: Seperate databricks workspaces dedicated storage (dev, staging, prod)
   # Storage principles id is used for name field in databricks.yml name the sp variable: <sp_name>_id
+  # be nice to hide these in the cfg, github has these in vars anyway not seen this done tried cfg file and not tried a config.yml [example proj with {{ dev_sp }}](https://github.com/evanaze/dbx-asset-bundle-deployment/blob/main/databricks.yml) ... not seeing databricks bundle deploy -t staging --var dev_sp= being specified in the cicd
   dev_env_sp_id:
     default: "b0326488-f6b0-4c0f-bf20-a091224bad83"
   staging_env_sp_id:
-    default: "my-sp-id-jfsdkjhfjsdhfkjh"
+    default: "d588f2c8-0c0a-4ded-9da2-0663bf8dd994"
   prod_env_sp_id:
     default: "my-sp-id-jfsdkjhfjsdhfkjh"
 
