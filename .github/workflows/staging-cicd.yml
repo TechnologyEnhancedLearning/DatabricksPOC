@@ -42,11 +42,11 @@ jobs:
 
       - name: Validate Staging Bundle
       # trigger target the staging deploy in databricks.yml
-        run: databricks bundle validate -t staging 
+        run: databricks bundle validate -t staging --profile ""  # forces use of env vars only
 
       - name: Deploy Staging Bundle
       # trigger target the staging deploy in databricks.yml
-        run: databricks bundle deploy -t staging #??--auto-approve
+        run: databricks bundle deploy -t staging --profile ""  # forces use of env vars only #??--auto-approve
        # working-directory: .
 
   # testing:
