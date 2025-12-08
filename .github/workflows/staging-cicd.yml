@@ -39,7 +39,7 @@ jobs:
     
     
       - name: Set up Databricks CLI
-      - uses: databricks/setup-cli@main
+        uses: databricks/setup-cli@main
 
       - name: Validate Staging Bundle
       # trigger target the staging deploy in databricks.yml
