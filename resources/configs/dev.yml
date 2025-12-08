@@ -1,0 +1,13 @@
+# TODO and gitignore it and only need the one relevant to my databricks workspace
+# something like
+
+# vars:
+  # # Unity Catalog
+  # catalog: dev_catalog        # temporary dev catalog name
+  # schema: unified_reporting_dev   # schema for bronze/silver/gold
+
+  # # Root path for data (can be DBFS or ADLS mount)
+  # data_root: /mnt/dev/unified_reporting
+
+  # # Mode flag for your code
+  # mode: development

@@ -1,0 +1,16 @@
+# qqqq move notes somewhere useful
+# qqqq i dont think we need a dev pipeline event because people are in their own dev workspace on databricks or a dev branch
+# - but lets give it a go as a place for just data devs to update their stuff together maybe wont need it
+# - think repeat any testing want to know early anyway??
+# - dont worry about repeating stepts between cicd for now keep simple for branch rules etc do it later if desired
+# when are we deploying local dabs though? on push to feature branches????
+# -- linking it to push might be nice deploying dabs could be forgetable step for local development might be nice to auto deploy dab on push??
+name: Deploy to Databricks Dev Shared
+
+on:
+  push:
+    branches:
+      - dev-data-team-shared
+
+## Test, DAB, Tell dev repo folder on databricks to pull (so in sync with its dab ... or should it deploy dab but apparently git folders are for reference)
+jobs:

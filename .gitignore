@@ -1,0 +1,47 @@
+# Couldnt find an official gitignore this is  AI generated
+# -----------------------------
+# Databricks / DAB / dbx
+# -----------------------------
+.databricks/          # local workspace metadata / CLI files
+.deploy/              # local deploy cache (dbx/DAB)
+.bundle/              # local bundle files (dbx/DAB)
+*.log                 # temporary logs
+*.tmp                 # temporary files
+dbx_project.yaml.bak  # backup of bundle config
+build/
+dist/
+
+# -----------------------------
+# Python
+# -----------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+env/
+pip-selfcheck.json
+
+# -----------------------------
+# Jupyter Notebooks
+# -----------------------------
+.ipynb_checkpoints/
+
+# -----------------------------
+# Scratch / experimental folder
+# -----------------------------
+scratch/**            # ignore all files in scratch
+!scratch/README.md    # except placeholder README.md
+
+# -----------------------------
+# IDE / editor
+# -----------------------------
+.vscode/
+.idea/
+
+# -----------------------------
+# OS / system
+# -----------------------------
+.DS_Store
+Thumbs.db
