@@ -101,7 +101,7 @@ targets:
     default: true
     # This is the the default deployment workspace
     workspace:
-      # profile means in gets set values from [dev] section of databrickscfg
+      # profile means in gets set values from [dev] section of databrickscfg useful on local machine, unneeded in databricks environment 
       profile: dev
       # specify hosts in the databricks.yml not config for clarity
       # dev databricks host
@@ -126,13 +126,14 @@ targets:
       # Devs can see each others stuff
       group_name: dev_env_users
 
-
+#delete this
 
   staging:
     # Staging should purely be for investigation and testing prior to going to prod it runs in production mode so will run and constant updates and should be through github actions and service principle on successful pull request 
     mode: production
     workspace:
-      profile: staging
+      # specify in the databricks validate and deploy in cicd github no profile otherwise will fail to find vars, use profile only for deploying from local machnine
+      # profile: staging #still failing can make the file on the fly but would prefer not to
       # staging databricks host
       host: https://adb-295718430158257.17.azuredatabricks.net
       root_path: /Workspace/.bundle/${bundle.name}/staging
@@ -154,7 +155,8 @@ targets:
     # Automatically deployed to via git actions and service principle minimal testing on deploy as previously run on staging
     mode: production
     workspace:
-      profile: prod
+      # specify in the databricks validate and deploy in cicd github no profile otherwise will fail to find vars, use profile only for deploying from local machnine
+      # profile: prod
       # prod databricks host
       host: https://adb-295718430158257.17.azuredatabricks.net
       root_path: /Workspace/.bundle/${bundle.name}/prod
