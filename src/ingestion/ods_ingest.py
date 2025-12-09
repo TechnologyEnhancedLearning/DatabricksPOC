@@ -1,6 +1,18 @@
 # for making spark tables
 # qqqq problem i am having is that we are setting the schema, and dev has schema set as user names
 # i want to use the databricks.yml schema name for dev, and for staging and prod i want to set it to bronze_ods in this script
+
+# This does work, but dont know how the file is working generally when bundle files are not generated anymore, so its not working from within the bundle.
+# ultimately probably still want to be in a wheel will see what happens with unit testing it
+import sys
+import os
+sys.path.append(os.path.abspath('..'))
+
+### TRY  ###
+# import sys
+# bundle_src_path = sys.argv[1]
+# sys.path.append(bundle_src_path)
+
 from pyspark import pipelines as dp
 #from utils.loaders import load_csv_table #use wheel instead
 from utils.loaders import load_csv_table

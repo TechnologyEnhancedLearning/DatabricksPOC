@@ -60,7 +60,9 @@ resources:
             # if doing a pipeline per layer would do something like
             # include: ../../src/ingestion/ - might work
             # include: ../../src/ingestion/*.py   - doesnt work 
-            include: ../../src/ingestion/ods_ingest.py 
+            include: ../../src/ingestion/ods_ingest.py # -worked
+            # include: ../../src/**/*.py
+        #- folder: ../../src/utils
       photon: true
       # qqqq good practice to specify its something to do with dlt having beta version?
       channel: current
