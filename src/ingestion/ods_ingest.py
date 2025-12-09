@@ -2,7 +2,8 @@
 # qqqq problem i am having is that we are setting the schema, and dev has schema set as user names
 # i want to use the databricks.yml schema name for dev, and for staging and prod i want to set it to bronze_ods in this script
 from pyspark import pipelines as dp
-
+#from utils.loaders import load_csv_table #use wheel instead
+from utils.loaders import load_csv_table
 
 # Fixed System Constants these and some of this stuff should be going in a helper i think
 #ADLS_PROTOCOL = "abfss://"
@@ -110,14 +111,16 @@ ODS_TABLES = {
 #         "comment": "Import raw Successor_Details"
 #     },
 # }
-def load_csv_table(base_path, csv_filename):
-    """Load CSV from Azure storage with standard options"""
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(f"{base_path}{csv_filename}")
-    )
+
+## get from wheel
+# def load_csv_table(base_path, csv_filename):
+#     """Load CSV from Azure storage with standard options"""
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(f"{base_path}{csv_filename}")
+#     )
 
 # Create DLT tables dynamically
 for table_name, config in ODS_TABLES.items():
