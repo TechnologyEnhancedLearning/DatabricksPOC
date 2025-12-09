@@ -1,8 +1,21 @@
 # for making spark tables
 # qqqq problem i am having is that we are setting the schema, and dev has schema set as user names
 # i want to use the databricks.yml schema name for dev, and for staging and prod i want to set it to bronze_ods in this script
-from pyspark import pipelines as dp
 
+# This does work, but dont know how the file is working generally when bundle files are not generated anymore, so its not working from within the bundle.
+# ultimately probably still want to be in a wheel will see what happens with unit testing it
+import sys
+import os
+sys.path.append(os.path.abspath('..'))
+
+### TRY  ###
+# import sys
+# bundle_src_path = sys.argv[1]
+# sys.path.append(bundle_src_path)
+
+from pyspark import pipelines as dp
+#from utils.loaders import load_csv_table #use wheel instead
+from utils.loaders import load_csv_table
 
 # Fixed System Constants these and some of this stuff should be going in a helper i think
 #ADLS_PROTOCOL = "abfss://"
@@ -35,151 +48,264 @@ storage_container_path = spark.conf.get("pipeline.storage_container_path")
 # domain_folder ?? qqqq
 folder_name = spark.conf.get("pipeline.domain") # ods
 #folder_location_path = f"{ADLS_PROTOCOL}{container}@{storage_account}{ADLS_SUFFIX}/{folder_name}/"
-folder_location_path = f"{storage_container_path }/{folder_name}/"
+folder_location_path = f"{storage_container_path}/{folder_name}/"
 # "abfss://bronze@unifiedrptdeltalake.dfs.core.windows.net/ods
 print(folder_location_path)
+# qqqq this could be far simpler hardcode "import raw" the just list the names but we want it a bit more flexible
+
+# List of table names
+TABLE_NAMES = [
+    "Additional_Attributes_Details",
+    "Code_System_Details",
+    "Contact_Details",
+    "Manifest_Details",
+    "Organisation_Details",
+    "OtherID_Details",
+    "PrimaryRole_Details",
+    "Relationship_Details",
+    "Role_Details",
+    "Successor_Details",
+]
 
 
-@dp.table(
-    # qqqq was f"{schema_name}.Additional_Attributes_Details" but worked before now need to do it this way???!!!
-    name="Additional_Attributes_Details",
-    comment="Import raw Additional_Attributes_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}Additional_Attributes_Details.csv"
-        )
-    )
+# Define all ODS tables with their configurations
+# tables as keys because unique
+# only using dictionary because expect future use to have more to it
 
-@dp.table(
-    name="Code_System_Details",
-    comment="Import raw Code_System_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}Code_System_Details.csv"
-        )
-    ) 
+# Generate table configurations dynamically
+ODS_TABLES = {
+    table_name: {
+        "csv_filename": f"{table_name}.csv",
+        "comment": f"Import raw {table_name}"
+    }
+    for table_name in TABLE_NAMES
+}
 
-@dp.table(
-    name="Contact_Details",
-    comment="Import raw Contact_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}Contact_Details.csv"
-        )
-    ) 
+# ODS_TABLES = {
+#     "Additional_Attributes_Details": {
+#         "csv_filename": "Additional_Attributes_Details.csv",
+#         "comment": "Import raw Additional_Attributes_Details"
+#     },
+#     "Code_System_Details": {
+#         "csv_filename": "Code_System_Details.csv",
+#         "comment": "Import raw Code_System_Details"
+#     },
+#     "Contact_Details": {
+#         "csv_filename": "Contact_Details.csv",
+#         "comment": "Import raw Contact_Details"
+#     },
+#     "Manifest_Details": {
+#         "csv_filename": "Manifest_Details.csv",
+#         "comment": "Import raw Manifest_Details"
+#     },
+#     "Organisation_Details": {
+#         "csv_filename": "Organisation_Details.csv",
+#         "comment": "Import raw Organisation_Details"
+#     },
+#     "OtherID_Details": {
+#         "csv_filename": "OtherID_Details.csv",
+#         "comment": "Import raw OtherID_Details"
+#     },
+#     "PrimaryRole_Details": {
+#         "csv_filename": "PrimaryRole_Details.csv",
+#         "comment": "Import raw PrimaryRole_Details"
+#     },
+#     "Relationship_Details": {
+#         "csv_filename": "Relationship_Details.csv",
+#         "comment": "Import raw Relationship_Details"
+#     },
+#     "Role_Details": {
+#         "csv_filename": "Role_Details.csv",
+#         "comment": "Import raw Role_Details"
+#     },
+#     "Successor_Details": {
+#         "csv_filename": "Successor_Details.csv",
+#         "comment": "Import raw Successor_Details"
+#     },
+# }
 
-@dp.table(
-    name="Manifest_Details",
-    comment="Import raw Manifest_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}Manifest_Details.csv"
-        )
-    ) 
+## get from wheel
+# def load_csv_table(base_path, csv_filename):
+#     """Load CSV from Azure storage with standard options"""
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(f"{base_path}{csv_filename}")
+#     )
 
-@dp.table(
-    name="Organisation_Details",
-    comment="Import raw Organisation_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}Organisation_Details.csv"
-        )
-    ) 
+# Create DLT tables dynamically
+for table_name, config in ODS_TABLES.items():
+    # Create a closure to capture the current loop variables
+    def create_table(name=table_name, cfg=config):
+        @dp.table(name=name, comment=cfg["comment"])
+        def table_loader():
+            return load_csv_table(folder_location_path, cfg["csv_filename"])
+        return table_loader
+    
+    create_table()
 
-@dp.table(
-    name="OtherID_Details",
-    comment="Import raw OtherID_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}OtherID_Details.csv"
-        )
-    ) 
 
-@dp.table(
-    name="PrimaryRole_Details",
-    comment="Import raw PrimaryRole_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}PrimaryRole_Details.csv"
-        )
-    ) 
+# def load_csv_table(table_name):
+#     """Load CSV from Azure storage with standard options"""
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(f"{folder_location_path}{table_name}.csv")
+#     )
 
-@dp.table(
-    name="Relationship_Details",
-    comment="Import raw Relationship_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}Relationship_Details.csv"
-        )
-    )     
+# # Create DLT tables dynamically
+# for table_name, comment in ODS_TABLES:
+#     # Create a closure to capture the current loop variables
+#     def create_table(name=table_name, desc=comment):
+#         @dp.table(name=name, comment=desc)
+#         def table_loader():
+#             return load_csv_table(name)
+#         return table_loader
+    
+#     create_table()
 
-@dp.table(
-    name="Role_Details",
-    comment="Import raw Role_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}Role_Details.csv"
-        )
-    )
+# @dp.table(
+#     # qqqq was f"{schema_name}.Additional_Attributes_Details" but worked before now need to do it this way???!!!
+#     name="Additional_Attributes_Details",
+#     comment="Import raw Additional_Attributes_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}Additional_Attributes_Details.csv"
+#         )
+#     )
 
-@dp.table(
-    name="Successor_Details",
-    comment="Import raw Successor_Details"
-)
-def azure_csv_table():
-    return (
-        spark.read.format("csv")
-        .option("header", "true")
-        .option("inferSchema", "true")
-        .load(
-            f"{folder_location_path}Successor_Details.csv"
-        )
-    )
+# @dp.table(
+#     name="Code_System_Details",
+#     comment="Import raw Code_System_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}Code_System_Details.csv"
+#         )
+#     ) 
+
+# @dp.table(
+#     name="Contact_Details",
+#     comment="Import raw Contact_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}Contact_Details.csv"
+#         )
+#     ) 
+
+# @dp.table(
+#     name="Manifest_Details",
+#     comment="Import raw Manifest_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}Manifest_Details.csv"
+#         )
+#     ) 
+
+# @dp.table(
+#     name="Organisation_Details",
+#     comment="Import raw Organisation_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}Organisation_Details.csv"
+#         )
+#     ) 
+
+# @dp.table(
+#     name="OtherID_Details",
+#     comment="Import raw OtherID_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}OtherID_Details.csv"
+#         )
+#     ) 
+
+# @dp.table(
+#     name="PrimaryRole_Details",
+#     comment="Import raw PrimaryRole_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}PrimaryRole_Details.csv"
+#         )
+#     ) 
+
+# @dp.table(
+#     name="Relationship_Details",
+#     comment="Import raw Relationship_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}Relationship_Details.csv"
+#         )
+#     )     
+
+# @dp.table(
+#     name="Role_Details",
+#     comment="Import raw Role_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}Role_Details.csv"
+#         )
+#     )
+
+# @dp.table(
+#     name="Successor_Details",
+#     comment="Import raw Successor_Details"
+# )
+# def azure_csv_table():
+#     return (
+#         spark.read.format("csv")
+#         .option("header", "true")
+#         .option("inferSchema", "true")
+#         .load(
+#             f"{folder_location_path}Successor_Details.csv"
+#         )
+#     )
 
 
 ###### Try this

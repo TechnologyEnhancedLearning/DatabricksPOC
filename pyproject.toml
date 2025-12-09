@@ -25,6 +25,7 @@ main = "Workflow_POC.main:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+# Wheel packing came in the template :) qqqq
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
 
