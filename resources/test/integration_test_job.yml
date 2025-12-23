@@ -9,4 +9,4 @@ resources:
             # DAB knows to look relative to the YAML file location
             # This points to your 'Run_Tests' notebook in the repo
             # as it is this will run unit too atm
-            notebook_path: ../../tests/Run_Tests
+            notebook_path: ../../tests/Run_Tests.ipynb
