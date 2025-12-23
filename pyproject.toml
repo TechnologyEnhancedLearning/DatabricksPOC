@@ -15,7 +15,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
- #   "pytest",
+    "pytest",
+    "pytest-mock",      # Very useful for mocking dbutils later
     "databricks-dlt",
     "databricks-connect>=15.4,<15.5",
 ]
@@ -34,13 +35,15 @@ packages = ["src"]
 [tool.black]
 line-length = 125
 
-# will tis clash with conftest
-#[tool.pytest.ini_options]
-#minversion = "6.0"
-#testpaths = ["tests/unit-tests"]
-#pythonpath = ["src"]
-#python_files = ["test_*.py"]
-#addopts = [
-#    "-v",
-#    "--tb=short"
-#]
+[tool.pytest.ini_options]
+minversion = "6.0"
+# This tells pytest to look in 'tests' by default
+testpaths = ["tests"]
+# This is the "Magic Fix" for routing. It adds 'src' to the path automatically!
+pythonpath = ["src"]
+python_files = ["test_*.py"]
+addopts = [
+    "-v",
+    "-s",
+    "--tb=short"
+]
