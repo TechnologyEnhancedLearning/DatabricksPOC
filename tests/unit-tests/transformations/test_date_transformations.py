@@ -25,13 +25,7 @@ from transformations import working_days_monthly
 #     return session
 
 
-@pytest.fixture(scope="session")
-def spark():
-    """Provide Spark session for all tests"""
-    session = SparkSession.getActiveSession()
-    if session is None:
-        raise RuntimeError("No active Spark session found. Running in Databricks?")
-    return session
+
 
 
 @pytest.fixture(scope="function")

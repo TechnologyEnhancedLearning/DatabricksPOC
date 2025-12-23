@@ -24,6 +24,6 @@ jobs:
           pip install -r requirements-dev.txt
           pip install -e .
 
-      - name: Run pytest (exclude Databricks tests)
+      - name: Run pytest againt unit tests (exclude Databricks tests)
         run: |
-          pytest -m "not databricks" -v
+          pytest tests/unit-tests -m "not databricks" -v
