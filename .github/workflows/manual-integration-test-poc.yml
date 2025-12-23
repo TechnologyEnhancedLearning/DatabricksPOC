@@ -1,0 +1,14 @@
+# This yml is so we can tell dbx to run integration tests
+name: Trying to trigger dbx integration tests in dbx environ
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: 'Which DAB target to deploy to?'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
