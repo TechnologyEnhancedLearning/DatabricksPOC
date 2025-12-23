@@ -42,6 +42,9 @@ variables:
   layer:
     default: bronze
     description: bronze, silver, transfrormations etc
+  domain:
+    default: ods
+    description: pipeline per domain I expect
 
 
 x-bronze-config: &bronze-config
@@ -56,17 +59,27 @@ resources:
     pipeline_ods_ingestion:
       name: ods_ingestion
       libraries:
+        ####### it seems without a wheel we cannot provide the other files
+        # This is your DLT entry point
+        #- file:
+        #    path: ../../src/ingestion/ods_ingest.py
+        
+        # This makes 'import utils' possible. 
+        # - glob: 
+        #     include: ../../src/utils/
         - glob:
             # if doing a pipeline per layer would do something like
             # include: ../../src/ingestion/ - might work
             # include: ../../src/ingestion/*.py   - doesnt work 
-            include: ../../src/ingestion/ods_ingest.py 
+            include: ../../src/ingestion/ods_ingest.py # -worked
+            # include: ../../src/**/*.py
+        #- folder: ../../src/utils
       photon: true
       # qqqq good practice to specify its something to do with dlt having beta version?
       channel: current
       # By defining catalog here we set it for all jobs in the pipeline without needing to specify it witht he variable when defining a table
       catalog: ${var.catalog}
-      target: ${var.schema_prefix}${var.layer}_ods ## AI said missing this qqqq i dont want this hard coded here
+      target: ${var.schema_prefix}${var.layer}_${var.domain}
       serverless: true
       # qqqq dont think i need this here DELETE root_path: ../../src/ingestion
       # qqqq config is only at pipeline level use yml anchor points if need to reuse
@@ -83,4 +96,4 @@ resources:
         # bundle.layer_name: bronze -> #schema_layer = "bronze_" -> # schema_layer = park.conf.get("bundle.layer_name")
       # configuration:
         <<: *bronze-config #config anchor point for bronze layer so all pipelines in this file will have this set of configs
-        pipeline.domain: ods # if we then want to apply per pipeline variable here
+        pipeline.domain: ${var.domain} # if we then want to apply per pipeline variable here

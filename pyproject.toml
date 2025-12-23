@@ -2,6 +2,8 @@
 name = "Workflow_POC"
 version = "0.0.1"
 authors = [{ name = "philip.tate@nhs.net" }]
+description = "POC"
+readme = "README.md"
 requires-python = ">=3.10,<=3.13"
 dependencies = [
     # Any dependencies for jobs and pipelines in this project can be added here
@@ -14,6 +16,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest",
+    "pytest-mock",      # Very useful for mocking dbutils later
     "databricks-dlt",
     "databricks-connect>=15.4,<15.5",
 ]
@@ -25,8 +28,25 @@ main = "Workflow_POC.main:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+# Wheel packing came in the template :) qqqq
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
 
 [tool.black]
 line-length = 125
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+# This tells pytest to look in 'tests' by default
+testpaths = ["tests"]
+# This is the "Magic Fix" for routing. It adds 'src' to the path automatically!
+pythonpath = ["src"]
+python_files = ["test_*.py"]
+addopts = [
+    "-v",
+    "-s",
+    "--tb=short"
+]
+markers = [
+    "databricks: for example we might use this marker to exclude a specific unit test from git env test running so it only run in dbx env",
+]
