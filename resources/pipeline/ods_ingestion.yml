@@ -1,0 +1,99 @@
+###############################
+## POC notes - DELETE LATER
+###############################
+## We should think about these resource files I think potentially a .yml per layer bronze.yml may make sense
+## We will not define schemas here
+## We use this file to expose from databricks.yml the variables we need to set up the pipeline
+## We will define too variables just for the set of pipelines here too if we start running layer based .ymls then we would have layer level variables here
+###############################
+## If we want specific pipeline resource file per .py file we should use this i think
+  #     libraries:
+  # - notebook:
+  #     path: ../../src/ingestion/ods_ingest.py
+## if we want per layer maybe
+      # libraries:
+      #   - glob:
+      #       # if doing a pipeline per layer would do something like
+      #       include: ../../src/ingestion/**.py
+## if we want per domain maybe
+      # libraries:
+      #   - glob:
+      #       # if doing a pipeline per layer would do something like
+      #       include: ../../src/ingestion/ods_*.py
+###############################
+
+# qqqq discus where want these things to live if it was using a wheel then the python file could be literally a table and a foreach
+#####
+# If we are running multlipe pipelines we may define all their vars at the top
+#####
+
+
+# qqqq
+## im thinking var for in script var <-- also no because i cand get bundle.xyz and no all vars seem accessible everywhere i get catalog from databricks.yml
+## bundle for vars originating from databricks.ymly
+### i get vars from databricks 
+## pipeline. from pipeline files
+## but files run, it shouldnt be bundle and pipeline it should represent the scope they come from
+
+## qqqq i like the top level config value to pass i do not like construction vars in a yml instead of python but 
+# Error: cannot create pipeline: The target schema field is required for UC pipelines. Reason: DLT requires specifying a target schema for UC pipelines. Please use the TEMPORARY keyword in the CREATE MATERIALIZED VIEW or CREATE STREAMING TABLE statement if you do not wish to publish your dataset..
+# Error: cannot update pipeline: Specified 'schema' field in the pipeline settings is illegal. Reason: Cannot unset 'schema' field once it's defined in the pipeline spec. Please create a new DLT pipeline. For more information about publishing modes, see https://docs.databricks.com/en/dlt/migrate-to-dpm.html.
+variables:
+  layer:
+    default: bronze
+    description: bronze, silver, transfrormations etc
+  domain:
+    default: ods
+    description: pipeline per domain I expect
+
+
+x-bronze-config: &bronze-config
+  bundle.env_name: ${var.env_name}
+  bundle.storage_account: ${var.storage_account} #storage is environment specific so defined in databricks.yml
+  pipeline.layer: ${var.layer} # if we are doing layer based resource files qqqq get from var
+  # f"{ADLS_PROTOCOL}{container}@{storage_account}{ADLS_SUFFIX}/        -> py adds {folder_name}/"
+  pipeline.storage_container_path: "abfss://${var.layer}@${var.storage_account}.dfs.core.windows.net/"
+
+resources:
+  pipelines:
+    pipeline_ods_ingestion:
+      name: ods_ingestion
+      libraries:
+        ####### it seems without a wheel we cannot provide the other files
+        # This is your DLT entry point
+        #- file:
+        #    path: ../../src/ingestion/ods_ingest.py
+        
+        # This makes 'import utils' possible. 
+        # - glob: 
+        #     include: ../../src/utils/
+        - glob:
+            # if doing a pipeline per layer would do something like
+            # include: ../../src/ingestion/ - might work
+            # include: ../../src/ingestion/*.py   - doesnt work 
+            include: ../../src/ingestion/ods_ingest.py # -worked
+            # include: ../../src/**/*.py
+        #- folder: ../../src/utils
+      photon: true
+      # qqqq good practice to specify its something to do with dlt having beta version?
+      channel: current
+      # By defining catalog here we set it for all jobs in the pipeline without needing to specify it witht he variable when defining a table
+      catalog: ${var.catalog}
+      target: ${var.schema_prefix}${var.layer}_${var.domain}
+      serverless: true
+      # qqqq dont think i need this here DELETE root_path: ../../src/ingestion
+      # qqqq config is only at pipeline level use yml anchor points if need to reuse
+      configuration:
+        ################ Map Databricks Bundle variables to Spark Config Properties ################
+        # Map the Bundle variables (from databricks.yml) to Spark config properties
+        # The key names here MUST match what you use in spark.conf.get() in Python!
+        # bundle.env_name: ${var.env_name}
+        # bundle.schema_prefix: ${var.schema_prefix} - qqqq setting schema now in the yml
+        # bundle.storage_account: ${var.storage_account}
+        ############### Resource yml files for set of pipelines #################
+        # If we do bronze, silver ... tranformation based layers with own yml files will define layer level vars here
+        # for example this would be
+        # bundle.layer_name: bronze -> #schema_layer = "bronze_" -> # schema_layer = park.conf.get("bundle.layer_name")
+      # configuration:
+        <<: *bronze-config #config anchor point for bronze layer so all pipelines in this file will have this set of configs
+        pipeline.domain: ${var.domain} # if we then want to apply per pipeline variable here
