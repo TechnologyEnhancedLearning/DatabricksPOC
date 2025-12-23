@@ -1,3 +1,4 @@
+
 # for making spark tables
 # qqqq problem i am having is that we are setting the schema, and dev has schema set as user names
 # i want to use the databricks.yml schema name for dev, and for staging and prod i want to set it to bronze_ods in this script
@@ -6,6 +7,7 @@
 # ultimately probably still want to be in a wheel will see what happens with unit testing it
 import sys
 import os
+# ai says This is an acceptable workaround for running code directly in Databricks pipelines/jobs when you haven't built a Python wheel.
 sys.path.append(os.path.abspath('..'))
 
 ### TRY  ###
@@ -140,7 +142,8 @@ for table_name, config in ODS_TABLES.items():
     def create_table(name=table_name, cfg=config):
         @dp.table(name=name, comment=cfg["comment"])
         def table_loader():
-            return load_csv_table(folder_location_path, cfg["csv_filename"])
+            # spark is defined by databricks environment so may not need to directly define it
+            return load_csv_table( spark, folder_location_path, cfg["csv_filename"])
         return table_loader
     
     create_table()

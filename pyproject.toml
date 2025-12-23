@@ -2,6 +2,8 @@
 name = "Workflow_POC"
 version = "0.0.1"
 authors = [{ name = "philip.tate@nhs.net" }]
+description = "POC"
+readme = "README.md"
 requires-python = ">=3.10,<=3.13"
 dependencies = [
     # Any dependencies for jobs and pipelines in this project can be added here
@@ -13,7 +15,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "pytest",
+ #   "pytest",
     "databricks-dlt",
     "databricks-connect>=15.4,<15.5",
 ]
@@ -31,3 +33,14 @@ packages = ["src"]
 
 [tool.black]
 line-length = 125
+
+# will tis clash with conftest
+#[tool.pytest.ini_options]
+#minversion = "6.0"
+#testpaths = ["tests/unit-tests"]
+#pythonpath = ["src"]
+#python_files = ["test_*.py"]
+#addopts = [
+#    "-v",
+#    "--tb=short"
+#]

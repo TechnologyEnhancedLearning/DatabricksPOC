@@ -1,0 +1,99 @@
+import pytest
+from pyspark.sql import SparkSession
+from pathlib import Path
+import os
+import sys
+
+# --- HELPER FUNCTION TO GET DBUTILS (Required fix) ---
+def get_dbutils(spark: SparkSession):
+    """
+    Safely retrieves the dbutils object, necessary when spark.dbutils is not available
+    due to Spark Connect or other environment settings.
+    """
+    try:
+        # Tries the standard Databricks notebook method
+        from pyspark.sql import SQLContext # Need this import for the notebook method
+        return SQLContext(spark.sparkContext).createDataFrame([('1', '2')], ['col1', 'col2']).sqlContext.sparkSession._jvm.com.databricks.dbutils.DBUtils.getDBUtils(spark.sparkContext)
+    except Exception:
+        # Fallback for alternative environments
+        try:
+            from IPython import get_ipython
+            return get_ipython().user_ns["dbutils"]
+        except:
+            # Final fallback, though unlikely to work if the above failed
+            raise Exception("Cannot find DBUtils object.")
+
+# --- Your Unmodified Production Function (Included for context) ---
+def load_csv_table(spark, base_path, csv_filename):
+    return (
+        spark.read.format("csv")
+        .option("header", "true")
+        .option("inferSchema", "true")
+        .load(f"{base_path}{csv_filename}")
+    )
+
+# --- THE WORKING FIXTURE (Using the safe DBUtils getter) ---
+
+@pytest.fixture
+def sample_csv_data(spark: SparkSession, tmp_path: Path):
+    """
+    STAGES the static CSV file to a temporary DBFS location 
+    to bypass the WorkspaceLocalFileSystem security restriction.
+    """
+    # 1. Define Paths
+    csv_filename = "org_data.csv"
+    fixture_dir = "tests/unit-tests/utils/fixtures" 
+    
+    local_base_path = Path(os.getcwd()) / fixture_dir
+    local_file_path = local_base_path / csv_filename
+    
+    # Define the TEMPORARY path on DBFS
+    # We use tmp_path name to ensure uniqueness
+    dbfs_staging_path = f"dbfs:/tmp/pytest_data/{tmp_path.name}/"
+    
+    # 2. Write the CSV content locally (if file doesn't exist)
+    csv_content = """OrganisationID,Name,Status
+ORG001,Test Hospital,Active
+ORG002,Test Clinic,Inactive
+ORG003,Test Surgery,Active"""
+    
+    local_base_path.mkdir(parents=True, exist_ok=True)
+    local_file_path.write_text(csv_content) 
+
+    # 3. CRITICAL STEP: COPY the file from Local Disk to DBFS
+    try:
+        # FIX: Get dbutils using the helper function
+        dbutils = get_dbutils(spark) 
+        
+        # Source path MUST start with 'file:' prefix for dbutils.fs.cp
+        local_source = f"file://{str(local_file_path)}"
+        
+        # Destination path is the folder on DBFS
+        dbutils.fs.cp(local_source, dbfs_staging_path, recurse=True)
+        
+    except Exception as e:
+        # This will catch the get_dbutils failure or the cp failure
+        raise RuntimeError(f"Failed to stage file to DBFS. Error: {e}")
+
+    # 4. Return the DBFS path (It's now a folder containing the CSV)
+    # The load function will look for base_path/csv_filename which will fail if cp was recursive.
+    # We need the base_path to be the DBFS folder path.
+    return dbfs_staging_path, csv_filename 
+    
+# --- The Test Function (Unchanged, assuming you fixed the name) ---
+def test_load_csv_table_basic(spark: SparkSession, sample_csv_data):
+    """
+    This test loads the data from the temporary DBFS staging location.
+    """
+    base_path, csv_filename = sample_csv_data
+    df = load_csv_table(spark, base_path, csv_filename)
+    
+    # Assertions...
+    assert df.count() == 3
+    
+    # Cleanup the staged data (Recommended)
+    try:
+        get_dbutils(spark).fs.rm(base_path, recurse=True)
+    except Exception as e:
+        # Don't fail the test on cleanup failure
+        print(f"Warning: Failed to clean up DBFS path {base_path}. Error: {e}")
