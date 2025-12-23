@@ -49,7 +49,8 @@ jobs:
     name: "Early warning of dab issues"
     runs-on: ubuntu-latest
     # Just dev we are not deploying so dont need access to more important service principle
-    environment: dev
+    # !!!! TODO !!!!! Should be dev but git needs the service principle putting into its environment 
+    environment: staging
     env:
       DATABRICKS_HOST: ${{ vars.DBX_HOST }}
       DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
