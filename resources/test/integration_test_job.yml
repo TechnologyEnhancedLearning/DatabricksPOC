@@ -1,0 +1,12 @@
+resources:
+  jobs:
+    integration_test_job:
+      name: "[${bundle.target}] Integration & Unit Test Runner"
+      tasks:
+        - task_key: run_all_tests
+          # serverless instead # job_cluster_key: test_cluster
+          notebook_task:
+            # DAB knows to look relative to the YAML file location
+            # This points to your 'Run_Tests' notebook in the repo
+            # as it is this will run unit too atm
+            notebook_path: ../../tests/Run_Tests
