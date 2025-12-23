@@ -1,0 +1,30 @@
+# qqqq todo ai generated ask someone to scan over it and give a read of the ins and outs
+[pytest]
+# Pytest configuration for Databricks unit tests
+
+# Test discovery patterns
+python_files = test_*.py
+python_classes = Test*
+python_functions = test_*
+
+# Test paths
+testpaths = tests
+
+# Output options
+addopts = 
+    -v
+    --tb=short
+    --strict-markers
+    --disable-warnings
+
+# Markers for organizing tests
+markers =
+    unit: Unit tests that don't require external resources
+    integration: Integration tests that may require external systems
+    slow: Tests that take a long time to run
+
+# Minimum Python version
+minversion = 3.8
+
+# Directory patterns to ignore
+norecursedirs = .git .tox dist build *.egg .venv venv

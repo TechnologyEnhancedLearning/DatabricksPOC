@@ -1,0 +1,4 @@
+OrganisationID,Name,Status
+ORG001,Test Hospital,Active
+ORG002,Test Clinic,Inactive
+ORG003,Test Surgery,Active
