@@ -64,4 +64,5 @@ jobs:
         uses: databricks/setup-cli@main
 
       - name: Validate Bundle
-        run: databricks bundle validate
+        # Am i forced to have a target its after databrickcfg but shouldnt be
+        run: databricks bundle validate -t staging
