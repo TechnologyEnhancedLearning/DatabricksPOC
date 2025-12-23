@@ -103,7 +103,8 @@ def test_working_days_january_2023_count(spark, sample_dataframe_january_2023):
     
     print(f"✅ January 2023 verified: {working_days} working days")
 
-
+# Just trying out pytest.mark so can exclude by run: pytest -m "not databricks" but the intention would be unit tests via github action and integration by github action triggering test in databricks environment
+@pytest.mark.databricks
 def test_working_days_february_2023_count(spark):
     """
     Test that February 2023 returns 20 working days

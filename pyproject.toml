@@ -47,3 +47,6 @@ addopts = [
     "-s",
     "--tb=short"
 ]
+markers = [
+    "databricks: for example we might use this marker to exclude a specific unit test from git env test running so it only run in dbx env",
+]
