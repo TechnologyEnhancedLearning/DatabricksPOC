@@ -1,56 +1,66 @@
-# We want to run CI processes that can run independent of databricks as branch rules so that we dont # deploy at cost code that we already should know needs changing
-# such as linting, and unit test for python, maybe dab? verify
-# we run these on all pull request because if there is a hot fix it may not have passed through 
-# staging for example
-# qqqq check this is up to date
 name: CI - Pull Request Checks
 
-# Run CI on all pull requests
+# Run CI on all pull requests just incase of hot fixes
 on:
   pull_request:
     branches:
       - '**'  # all branches
+  workflow_dispatch:
 
 jobs:
-  ci_checks:
-    name: "Linting, Unit Tests, DAB Verify"
+  lint:
+    name: "Linting"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Commit lint placeholder
+        # TODO: Implement commitlint with config from TELBlazor reference
+        run: |
+          echo "WARNING: Commit lint step is currently a placeholder."
+          echo "Reference project: TELBlazor"
+          # exit 0  <-- Change to 0 if you don't want to block the rest of the pipe yet
+  
+  pytest:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout code
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v4
 
-      # Set up Python
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.10"
 
-      # Install dependencies used for linting and unit tests
-      - name: Install dependencies
-        run: pip install -r requirements-dev.txt
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
 
-      # Run python unit tests
-      - name: Run Unit Tests
-        run: pytest tests/unit
+      - name: Install project + test deps
+        run: |
+          pip install -r requirements-dev.txt
+          pip install -e .
+      - name: Run pytest againt unit tests (exclude Databricks tests)
+        run: |
+          pytest tests/unit-tests -m "not databricks" -v
+          
+  dab-validate:
+    name: "Early warning of dab issues"
+    runs-on: ubuntu-latest
+    # Just dev we are not deploying so dont need access to more important service principle
+    environment: dev
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
 
-      # Run python lint
-      # qqqq on example used flake8 instead
-      # pyproject.toml will need configuring
-      - name: Run Linting
-        run: pylint src
-        
-      # qqqq to do run commit lint step and put in commit lint config
-      # see TELBlazor
-      - name: Commit lint
-      run: |
-          echo "Commit lint not implemented"
-          exit 1
-        
-      # qqqq to do run version generation step and put in commit lint config
-      # see TELBlazor
-      - name: Version Generation Test Run
-      run: |
-          echo "Version test run not implemented"
-          exit 1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+    
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validate Bundle
+        run: databricks bundle validate
