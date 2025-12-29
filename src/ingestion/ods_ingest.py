@@ -63,7 +63,7 @@ for table_name, config in ODS_TABLES.items():
     def create_table(name=table_name, cfg=config):
         @dp.table(name=name, comment=cfg["comment"])
         def table_loader():
-            # spark is defined by databricks environment so may not need to directly define it
+            # spark is defined by databricks environment its provided globally here but as load_csv_table is the unit testable part we make it a passable argument
             return load_csv_table( spark, folder_location_path, cfg["csv_filename"])
         return table_loader
     
