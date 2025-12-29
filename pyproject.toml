@@ -45,9 +45,9 @@ load-plugins = ["databricks.labs.pylint.all"]
 max-line-length = 125
 
 #disable all to test if picked up
-#disable = ["all"]
 [tool.pylint.messages_control]
 disable = [
+#    "all",        # just testing if toml picked up
     "C8920",       # Remove commented out code (too aggressive in notebooks)
     "C0303",       # Trailing whitespace
     "C0304",       # Missing final newline
