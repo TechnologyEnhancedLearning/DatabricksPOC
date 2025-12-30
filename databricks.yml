@@ -137,6 +137,9 @@ targets:
       # staging databricks host
       host: https://adb-295718430158257.17.azuredatabricks.net
       root_path: /Workspace/.bundle/${bundle.name}/staging
+    # qqqq adding this so jobs and pipelines are run as the service principle
+    run_as:
+      service_principal_name: "${var.staging_env_sp_id}"
     variables:
       env_name: staging
       catalog: staging_catalog

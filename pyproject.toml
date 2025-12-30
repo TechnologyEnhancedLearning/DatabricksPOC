@@ -13,12 +13,14 @@ dependencies = [
     # add dependencies to the 'environment' section of your pipeline.yml file instead
 ]
 
+# Using the dev group keeps the code light for prod but as not loaded into pipelines may find the need to move some into the dependencies section. We can make a staging group and tell pipelines to use it in the dab i expect.
 [dependency-groups]
 dev = [
     "pytest",
     "pytest-mock",      # Very useful for mocking dbutils later
     "databricks-dlt",
     "databricks-connect>=15.4,<15.5",
+    "databricks.labs.pylint.all",
 ]
 
 [project.scripts]
@@ -32,6 +34,33 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
 
+### Pylint
+
+# we stall this currently in the notebook not preinstalled in the cluster but we need it to load
+[tool.pylint.master]
+load-plugins = ["databricks.labs.pylint.all"]
+
+# doesnt work tried 1 to trigger it
+[tool.pylint.format]
+max-line-length = 125
+
+#disable all to test if picked up
+[tool.pylint.messages_control]
+disable = [
+#    "all",        # just testing if toml picked up
+    "C8920",       # Remove commented out code (too aggressive in notebooks)
+    "C0303",       # Trailing whitespace
+    "C0304",       # Missing final newline
+    "C0413",       # Wrong import position (not always critical)
+    "E0611",       # No name in module (common with Spark)
+    "E0401",       # Unable to import (Spark notebooks / dynamic paths)
+    "C0103",       # Variable name style (allow lowercase df, e, etc.)
+    "W0511",       # TODO / FIXME comments
+]
+
+good-names = ["e", "i", "k", "n", "f", "v", "df"]
+
+# qqqq is black setup and used?
 [tool.black]
 line-length = 125
 
