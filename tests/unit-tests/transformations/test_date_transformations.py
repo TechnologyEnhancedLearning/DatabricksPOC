@@ -1,31 +1,12 @@
 # test_working_days_monthly.py
+# qqqq retrospect pyspark test may be better
 import sys
 import pytest
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as fn
 
-# Project imports
-# should be provided by toml
-# PROJECT_ROOT = "/Workspace/Users/philip.tate@nhs.net/PT Separate Feature Branch/src"
-# sys.path.insert(0, PROJECT_ROOT)
 
 from transformations import working_days_monthly
-
-
-# ============================================================================
-# FIXTURES
-# ============================================================================
-# should be automatic
-# @pytest.fixture(scope="session")
-# def spark():
-#     """Provide Spark session for all tests"""
-#     session = SparkSession.getActiveSession()
-#     if session is None:
-#         raise RuntimeError("No active Spark session found. Running in Databricks?")
-#     return session
-
-
-
 
 
 @pytest.fixture(scope="function")

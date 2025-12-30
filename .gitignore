@@ -10,7 +10,7 @@
 dbx_project.yaml.bak  # backup of bundle config
 build/
 dist/
-
+tests/test-reports/*
 # -----------------------------
 # Python
 # -----------------------------

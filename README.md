@@ -70,7 +70,7 @@ project-root/
 │   ├── silver_pipeline.py
 │   └── gold_pipeline.py
 │
-├── requirements.txt          # Python dependencies
+├── requirements.txt          # Python dependencies files would put on clusters so dont need installing per notebook and requirements-dev.txt for ones useful for loading the clusters with
 ├── environment.yml           # Conda environment for analysts
 └── scripts/                  # Utility scripts (deploy, tests)
 
