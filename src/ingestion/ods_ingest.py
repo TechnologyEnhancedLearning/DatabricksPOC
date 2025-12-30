@@ -2,12 +2,32 @@
 # worked but improving pathing
 # unless we set up a wheel artifact this is required to access utils
 import sys
-import os
-sys.path.append(os.path.abspath('..'))
+from pathlib import Path
 
+########### qqqq previous approach #####
+## this worked but suspicious of it in dabs staging github etc
+#import os
+# sys.path.append(os.path.abspath('..')) 
+#  with utils.loaders from loaders import load_csv_table 
+# and the init was from .loaders import load_csv_table  __all__ = ["load_csv_table"]
+##############
+
+
+############### Make Modules Available  #############
+current_dir = Path.cwd()
+print(f"Current_dir: {current_dir}")
+shared_parent_root = current_dir.parent.resolve()
+print(f"shared_parent_root: {shared_parent_root}")
+module_folder_path_from_shared_parent = "utils"
+module_path = (shared_parent_root / module_folder_path_from_shared_parent).resolve()
+print(f"module_path: {module_path}")
+if str(module_path) not in sys.path:
+    sys.path.insert(0, str(module_path))
+######################################################
 
 from pyspark import pipelines as dp
-from utils.loaders import load_csv_table
+from loaders import * #load_csv_table
+# from utils.loaders import load_csv_table  # qqqq worked
 
 # storage_account = spark.conf.get("bundle.storage_account") # 'unifiedrptdeltalake'
 storage_container_path = spark.conf.get("pipeline.storage_container_path")

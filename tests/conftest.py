@@ -1,7 +1,7 @@
 import pytest
 from pyspark.sql import SparkSession
 
-
+# spark isnt in github by default like databricks so we need to create it
 @pytest.fixture(scope="session")
 def spark():
     # Databricks / Spark Connect
@@ -21,16 +21,3 @@ def spark():
 
     yield spark
     spark.stop()
-
-
-### Worked but want something that can work with cicd
-# import pytest
-# from pyspark.sql import SparkSession
-
-# # Use existing Spark session in Databricks (Spark Connect)
-# @pytest.fixture(scope="session")
-# def spark():
-#     session = SparkSession.getActiveSession()
-#     if session is None:
-#         raise RuntimeError("No active Spark session found. Ensure you are running in Databricks.")
-#     return session
