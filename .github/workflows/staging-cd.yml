@@ -1,7 +1,7 @@
 # Rely on ci.yml and branch rules to ensure bundle validation and linting
 # we are not going from staging straight to prod, because we use staging for manual testing as well
 # [use as a ref](https://github.com/evanaze/dbx-asset-bundle-deployment/blob/main/.github/workflows/dev-ci.yml)
-name: Deploy to Databricks Staging and Trigger Tests in Databricks
+name: Deploy to Databricks Staging and Trigger Staging Tests in Databricks
 
 on:
   push:
@@ -26,22 +26,34 @@ jobs:
       - name: Set up Databricks CLI
         uses: databricks/setup-cli@main
 
+      # Just incase somethings changed there is no harm in it
       - name: Validate Staging Bundle
       # trigger target the staging deploy in databricks.yml
         run: databricks bundle validate -t staging #--profile ""  # forces use of env vars only # didnt work
 
       - name: Deploy Staging Bundle
       # trigger target the staging deploy in databricks.yml
-        run: databricks bundle deploy -t staging #--profile ""  # forces use of env vars only #??--auto-approve # didnt work
+        run: databricks bundle deploy -t staging --auto-approve #--profile ""  # forces use of env vars only #??--auto-approve # didnt work
        # working-directory: .
 
-##### Probably need as a linear job to ensure that setup has happened or some wait but then this has worked from the manual side
+  check-staging-is-stable:
+    name: Check staging stable after deploy
+    needs: deploy_to_staging
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # this step would come after dab deploy? or would run first dev dab?
-      # i dont want a fail really and the code to be sat there known to be bad so running locally via a hook could be good pre-push?
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+
       # The notebook will actually run both as set up atm but maybe its ok for now
-      # shouldnt have named the job and the yml file the same oops
-      #- name: Run Integration Tests
-      #  run: |
-      #    echo "running the integration yml test job integration_test_job.yml"
-      #    databricks bundle run -t staging integration_test_job
+      - name: Check Staging Integration Tests After Deploy
+        run: |
+          echo "running the integration yml test job integration_test_job.yml"
+          databricks bundle run -t staging run_integration_tests

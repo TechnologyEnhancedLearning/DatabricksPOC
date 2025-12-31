@@ -1,0 +1,55 @@
+name: Manually Validate All Bundle Targets
+# The pipeline validate bundles on pull request before the merge deploys them. This means code could get to staging before failing because prod bundle fails. In this scenario it will be often the case that prod needs some provision, however this trigger is so the check can be run early.
+
+on:
+  workflow_dispatch: # Manual trigger
+
+
+jobs:
+  validate-dev:
+    name: Validate Dev
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+      - name: Validate Dev Target
+        run: databricks bundle validate -t dev
+
+  validate-staging:
+    name: Validate Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+      - name: Validate Staging Target
+        run: databricks bundle validate -t staging
+
+  validate-prod:
+    name: Validate Prod
+    runs-on: ubuntu-latest
+    environment: prod
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+      - name: Validate Prod Target
+        run: databricks bundle validate -t prod

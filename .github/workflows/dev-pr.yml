@@ -1,0 +1,25 @@
+name: DEV PR Checks
+
+on:
+  pull_request:
+    branches:
+      - dev-data-team-shared  # Trigger on PRs targeting the dev branch
+
+jobs:
+  validate-dev:
+    name: Validate Dev
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validate Dev Target
+        run: databricks bundle validate -t dev

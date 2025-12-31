@@ -28,8 +28,7 @@ jobs:
       # this step would come after dab deploy? or would run first dev dab?
       # i dont want a fail really and the code to be sat there known to be bad so running locally via a hook could be good pre-push?
       # The notebook will actually run both as set up atm but maybe its ok for now
-      # shouldnt have named the job and the yml file the same oops
-      - name: Run Integration Tests
+      - name: Check Staging Integration Tests Before Allowing Prod Deploy
         run: |
           echo "running the integration yml test job integration_test_job.yml"
           databricks bundle run -t staging integration_test_job
