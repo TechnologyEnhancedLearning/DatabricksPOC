@@ -19,9 +19,20 @@ jobs:
         DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
 
       steps:
-        # qqqq add version and changelog creation step, and give a dab version matching repo version
-        - uses: actions/checkout@v4
-        - uses: databricks/setup-cli@main
-        - name: Deploy bundle
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Set up Databricks CLI
+          uses: databricks/setup-cli@main
+        
+        - name: Deploy Prod Bundle
+          # trigger target the prod deploy in databricks.yml
           run: databricks bundle deploy -t prod --auto-approve
-          working-directory: .
+
+          
+        # qqqq add version and changelog creation step, and give a dab version matching repo version
+        # - uses: actions/checkout@v4
+        # - uses: databricks/setup-cli@main
+        # - name: Deploy bundle
+        #   run: databricks bundle deploy -t prod --auto-approve
+        #   working-directory: .
