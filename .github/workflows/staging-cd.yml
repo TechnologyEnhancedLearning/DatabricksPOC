@@ -56,4 +56,4 @@ jobs:
       - name: Check Staging Integration Tests After Deploy
         run: |
           echo "running the integration yml test job integration_test_job.yml"
-          databricks bundle run -t staging run_integration_tests
+          databricks bundle run -t staging integration_test_job
