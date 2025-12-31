@@ -24,24 +24,24 @@ jobs:
       - name: Validate Prod Target
         run: databricks bundle validate -t prod
     
-    check-staging-is-stable:
-      name: Check staging still stable before deploy to prod
-      runs-on: ubuntu-latest
-      environment: staging
-      env:
-        DATABRICKS_HOST: ${{ vars.DBX_HOST }}
-        DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
-        DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-
-        - name: Set up Databricks CLI
-          uses: databricks/setup-cli@main
+  check-staging-is-stable:
+    name: Check staging still stable before deploy to prod
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
 
         # The notebook will actually run both as set up atm but maybe its ok for now
-        - name: Check Staging Integration Tests Before Allowing Prod Deploy
-          run: |
-            echo "running the integration yml test job integration_test_job.yml"
-            databricks bundle run -t staging run_integration_tests
+      - name: Check Staging Integration Tests Before Allowing Prod Deploy
+        run: |
+          echo "running the integration yml test job integration_test_job.yml"
+          databricks bundle run -t staging integration_test_job
 

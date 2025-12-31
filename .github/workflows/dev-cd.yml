@@ -58,4 +58,4 @@ jobs:
       - name: Check Dev Integration Tests After Deploy
         run: |
           echo "running the integration yml test job integration_test_job.yml"
-          databricks bundle run -t dev run_integration_tests 
+          databricks bundle run -t dev integration_test_job 
