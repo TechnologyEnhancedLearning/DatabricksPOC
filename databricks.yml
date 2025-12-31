@@ -120,9 +120,10 @@ targets:
     permissions:
     - level: CAN_MANAGE
       service_principal_name: "${var.dev_env_sp_id}" 
-    - level: CAN_MANAGE
+    # only one owner error which to use comes down to if have a personal deploy
+    #- level: CAN_MANAGE
       # Devs manage our own stuff
-      user_name: ${workspace.current_user.userName} 
+    #  user_name: ${workspace.current_user.userName} 
     - level: CAN_VIEW
       # Devs can see each others stuff
       group_name: dev_env_users
