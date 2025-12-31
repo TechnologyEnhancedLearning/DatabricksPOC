@@ -23,20 +23,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-     ### maybe put in later 
-      # - name: Set up Python
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.10'
-      
-      # - name: Install dependencies
-      #   run: |
-      #     pip install -r requirements.txt
-    # qqqq add a step to make a version number so can see its changed and print it as part of the job
-    #DAB_VERSION: "staging-${GITHUB_SHA::7}"  # short commit hash
-    # databricks bundle deploy --environment staging --version $DAB_VERSION
-    
-    
       - name: Set up Databricks CLI
         uses: databricks/setup-cli@main
 

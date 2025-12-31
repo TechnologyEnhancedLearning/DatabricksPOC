@@ -22,6 +22,12 @@ jobs:
           echo "WARNING: Commit lint step is currently a placeholder."
           echo "Reference project: TELBlazor"
           # exit 0  <-- Change to 0 if you don't want to block the rest of the pipe yet
+
+      - name: Maybe code lint for only top priority issues
+        run: |
+          echo "WARNING: pylint lint step is currently a placeholder."
+          # exit 0  <-- Change to 0 if you don't want to block the rest of the pipe yet
+      #- databricks readme pages recommend [using their lint plugin](https://github.com/databrickslabs/pylint-plugin)
   
   pytest:
     runs-on: ubuntu-latest
