@@ -8,6 +8,44 @@ from pyspark.sql import functions as fn
 
 from transformations import working_days_monthly
 
+@pytest.fixture(scope="function")
+def working_days_calendar(spark):
+    """
+    Create a calendar DataFrame with monthly working days.
+    Covers 10 years from 2020-01-01.
+    Excludes weekends as non-working days.
+    Prints sample data for debugging.
+    """
+    
+    df = spark.range(0, 365 * 10).select(
+        fn.expr("date_add('2020-01-01', cast(id as int))").alias("Date")
+    ).withColumn(
+        "Month_Start", fn.trunc("Date", "MM")
+    ).withColumn(
+        "Working_Day_Type",
+        fn.when(fn.date_format("Date", "EEEE").isin("Saturday", "Sunday"), "N").otherwise("Y")
+    ).withColumn(
+        "Working_Day_Calc",
+        fn.when(fn.col("Working_Day_Type") == "Y", 1).otherwise(0)
+    )
+
+    # DEBUG: Print the schema and a small sample of data
+    # print("\n=== Calendar Schema ===")
+    # df.printSchema()
+    # print("\n=== Calendar Sample Data ===")
+    # df.orderBy("Date").show(12, truncate=False)
+
+    # Optional: Aggregate by month to get total working days
+    cal_agg = df.groupBy("Month_Start").agg(
+        fn.sum("Working_Day_Calc").alias("Total_Working_Days")
+    )
+
+    # DEBUG: Print aggregated result
+    # print("\n=== Aggregated Calendar Sample ===")
+    # cal_agg.orderBy("Month_Start").show(12, truncate=False)
+
+    return cal_agg
+
 
 @pytest.fixture(scope="function")
 def sample_dataframe_january_2023(spark):
@@ -50,12 +88,12 @@ def sample_dataframe_with_extra_columns(spark):
 # TESTS
 # ============================================================================
 
-def test_working_days_adds_column(spark, sample_dataframe_january_2023):
+def test_working_days_adds_column(working_days_calendar, sample_dataframe_january_2023):
     """
     Test that working_days_monthly adds the working_days column
     """
     # ACT
-    result_df = working_days_monthly(spark, sample_dataframe_january_2023, "start_date")
+    result_df = working_days_monthly(working_days_calendar, sample_dataframe_january_2023, "start_date")
     
     # ASSERT
     assert "working_days" in result_df.columns, "working_days column should be added"
@@ -64,13 +102,13 @@ def test_working_days_adds_column(spark, sample_dataframe_january_2023):
     print("✅ Column added successfully")
 
 
-def test_working_days_january_2023_count(spark, sample_dataframe_january_2023):
+def test_working_days_january_2023_count(working_days_calendar, sample_dataframe_january_2023):
     """
     Test that January 2023 returns 22 working days
     January 2023: 31 days - 4 Saturdays - 5 Sundays = 22 working days
     """
     # ACT
-    result_df = working_days_monthly(spark, sample_dataframe_january_2023, "start_date")
+    result_df = working_days_monthly(working_days_calendar, sample_dataframe_january_2023, "start_date")
     
     # ASSERT
     working_days = result_df.collect()[0]["working_days"]
@@ -80,7 +118,7 @@ def test_working_days_january_2023_count(spark, sample_dataframe_january_2023):
 
 # Just trying out pytest.mark so can exclude by run: pytest -m "not databricks" but the intention would be unit tests via github action and integration by github action triggering test in databricks environment
 @pytest.mark.databricks
-def test_working_days_february_2023_count(spark):
+def test_working_days_february_2023_count(spark,working_days_calendar):
     """
     Test that February 2023 returns 20 working days
     February 2023: 28 days - 4 Saturdays - 4 Sundays = 20 working days
@@ -91,7 +129,7 @@ def test_working_days_february_2023_count(spark):
     input_df = spark.createDataFrame(data, columns)
     
     # ACT
-    result_df = working_days_monthly(spark, input_df, "start_date")
+    result_df = working_days_monthly(working_days_calendar, input_df, "start_date")
     
     # ASSERT
     working_days = result_df.collect()[0]["working_days"]
@@ -100,12 +138,12 @@ def test_working_days_february_2023_count(spark):
     print(f"✅ February 2023 verified: {working_days} working days")
 
 
-def test_working_days_multiple_months(spark, sample_dataframe_multiple_months):
+def test_working_days_multiple_months(working_days_calendar, sample_dataframe_multiple_months):
     """
     Test that function handles multiple months correctly
     """
     # ACT
-    result_df = working_days_monthly(spark, sample_dataframe_multiple_months, "start_date")
+    result_df = working_days_monthly(working_days_calendar, sample_dataframe_multiple_months, "start_date")
     
     # ASSERT
     assert result_df.count() == 3, "Should have 3 rows"
@@ -119,12 +157,12 @@ def test_working_days_multiple_months(spark, sample_dataframe_multiple_months):
     print("✅ Multiple months handled correctly")
 
 
-def test_working_days_preserves_columns(spark, sample_dataframe_with_extra_columns):
+def test_working_days_preserves_columns(working_days_calendar, sample_dataframe_with_extra_columns):
     """
     Test that function preserves existing columns
     """
     # ACT
-    result_df = working_days_monthly(spark, sample_dataframe_with_extra_columns, "start_date")
+    result_df = working_days_monthly(working_days_calendar, sample_dataframe_with_extra_columns, "start_date")
     
     # ASSERT
     assert "start_date" in result_df.columns, "Original start_date column should be preserved"
@@ -140,7 +178,7 @@ def test_working_days_preserves_columns(spark, sample_dataframe_with_extra_colum
     print("✅ All columns preserved correctly")
 
 
-def test_working_days_with_null_dates(spark):
+def test_working_days_with_null_dates(spark,working_days_calendar):
     """
     Test handling of null dates (edge case)
     """
@@ -154,7 +192,7 @@ def test_working_days_with_null_dates(spark):
     input_df = spark.createDataFrame(data, columns)
     
     # ACT
-    result_df = working_days_monthly(spark, input_df, "start_date")
+    result_df = working_days_monthly(working_days_calendar, input_df, "start_date")
     
     # ASSERT
     assert result_df.count() == 3, "Should handle null dates without dropping rows"
@@ -167,7 +205,7 @@ def test_working_days_with_null_dates(spark):
     print("✅ Null dates handled correctly")
 
 
-def test_working_days_different_column_name(spark):
+def test_working_days_different_column_name(spark,working_days_calendar):
     """
     Test with a different column name for start date
     """
@@ -177,7 +215,7 @@ def test_working_days_different_column_name(spark):
     input_df = spark.createDataFrame(data, columns)
     
     # ACT
-    result_df = working_days_monthly(spark, input_df, "month_beginning")
+    result_df = working_days_monthly(working_days_calendar, input_df, "month_beginning")
     
     # ASSERT
     assert "working_days" in result_df.columns
@@ -186,13 +224,13 @@ def test_working_days_different_column_name(spark):
     print("✅ Different column name handled correctly")
 
 
-def test_working_days_values_are_reasonable(spark, sample_dataframe_multiple_months):
+def test_working_days_values_are_reasonable(working_days_calendar, sample_dataframe_multiple_months):
     """
     Test that all working days values are within reasonable bounds
     No month should have more than 23 working days or less than 19
     """
     # ACT
-    result_df = working_days_monthly(spark, sample_dataframe_multiple_months, "start_date")
+    result_df = working_days_monthly(working_days_calendar, sample_dataframe_multiple_months, "start_date")
     
     # ASSERT
     results = result_df.collect()
