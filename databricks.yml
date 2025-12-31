@@ -82,7 +82,7 @@ variables:
   staging_env_sp_id:
     default: "d588f2c8-0c0a-4ded-9da2-0663bf8dd994"
   prod_env_sp_id:
-    default: "my-sp-id-jfsdkjhfjsdhfkjh"
+    default: "811de200-7873-4ab3-a435-da3cddf13c36"
 
 # for external package maybe qqqq i dont think we will export there are poetry bundle example repos if we decide to
 # artifacts:
@@ -92,17 +92,18 @@ variables:
 
 # Deployment environments
 targets:
+  # qqqq should we have a personal section for deploying to own space ???
   dev: 
     # qqqq what is the process of developing and deploying dabs for own area.
     # qqqq would it actually be staging with features against folders !!!!???
-
+    # qqqq We do github checks against DEV and DEV would be analyst only env so do we actually want to deploy to dev shared workspace
     mode: development
     # Deploy under own user not service principle
     default: true
     # This is the the default deployment workspace
     workspace:
       # profile means in gets set values from [dev] section of databrickscfg useful on local machine, unneeded in databricks environment 
-      profile: dev
+      # profile: dev
       # specify hosts in the databricks.yml not config for clarity
       # dev databricks host
       host: https://adb-295718430158257.17.azuredatabricks.net
@@ -146,8 +147,8 @@ targets:
       # Staging storage account
       storage_account:  unifiedrptdeltalake
     permissions:
-      - user_name: philip.tate@nhs.net
-        level: CAN_MANAGE
+      #- user_name: philip.tate@nhs.net
+      #  level: CAN_MANAGE
       - group_name: staging_env_users
         level: CAN_VIEW
       - service_principal_name: "${var.staging_env_sp_id}" 
@@ -170,8 +171,8 @@ targets:
       # Prod storage account
       storage_account: unifiedrptdeltalake
     permissions:
-      - user_name: philip.tate@nhs.net
-        level: CAN_MANAGE
+      #- user_name: philip.tate@nhs.net
+      #  level: CAN_MANAGE
       - group_name: prod_env_users
         level: CAN_VIEW
       - service_principal_name: "${var.prod_env_sp_id}" 

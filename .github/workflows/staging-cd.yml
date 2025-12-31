@@ -1,0 +1,59 @@
+# Rely on ci.yml and branch rules to ensure bundle validation and linting
+# we are not going from staging straight to prod, because we use staging for manual testing as well
+# [use as a ref](https://github.com/evanaze/dbx-asset-bundle-deployment/blob/main/.github/workflows/dev-ci.yml)
+name: Deploy to Databricks Staging and Trigger Staging Tests in Databricks
+
+on:
+  push:
+    branches:
+      - staging #longer name for communication in the poc reduce when using it
+      - staging-data-test-team-shared
+
+jobs:
+  deploy_to_staging:
+    name: "Deploy Bundle to Stage Environment"
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+
+      # Just incase somethings changed there is no harm in it
+      - name: Validate Staging Bundle
+      # trigger target the staging deploy in databricks.yml
+        run: databricks bundle validate -t staging #--profile ""  # forces use of env vars only # didnt work
+
+      - name: Deploy Staging Bundle
+      # trigger target the staging deploy in databricks.yml
+        run: databricks bundle deploy -t staging --auto-approve #--profile ""  # forces use of env vars only #??--auto-approve # didnt work
+       # working-directory: .
+
+  check-staging-is-stable:
+    name: Check staging stable after deploy
+    needs: deploy_to_staging
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+
+      # The notebook will actually run both as set up atm but maybe its ok for now
+      - name: Check Staging Integration Tests After Deploy
+        run: |
+          echo "running the integration yml test job integration_test_job.yml"
+          databricks bundle run -t staging run_integration_tests

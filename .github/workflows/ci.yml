@@ -1,6 +1,7 @@
 name: CI - Pull Request Checks
-
+# TODO: branch rules should be added to force this 
 # Run CI on all pull requests just incase of hot fixes
+# No reason not to validate DABS and run unit test in github
 on:
   pull_request:
     branches:
@@ -21,6 +22,12 @@ jobs:
           echo "WARNING: Commit lint step is currently a placeholder."
           echo "Reference project: TELBlazor"
           # exit 0  <-- Change to 0 if you don't want to block the rest of the pipe yet
+
+      - name: Maybe code lint for only top priority issues
+        run: |
+          echo "WARNING: pylint lint step is currently a placeholder."
+          # exit 0  <-- Change to 0 if you don't want to block the rest of the pipe yet
+      #- databricks readme pages recommend [using their lint plugin](https://github.com/databrickslabs/pylint-plugin)
   
   pytest:
     runs-on: ubuntu-latest
@@ -44,25 +51,26 @@ jobs:
       - name: Run pytest againt unit tests (exclude Databricks tests)
         run: |
           pytest tests/unit-tests -m "not databricks" -v
-          
-  dab-validate:
-    name: "Early warning of dab issues"
-    runs-on: ubuntu-latest
-    # Just dev we are not deploying so dont need access to more important service principle
-    # !!!! TODO !!!!! Should be dev but git needs the service principle putting into its environment 
-    environment: staging
-    env:
-      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
-      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
-      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+
+  #### DELETE:  resource may not be set up ready so cant validate all, and no point just validating dev each time        
+  # dab-validate:
+  #   name: "Early warning of dab issues"
+  #   runs-on: ubuntu-latest
+  #   # Just dev we are not deploying so dont need access to more important service principle 
+  #   environment: dev
+  #   env:
+  #     DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+  #     DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+  #     DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
     
-      - name: Set up Databricks CLI
-        uses: databricks/setup-cli@main
+  #     - name: Set up Databricks CLI
+  #       uses: databricks/setup-cli@main
 
-      - name: Validate Bundle
-        # Am i forced to have a target its after databrickcfg but shouldnt be
-        run: databricks bundle validate -t staging
+  #     - name: Validate Bundle
+  #       # Am i forced to have a target its after databrickcfg but shouldnt be
+  #       run: databricks bundle validate -t dev

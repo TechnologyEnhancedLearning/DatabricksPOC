@@ -1,0 +1,61 @@
+# qqqq move notes somewhere useful
+# qqqq i dont think we need a dev pipeline event because people are in their own dev workspace on databricks or a dev branch
+# - but lets give it a go as a place for just data devs to update their stuff together maybe wont need it
+# - think repeat any testing want to know early anyway??
+# - dont worry about repeating stepts between cicd for now keep simple for branch rules etc do it later if desired
+# when are we deploying local dabs though? on push to feature branches????
+# -- linking it to push might be nice deploying dabs could be forgetable step for local development might be nice to auto deploy dab on push??
+name: Deploy to Databricks Dev and Trigger Dev Tests in Databricks
+
+on:
+  push:
+    branches:
+      - dev-data-team-shared
+
+jobs:
+  deploy_to_dev:
+    name: "Deploy Bundle to Dev Environment"
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+
+      # Just incase somethings changed there is no harm in it
+      - name: Validate Dev Bundle
+      # trigger target the Dev deploy in databricks.yml
+        run: databricks bundle validate -t dev
+
+      - name: Deploy Dev Bundle
+      # trigger target the Dev deploy in databricks.yml
+        run: databricks bundle deploy -t dev --auto-approve
+
+  check-dev-is-stable:
+    name: Check dev still stable after deploy
+    needs: deploy_to_dev
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      DATABRICKS_HOST: ${{ vars.DBX_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DBX_SP_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DBX_SP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+
+        # The notebook will actually run both as set up atm but maybe its ok for now
+      - name: Check Dev Integration Tests After Deploy
+        run: |
+          echo "running the integration yml test job integration_test_job.yml"
+          databricks bundle run -t dev run_integration_tests 
