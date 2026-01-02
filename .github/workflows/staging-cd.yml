@@ -6,8 +6,8 @@ name: Deploy to Databricks Staging and Trigger Staging Tests in Databricks
 on:
   push:
     branches:
-      - staging #longer name for communication in the poc reduce when using it
       - staging-data-test-team-shared
+    #  - staging #longer name for communication in the poc reduce when using it
 
 jobs:
   deploy_to_staging:
