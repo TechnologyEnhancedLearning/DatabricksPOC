@@ -11,3 +11,5 @@ resources:
             # This points to your 'Run_Tests' notebook in the repo
             # as it is this will run unit too atm
             notebook_path: ../../tests/Run_Tests.ipynb
+            base_parameters:
+              job.catalog: ${bundle.catalog}

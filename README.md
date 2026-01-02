@@ -101,6 +101,9 @@ project-root/
 | environment.yml | —                   |       |
 | scripts       | —                     |       |
 
+# Questions
+- would we deploy dabs to dev workspace and our personal ones?
+    - do we want to integration test in dev and not staging, or just use staging for simpler setup?
 
 # Template read me
 

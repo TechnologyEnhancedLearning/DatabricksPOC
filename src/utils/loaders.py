@@ -12,10 +12,11 @@ def load_csv_table(spark, base_path, csv_filename):
     Returns:
         DataFrame: Spark DataFrame with CSV data
     """
-    
+    import os
+    full_path = os.path.join(base_path, csv_filename)
     return (
         spark.read.format("csv")
         .option("header", "true")
         .option("inferSchema", "true")
-        .load(f"{base_path}{csv_filename}")
+        .load(full_path)
     )
