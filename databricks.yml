@@ -116,7 +116,7 @@ targets:
       host: https://adb-295718430158257.17.azuredatabricks.net
       # Dev root path under each users home directory
       # because deploying as service principle -> /Workspace/Users/b0326488-f6b0-4c0f-bf20-a091224bad83/.bundle/DatabricksPOC so we need to decide if to personal area by own username or to a shared dev space
-      root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/dev
+      root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/personal
     variables:
       env_name: dev
       catalog: dev_catalog
@@ -188,6 +188,13 @@ targets:
       # prod databricks host
       host: https://adb-295718430158257.17.azuredatabricks.net
       root_path: /Workspace/.bundle/${bundle.name}/prod
+    # Exclude development and test artifacts we are not testing prod
+    sync:
+      exclude:
+        - "tests/*"
+        - "resources/test/*"
+        - "scratch/*" 
+        - "setup/*" #setup is instructions and manual setup
     variables:
       # when 3 databricks it will be a share catalog name across the databricks
       env_name: prod 
