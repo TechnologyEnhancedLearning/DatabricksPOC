@@ -12,4 +12,4 @@ resources:
             # as it is this will run unit too atm
             notebook_path: ../../tests/Run_Tests.ipynb
             base_parameters:
-              job.catalog: ${bundle.catalog}
+              job.catalog: ${var.catalog}
