@@ -97,6 +97,9 @@ targets:
 # For manual deploy via ui or could be on push to your branch
 ###########################################
   # qqqq should we have a personal section for deploying to own space ???
+
+############## DBX UI and from local machine deploys
+
   personal: 
     # qqqq what is the process of developing and deploying dabs for own area.
     # qqqq would it actually be staging with features against folders !!!!???
@@ -131,11 +134,12 @@ targets:
 
 
 
-
+########### CICD DEPLOYS
 
   # qqqq should we have a personal section for deploying to own space ???
   dev: 
-    mode: development
+    # production because cicd is not going to deploying to workspaces it doesnt know the user
+    mode: production
     default: true
     workspace:
       host: https://adb-295718430158257.17.azuredatabricks.net
@@ -150,7 +154,6 @@ targets:
     - level: CAN_VIEW
       group_name: dev_env_users
 
-#delete this
 
   staging:
     # Staging should purely be for investigation and testing prior to going to prod it runs in production mode so will run and constant updates and should be through github actions and service principle on successful pull request 
