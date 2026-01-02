@@ -3,7 +3,8 @@ name: Prod PR Checks
 on:
   pull_request:
     branches:
-      - main  # Trigger on PRs targeting the dev branch
+      - main
+      # Trigger on PRs targeting the dev branch
 
 jobs:
   validate-prod:
