@@ -92,8 +92,15 @@ variables:
 
 # Deployment environments
 targets:
+
+##########################################
+# For manual deploy via ui or could be on push to your branch
+###########################################
   # qqqq should we have a personal section for deploying to own space ???
-  dev: 
+
+############## DBX UI and from local machine deploys
+
+  personal: 
     # qqqq what is the process of developing and deploying dabs for own area.
     # qqqq would it actually be staging with features against folders !!!!???
     # qqqq We do github checks against DEV and DEV would be analyst only env so do we actually want to deploy to dev shared workspace
@@ -108,6 +115,7 @@ targets:
       # dev databricks host
       host: https://adb-295718430158257.17.azuredatabricks.net
       # Dev root path under each users home directory
+      # because deploying as service principle -> /Workspace/Users/b0326488-f6b0-4c0f-bf20-a091224bad83/.bundle/DatabricksPOC so we need to decide if to personal area by own username or to a shared dev space
       root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/dev
     variables:
       env_name: dev
@@ -119,16 +127,33 @@ targets:
       storage_account:  unifiedrptdeltalake
     permissions:
     - level: CAN_MANAGE
-      service_principal_name: "${var.dev_env_sp_id}" 
-    # only one owner error which to use comes down to if have a personal deploy
-    #- level: CAN_MANAGE
-      # Devs manage our own stuff
-    #  user_name: ${workspace.current_user.userName} 
+      user_name: ${workspace.current_user.userName} 
     - level: CAN_VIEW
       # Devs can see each others stuff
       group_name: dev_env_users
 
-#delete this
+
+
+########### CICD DEPLOYS
+
+  # qqqq should we have a personal section for deploying to own space ???
+  dev: 
+    # production because cicd is not going to deploying to workspaces it doesnt know the user
+    mode: production
+    default: true
+    workspace:
+      host: https://adb-295718430158257.17.azuredatabricks.net
+      root_path: /Workspace/.bundle/${bundle.name}/dev
+    variables:
+      env_name: dev
+      catalog: dev_catalog
+      storage_account:  unifiedrptdeltalake
+    permissions:
+      - group_name: dev_env_users
+        level: CAN_VIEW
+      - service_principal_name: "${var.dev_env_sp_id}" 
+        level: CAN_MANAGE
+
 
   staging:
     # Staging should purely be for investigation and testing prior to going to prod it runs in production mode so will run and constant updates and should be through github actions and service principle on successful pull request 
@@ -148,8 +173,6 @@ targets:
       # Staging storage account
       storage_account:  unifiedrptdeltalake
     permissions:
-      #- user_name: philip.tate@nhs.net
-      #  level: CAN_MANAGE
       - group_name: staging_env_users
         level: CAN_VIEW
       - service_principal_name: "${var.staging_env_sp_id}" 
@@ -172,8 +195,6 @@ targets:
       # Prod storage account
       storage_account: unifiedrptdeltalake
     permissions:
-      #- user_name: philip.tate@nhs.net
-      #  level: CAN_MANAGE
       - group_name: prod_env_users
         level: CAN_VIEW
       - service_principal_name: "${var.prod_env_sp_id}" 
