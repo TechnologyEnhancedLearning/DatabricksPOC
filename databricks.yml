@@ -149,10 +149,10 @@ targets:
       catalog: dev_catalog
       storage_account:  unifiedrptdeltalake
     permissions:
-    - level: CAN_MANAGE
-      service_principal_name: "${var.dev_env_sp_id}" 
-    - level: CAN_VIEW
-      group_name: dev_env_users
+      - group_name: dev_env_users
+        level: CAN_VIEW
+      - service_principal_name: "${var.dev_env_sp_id}" 
+        level: CAN_MANAGE
 
 
   staging:
