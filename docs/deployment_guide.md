@@ -1,4 +1,4 @@
-# Deployment Guid
+# Deployment Guide
 
 The current setup is a POC. We may decide to reduce the number of steps, but it is to support decision making.
 
@@ -16,6 +16,10 @@ Select source for the bundle code to come from, this will be your repo
 Target personal
 Then click deploy
 
-You should not deploy to the other targets from the ui. The other locations are shared so tests and git versioning should run first. Deploying to the other is done by merging to Dev, staging,prod git branches, which triggers Dab deployment processes.
+You should not deploy to the other targets from the ui. The other locations are shared so tests and git versioning should run first. Deploying to the other is done by merging to Dev, staging,prod git branches, which triggers Dab deployment processes using service principles.
+
+**DEV**
+
+After commiting and pushing follow the pull request link in databricks
 
 
