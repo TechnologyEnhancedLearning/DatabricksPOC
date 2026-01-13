@@ -72,7 +72,7 @@ variables:
     default: "" # to be used in dev only so staging prod have no prefix value
     description: To prefix dev user schema names to allow multiple dev users to use same catalog with their own different schema names for development
   env_name:
-    description: The environment name (dev, staging, prod)
+    description: The environment name (personal, dev, staging, prod)
   storage_account:
     description: Seperate databricks workspaces dedicated storage (dev, staging, prod)
   # Storage principles id is used for name field in databricks.yml name the sp variable: <sp_name>_id
@@ -118,7 +118,7 @@ targets:
       # because deploying as service principle -> /Workspace/Users/b0326488-f6b0-4c0f-bf20-a091224bad83/.bundle/DatabricksPOC so we need to decide if to personal area by own username or to a shared dev space
       root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/personal
     variables:
-      env_name: dev
+      env_name: personal
       catalog: dev_catalog
       # only dev has schema prefix as its per user
       #e.g. phil_ will become phil_bronze_ods if we do layer and domain? as our schema naming convention
@@ -139,6 +139,7 @@ targets:
   # qqqq should we have a personal section for deploying to own space ???
   dev: 
     # production because cicd is not going to deploying to workspaces it doesnt know the user
+    # but also that will mean its more intensive so shouldnt it be dev but we are using sp qqqq
     mode: production
     default: true
     workspace:
