@@ -26,13 +26,24 @@ pip-selfcheck.json
 # -----------------------------
 # Jupyter Notebooks
 # -----------------------------
+# To stop printing of data resulting in it being in source control
 .ipynb_checkpoints/
+*-checkpoint.ipynb
+*.log
 
 # -----------------------------
 # Scratch / experimental folder
 # -----------------------------
 scratch/**            # ignore all files in scratch
 !scratch/README.md    # except placeholder README.md
+
+## Data files (we may decide not to do this but will try it early on so its opt in)
+*.csv
+*.parquet
+*.xlsx
+## Databricks
+.databricks/
+*.dbc
 
 # -----------------------------
 # IDE / editor
