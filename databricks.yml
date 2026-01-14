@@ -192,6 +192,11 @@ targets:
     # Exclude development and test artifacts we are not testing prod
     sync:
       exclude:
+        - "requirements.txt"
+        - ".github/"
+        - ".pytest_cache/"
+        - "docs/"
+        - "notebooks/"
         - "tests/*"
         - "resources/test/*"
         - "scratch/*" 
