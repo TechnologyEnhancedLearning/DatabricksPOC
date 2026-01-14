@@ -1,4 +1,5 @@
 # Automatically strip outputs from Jupyter notebooks
+# rans some basic tests in scratch seems to be already built in in the setup of dbx?
 *.ipynb filter=nbstripout
 *.ipynb diff=ipynb
 
