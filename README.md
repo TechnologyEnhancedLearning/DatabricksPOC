@@ -4,28 +4,25 @@ Experimenting with databricks workflow specifically DABS
 # Notable deviations from how final version will work
 - Databricks instance per environment
     - target the host instance not catalogs
-    - do not need root to be specified
-    - will replace yml hardcoding with variables
 
-# Branching
-- Dev is like local so maybe PR and deployment to own space should not be gated
-	- so lint only
-	- auto merge
-	- unit tests
-	- no prs
+# Branching/Environments
+
+- Personal
+	- develop on databricks in own repo folder username area
+	- deploy via ui bundle in your area
+- Dev Branch
+	- require pr
+	- on opening PR into the branch triggers tests
+	- on merging deploy dab into shared dev space for Analysts
 - staging
-	- require PR
-	- run tests after merge
+	- require pr with auto merge on success (not currently automerge needs adding via branch rules)
+	- on opening PR into the branch triggers tests
+	- on merging deploy dab into shared dev space for Analysts and Testers
 - main/prod
+	- manual merge
 	- rerun staging tests
 	- integration tests
-	- maybe some review but unlikley unless very motivated for checking for DRY early on
-- dev is per user and there is a preference for working within databricks, so actually staging and main only seems the best approach. And versioning can be done via a commit tracker on pushing main
 
-- why folders named TD-xxx
-	- if its wip then in scratch? or gitignore scratch
-- why not on own branches
-- we need readme of structure with what is used for what
 
 
 # Refs
@@ -37,136 +34,76 @@ Experimenting with databricks workflow specifically DABS
 - also of use [multiple project](https://github.com/datakickstart/datakickstart_dabs/tree/main)
 - [another with loads of examples to drill down to](https://github.com/databricks/bundle-examples)
 
-# Potential Structure 
-*Should generate one after*
-[Confluence structure to compare to mine](https://hee-tis.atlassian.net/wiki/spaces/TP/pages/5201494023/GitHub+Structure)
-project-root/
-│
-├── README.md
-├── databricks.yml            # Asset bundle config
-├── notebooks/                # For exploratory work & polished pipelines
-│   ├── dev/                  # Analysts' playground
-│   ├── pipelines/            # Production-ready notebooks
-│   └── utils/                # Shared utility notebooks
-│
-├── src/                      # Core functions and transformations
-│   ├── bronze/
-│   ├── silver/
-│   ├── gold/
-│   └── common/               # Reusable code (UDFs, helpers)
-│
-├── tests/
-│   ├── unit/
-│   ├── integration/
-│   └── data_quality/
-│
-├── configs/
-│   ├── dev.yml
-│   ├── staging.yml
-│   └── prod.yml
-│
-├── pipelines/                # Declarative pipeline definitions
-│   ├── bronze_pipeline.py
-│   ├── silver_pipeline.py
-│   └── gold_pipeline.py
-│
-├── requirements.txt          # Python dependencies files would put on clusters so dont need installing per notebook and requirements-dev.txt for ones useful for loading the clusters with
-├── environment.yml           # Conda environment for analysts
-└── scripts/                  # Utility scripts (deploy, tests)
+# Databricks Structure
 
-# Notes on Structure
+[DBX POC](https://adb-295718430158257.17.azuredatabricks.net/browse/folders/2302733728786158?o=295718430158257)/
+│
+├── Home
+└── Workspace
+    ├── repos                 
+    └── users/
+        ├  you@nhs.net        # your git folder for working on code
+        └ .bundle
+           └  DatabricksPOC
+                 └ personal  # Your bundles deployed via ui is created here
 
-
-| 1st Level     | 2nd Level            | Notes |
-|---------------|-----------------------|-------|
-| README.md     | —                     |       |
-| databricks.yml| —                     |       |
-| notebooks     | dev                   |       |
-| notebooks     | pipelines             |       |
-| notebooks     | utils                 |       |
-| src           | bronze                |       |
-| src           | silver                |       |
-| src           | gold                  |       |
-| src           | common                |       |
-| tests         | unit                  |       |
-| tests         | integration           |       |
-| tests         | data_quality          |       |
-| configs       | dev.yml               |       |
-| configs       | staging.yml           |       |
-| configs       | prod.yml              |       |
-| pipelines     | bronze_pipeline.py    |       |
-| pipelines     | silver_pipeline.py    |       |
-| pipelines     | gold_pipeline.py      |       |
-| requirements.txt | —                  |       |
-| environment.yml | —                   |       |
-| scripts       | —                     |       |
-
-# Questions
-- would we deploy dabs to dev workspace and our personal ones?
-    - do we want to integration test in dev and not staging, or just use staging for simpler setup?
-
-# Template read me
 
 # Workflow_POC
 
-The 'Workflow_POC' project was generated by using the default template.
+The 'Workflow_POC' project was generated by using the default template. For py dabs.
 
 * `src/`: Python source code for this project.
 * `resources/`:  Resource configurations (jobs, pipelines, etc.)
 * `tests/`: Unit tests for the shared Python code.
 * `fixtures/`: Fixtures for data sets (primarily used for testing).
+	- for hardcoded things like the calendar
+	- ive dropped fixtures for now but can reintroduce 
+		- maybe not having it in test mean can test 
 
 
-## Getting started
+# Project Structure in your Databricks Workspace
 
-Choose how you want to work on this project:
+project-root/
+│
+├── .github/                  # Pr template and git actions defined in here and some manually triggerable ones
+├── docs/                     # Reference documentents like how to deploy and architecture use this to keep repo readme short
+├── 
+├── README.md
+├── databricks.yml            # Asset bundle config
+├── notebooks/                # For exploratory work & polished pipelines that is to be shared
+│   ├── dev/                  # Analysts' playground
+│   ├── pipelines/            # Production-ready notebooks
+│   └── utils/                # Shared utility notebooks
+├── Scratch/                  # Git ignored contents for disposable code space not tracked
+├── resources/                # Supporting files, configurations and jobs
+│   ├── configs/              # Hardcoded non secret values can go in here and can be grouped environment
+│   ├── jobs/                 
+│   ├── pipeline/
+│   └── test/                 # This is just so we can have a job triggered by git to run our test its in a seperatefolder so we can exclude it if desired from prod so its lighter weight
+├── src/                      # Core functions and transformations
+│   ├── bronze/
+│   ├── silver/
+│   ├── gold/
+│   ├── transformations/
+│   └── utils/               # We want to in prs move as much to here as possible and use them as much as possible
+│
+├── tests/                   # mirrors folder structure of what is being tested
+│   ├── unit/               # Add to before pr
+│   ├── integration/		# Add to before pr
+│   ├── test-reports/		# where reports generated are outputted to 
+│   ├── data_quality/		# check the data smells right e.g. we shouldnt get more than 10% nulls
+│   ├── conftest.py			# configuration for test as well as TOML
+│   ├── Run_Lint            # No linting enforcement but can run as manual pr process
+│   └── Run_Test			# Trigger by a github via a job and triggerable manually
+│
+├── requirements.txt         # Python dependencies files would put on clusters so dont need installing per notebook and requirements-dev.txt for ones useful for loading the clusters with
+├── requirements-dev.txt     # Can seperate requirements so prod lighter e.g by not requiring pytest
+├── pyproject.toml			# Configuration of py
+└──.gitattributes			# having tested i dont think we need this but it was to stop notebooks exposing data
 
-(a) Directly in your Databricks workspace, see
-    https://docs.databricks.com/dev-tools/bundles/workspace.
-
-(b) Locally with an IDE like Cursor or VS Code, see
-    https://docs.databricks.com/dev-tools/vscode-ext.html.
-
-(c) With command line tools, see https://docs.databricks.com/dev-tools/cli/databricks-cli.html
-
-If you're developing with an IDE, dependencies for this project should be installed using uv:
-
-*  Make sure you have the UV package manager installed.
-   It's an alternative to tools like pip: https://docs.astral.sh/uv/getting-started/installation/.
-*  Run `uv sync --dev` to install the project's dependencies.
 
 
-# Using this project using the CLI
+[First Structure Confluence for Comparison](https://hee-tis.atlassian.net/wiki/spaces/TP/pages/5201494023/GitHub+Structure)
 
-The Databricks workspace and IDE extensions provide a graphical interface for working
-with this project. It's also possible to interact with it directly using the CLI:
 
-1. Authenticate to your Databricks workspace, if you have not done so already:
-    ```
-    $ databricks configure
-    ```
-
-2. To deploy a development copy of this project, type:
-    ```
-    $ databricks bundle deploy --target dev
-    ```
-    (Note that "dev" is the default target, so the `--target` parameter
-    is optional here.)
-
-    This deploys everything that's defined for this project.
-
-3. Similarly, to deploy a production copy, type:
-   ```
-   $ databricks bundle deploy --target prod
-   ```
-
-4. To run a job or pipeline, use the "run" command:
-   ```
-   $ databricks bundle run
-   ```
-
-5. Finally, to run tests locally, use `pytest`:
-   ```
-   $ uv run pytest
-   ```
 

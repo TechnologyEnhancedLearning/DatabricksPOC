@@ -179,7 +179,7 @@ targets:
       - service_principal_name: "${var.staging_env_sp_id}" 
         level: CAN_MANAGE
       
-
+# qqqq should we add exclusions like test to make it lighter weight?
   prod:
     # Automatically deployed to via git actions and service principle minimal testing on deploy as previously run on staging
     mode: production
