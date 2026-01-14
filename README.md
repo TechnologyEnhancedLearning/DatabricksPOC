@@ -1,6 +1,9 @@
 # DatabricksPOC
 Experimenting with databricks workflow specifically DABS
 
+# Further Information
+see docs folder
+
 # Notable deviations from how final version will work
 - Databricks instance per environment
     - target the host instance not catalogs
