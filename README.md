@@ -1,6 +1,11 @@
 # DatabricksPOC
 Experimenting with databricks workflow specifically DABS
 
+# Not done
+- databricks config maybe should some how hide service principle ids and address of catalogue behind secrets
+- github auto merge staging
+
+
 # Further Information
 see docs folder
 
@@ -26,6 +31,13 @@ see docs folder
 	- rerun staging tests
 	- integration tests
 
+# Questions
+This poc is to help decision making on what we would benefit from and would implement.
+These questions are to help with that process
+- What is the value of the personal dab?
+- How much value is there is dev and staging being seperate
+	- with dev being where analyst combine and experiment with code in a shared space
+	- staging where it mixes with testing process like testers changing data and is exposed to manual testing
 
 
 # Refs

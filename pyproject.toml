@@ -23,20 +23,22 @@ dev = [
     "databricks.labs.pylint.all",
 ]
 
-[project.scripts]
-main = "Workflow_POC.main:main"
+# Entry point
+#[project.scripts]
+#main = "Workflow_POC.main:main"
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+# Wheel build tool
+#[build-system]
+#requires = ["hatchling"]
+#build-backend = "hatchling.build"
 
 # Wheel packing came in the template :) qqqq
-[tool.hatch.build.targets.wheel]
-packages = ["src"]
+#[tool.hatch.build.targets.wheel]
+#packages = ["src"]
 
 ### Pylint
 
-# we stall this currently in the notebook not preinstalled in the cluster but we need it to load
+# we install this currently in the notebook not preinstalled in the cluster but we need it to load
 [tool.pylint.master]
 load-plugins = ["databricks.labs.pylint.all"]
 
@@ -60,10 +62,11 @@ disable = [
 
 good-names = ["e", "i", "k", "n", "f", "v", "df"]
 
-# qqqq is black setup and used?
+# Linter dbx recommends
 [tool.black]
 line-length = 125
 
+# testing
 [tool.pytest.ini_options]
 minversion = "6.0"
 # This tells pytest to look in 'tests' by default
@@ -76,6 +79,8 @@ addopts = [
     "-s",
     "--tb=short"
 ]
+
+# there is one example in the unit tests of an exclusion (unnecesserily) excluding a test from git
 markers = [
     "databricks: for example we might use this marker to exclude a specific unit test from git env test running so it only run in dbx env",
 ]
