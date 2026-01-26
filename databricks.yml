@@ -152,7 +152,7 @@ targets:
         - "tests/*"
         - "resources/test/*"
         - "scratch/*" 
-        - "setup/*" #setup is instructions and manual setup
+        - "setup/*" #setup is instructions and manual setup for dbx not stored procs tables etc theyre in source
     variables:
       env_name: prod 
       catalog: prod_catalog
