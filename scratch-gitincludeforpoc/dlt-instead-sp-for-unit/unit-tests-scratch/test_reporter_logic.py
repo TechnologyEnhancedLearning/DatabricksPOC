@@ -3,26 +3,31 @@
 
 # unit-tests-scratch/test_reporter_logic.py
 import sys
+import os
 from pathlib import Path
 import pytest
 from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, LongType
+
+# Add parent directory to path
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# parent_dir = os.path.dirname(current_dir)
+# sys.path.insert(0, parent_dir)
 
 ############### Make Modules Available  #############
-# Use __file__ instead of cwd() for reliability
-test_file_dir = Path(__file__).parent.resolve()
-print(f"Test file directory: {test_file_dir}")
+current_dir = Path.cwd()
+print(f"Current_dir: {current_dir}")
+shared_parent_root = current_dir.parent.resolve()
+print(f"shared_parent_root: {shared_parent_root}")
+module_folder_path_from_shared_parent = "utils"
+module_path = (shared_parent_root / module_folder_path_from_shared_parent).resolve()
+print(f"module_path: {module_path}")
+if str(module_path) not in sys.path:
+    sys.path.insert(0, str(module_path))
 
-# Go up to the folder containing the module
-parent_dir = test_file_dir.parent.resolve()
-print(f"Parent directory: {parent_dir}")
-
-# Add to path if not already there
-if str(parent_dir) not in sys.path:
-    sys.path.insert(0, str(parent_dir))
-    print(f"Added to sys.path: {parent_dir}")
 ######################################################
 
-from path.to.reporter_logic import compute_is_reporter
+from reporter_logic import compute_is_reporter
 
 
 
@@ -46,9 +51,21 @@ def test_is_reporter_basic(spark):
     )
 
     # No direct permission
+    # DBX doesnt like an empty dataframe
+    # uru = spark.createDataFrame(
+    #     [],
+    #     ["ReportingUserHK"]
+    # )
+
+    # No direct permission
+    # Define the schema explicitly
+    uru_schema = StructType([
+        StructField("ReportingUserHK", LongType(), True)
+    ])
+
     uru = spark.createDataFrame(
         [],
-        ["ReportingUserHK"]
+        schema=uru_schema  # ✅ Now Spark knows it's a LongType column
     )
 
     result = compute_is_reporter(users, ual, ugr, uru)
