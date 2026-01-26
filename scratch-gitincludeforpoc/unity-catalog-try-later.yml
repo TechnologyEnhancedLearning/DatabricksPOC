@@ -1,0 +1,46 @@
+
+# rather than recording manual run scripts in the the setup top level folder we could check and run like this potentially
+# this quick was just a suggested improvement and has not been checked just put here for later
+# qqqq
+
+
+# # resources/unity-catalog.yml
+# resources:
+#   # --- 1. CATALOGS ---
+#   unity_catalog_catalogs:
+#     # Defining the catalog for the DEV environment
+#     our_catalog:
+#       name: ${var.catalog} # Will resolve to 'our_catalog' in dev target
+#       # You can optionally define the managed location here if you want to hardcode it, 
+#       # but often this is best managed by the workspace admin.
+#       # managed_location: 'abfss://unity-catalog-storage@dbstoragenxhpv6mlq64wq.dfs.core.windows.net/295718430158257/our_catalog'
+#       comment: 'Dev environment - personal schemas per developer'
+
+#     # The staging and prod targets will use their respective catalog names (staging_catalog/prod_catalog)
+#     # They can reference the same general structure here, or be defined separately if they have different configs.
+#     staging_catalog:
+#       name: staging_catalog
+#       comment: 'Staging environment - integration testing'
+
+#     prod_catalog:
+#       name: prod_catalog
+#       comment: 'Production environment - live data'
+
+#   # --- 2. SCHEMAS (for Staging and Prod) ---
+#   unity_catalog_schemas:
+#     staging_schema:
+#       # Use explicit names for Staging/Prod as they are shared/static
+#       schema: staging_catalog.our_schema 
+#       catalog: staging_catalog
+#       comment: 'Shared schema for Staging data'
+
+#     prod_schema:
+#       schema: prod_catalog.our_schema
+#       catalog: prod_catalog
+#       comment: 'Shared schema for Production data'
+
+#     # NOTE on DEV Schema:
+#     # You DO NOT need to explicitly define the DEV schema here (e.g., our_catalog.${workspace.current_user.short_name}).
+#     # DLT pipelines, when configured with `schema: ${var.schema}` and `catalog: ${var.catalog}`, 
+#     # will automatically create the *schema* (database) if it doesn't exist, as long as the 
+#     # user/service principal has the necessary CREATE SCHEMA permission on the target catalog.
