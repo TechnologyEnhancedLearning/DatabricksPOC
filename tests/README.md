@@ -1,5 +1,5 @@
 # tests
--  Tests live here
+- Tests live here
 - Run_Tests allows manual running for devs
 - Run_Tests has a job that triggers it for devops
 - Run_Lint a nicety can manually target your file

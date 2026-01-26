@@ -1,0 +1,13 @@
+resources:
+  jobs:
+    # rename run_unit_integration_test_in_dbx_env or something and update the gitaction calling it
+    create_procs_job:
+      name: "[${bundle.target}] Create Procs"
+      tasks:
+        - task_key: run_create_procs
+          # serverless instead # job_cluster_key: test_cluster
+          notebook_task:
+            # DAB knows to look relative to the YAML file location
+            notebook_path: ../../scr/procedures/.ipynb
+            base_parameters:
+              job.catalog: ${var.catalog}
