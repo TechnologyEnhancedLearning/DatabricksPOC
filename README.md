@@ -48,7 +48,16 @@ These questions are to help with that process
 	- our approach local development will be deploying via client in the ui for dev, but staging and prod is deployed by github actions instead
 - also of use [multiple project](https://github.com/datakickstart/datakickstart_dabs/tree/main)
 - [another with loads of examples to drill down to](https://github.com/databricks/bundle-examples)
-
+	[data tests in notebook youtube dbx](https://www.youtube.com/watch?v=RUGNEk89hwc)
+	- Databricks - How to create your Data Quality Checks Notebooks
+	- dbutils call notebook
+	- throw error on run
+	- test built sql
+	- similar to what we are doing for unit
+	- could wrap in py like the sp i expect
+	- nice that its written as a notebook for nicer documentation
+	- youtube show original docs on dbx and has a repo link
+	- can thread it
 # Databricks Structure
 
 [DBX POC](https://adb-295718430158257.17.azuredatabricks.net/browse/folders/2302733728786158?o=295718430158257)/
