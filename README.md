@@ -1,10 +1,22 @@
 # DatabricksPOC
-Experimenting with databricks workflow specifically DABS
+Experimenting with databricks workflow specifically DABS and Testing.
+
+😊 Please use the POC as a reference and add to it where improvements will help others 😊 
 
 # Not done
 - databricks config maybe should some how hide service principle ids and address of catalogue behind secrets
 - github auto merge staging
+- **version numbering**
 
+# Potentially incorrect assumptions
+- gold is for data ready for dashboard, aggrogated
+- silver is cleaned
+- bronze raw unaltered
+but to have a source of truth
+- should we always go to the highest one e.g. gold?
+	- if we dont and then a silver version of a bronze table is added we have two sources of truth so should we always have gold silver bronze, no going direct to gold, and then if silver is improved so is everything depent on it?
+- should gold be aggregated adding value to data and silver be simply clean copies of bronze table e.g. clean then build with clean version?
+- or maybe gold just for aggregated?
 
 # Further Information
 see docs folder
@@ -35,12 +47,15 @@ see docs folder
 This poc is to help decision making on what we would benefit from and would implement.
 These questions are to help with that process
 - What is the value of the personal dab?
+	- maybe deploying means variables are in spark so if need them to try something this makes them available
 - How much value is there is dev and staging being seperate
 	- with dev being where analyst combine and experiment with code in a shared space
 	- staging where it mixes with testing process like testers changing data and is exposed to manual testing
 
 
 # Refs
+-   [matches our approach dbx bundle architecture](https://learn.microsoft.com/en-gb/azure/databricks/dev-tools/bundles/)
+- [dbx official blog useful workspace seperation](https://www.databricks.com/blog/2022/03/10/functional-workspace-organization-on-databricks.html)
 - [Official up to step 5](https://docs.databricks.com/aws/en/ldp/convert-to-dab)
 - [follow this too](https://www.evanazevedo.com/blog/databricks-deployment/)
 	- in this auto staging to prod which we dont want
@@ -130,4 +145,11 @@ project-root/
 [First Structure Confluence for Comparison](https://hee-tis.atlassian.net/wiki/spaces/TP/pages/5201494023/GitHub+Structure)
 
 
-
+# Niceties
+In git ignore so can make a notebook name it and its just yours
+> " Ignore scratch notebooks
+			 so whenever you want to explore something you can do scratch-phil-ods-thingy and it wont be source controlled.
+			scratch-*.dbc
+			scratch-*.ipynb
+			scratch-*.py
+		"
