@@ -3,10 +3,26 @@ Experimenting with databricks workflow specifically DABS and Testing.
 
 😊 Please use the POC as a reference and add to it where improvements will help others 😊 
 
+---
+
+- qqqq link doc files to make this snappier and the PR doc
+
+## Using /addinstructions for PRs
+When raising a pull request (PR), please use the `/addinstructions` command in Databricks AI to add any relevant workspace or user space instructions. This helps reviewers and collaborators understand any special requirements or context for your changes. You can invoke this command directly in the Databricks AI chat or as a PR comment.
+
+---
+
 # Not done
+- need public repo for branch rules, theyre not tweaked so cant just be exported but
+	- can set deployment rules
+	- and rules per branch .yml file
 - databricks config maybe should some how hide service principle ids and address of catalogue behind secrets
 - github auto merge staging
 - **version numbering**
+- enable copilot auto pr
+	- recommend enable in branch rules
+	- and require one reviewer
+	- /addinstructions as a command in databricks ai can work so can put user space or work space instructions
 
 # Potentially incorrect assumptions
 - gold is for data ready for dashboard, aggrogated
@@ -42,6 +58,11 @@ see docs folder
 	- manual merge
 	- rerun staging tests
 	- integration tests
+
+## Branching choices
+- Require a pull request before merging (think were ok)
+- Require status checks to pass
+- we can restrict branch names
 
 # Questions
 This poc is to help decision making on what we would benefit from and would implement.

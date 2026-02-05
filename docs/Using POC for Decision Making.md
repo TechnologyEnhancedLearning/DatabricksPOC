@@ -2,7 +2,7 @@
 
 ## Feature not included
 - Pull request doc
-- Versioning
+- Versioning <- recommend manual
 - multi environments (uses catalogs for poc)
 - doc how to write tests
 - git poc connection is pat not federated, may need entra may not?

@@ -1,3 +1,7 @@
+
+# good to know
+look in the top level toml file to see markers in use, add to them, they are good things to agree as a team i expect
+
 # tests
 - Tests live here
 - Run_Tests allows manual running for devs
@@ -20,6 +24,29 @@ We can code personal as defaults and fall back but this means they will be set b
 and the conftest.py so really we want to deploy or strip vars from databricks.yml
 you can make a wrapper that uses personal values if there is not a dab deployment.
 I dont want to duplicate configuration values. Can have a wrapper that provides hard code value if not set by databricks but unsure how would get personal area.
+
+# Which type of test to use
+
+# How to write tests
+File must start with test_ to be discoverably by pytest
+Use test @pytest.mark markings where we may want exclusion or potential descriptions
+Use classes to group tests
+Use folders to group tests
+Each test should test a single thing
+
+
+## Unit Tests
+These are our best test, they run faster, cost less, they are for reuseable functions. If code can be refactored to be function based code it is a gift for the future as it makes it reuseable, and the tests make it reliable.
+
+## Integration Tests
+The tests cant be run in issolation, they may need IO, database access or may test two things interacting.
+
+## data quality tests
+What do we expect of the data
+What do we want to be warned about (we can always change thresholds later)
+You can make manual tests for exploraion and use @python.mark.manual or some other mark we can use to exclude them
+
+# qqqq add a manual test runner so analysts can set parameters and run specific tests easily without affecting automated test running and not needing %skip
 
 # useful ref (not used for setup but good)
 
