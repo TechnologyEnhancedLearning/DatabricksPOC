@@ -18,4 +18,4 @@
 
 # Potential Advice
 - Review this unless there are other considerations then maybe for now dont worry about versioning
-- consider manual
+- consider manual tagging after prod merge, or release, and tag, though release just means zips we dont need you can generate commits and add notes

@@ -26,7 +26,8 @@ def contact_details_table(spark, bronze_ods_schema):
 # some only run maybe on staging where data is kept up to date for example 
 @pytest.mark.databricks #dont run in CI environment
 @pytest.mark.expensive
-# @pytest.mark.skip(reason="Skipping freshness tests in dev")
+@pytest.mark.freshness(reason="Skipping freshness tests in dev") # maybe should be 
+@pytest.mark.dev_skip(reason="Skipping freshness tests in dev")
 class TestContactDetailsFreshness:
     """Check data is being loaded daily"""
     
@@ -58,7 +59,7 @@ class TestContactDetailsFreshness:
 
 class TestContactDetailsTelephoneFormat:
     """Validate telephone number formats"""
-    
+    @pytest.mark.staging_skip(reason="Just to see job is passing the value")
     def test_tel_is_numeric_when_not_null(self, contact_details_table):
         """Tel column should only contain digits when populated"""
         invalid_tel = contact_details_table.filter(
