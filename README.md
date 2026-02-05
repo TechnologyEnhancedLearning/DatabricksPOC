@@ -1,10 +1,45 @@
+
+# Fix
+- this doesnt look like the dab version qqqq
+https://adb-295718430158257.17.azuredatabricks.net/jobs/92701994927170/runs/804972613236146?o=295718430158257
+
+
 # DatabricksPOC
-Experimenting with databricks workflow specifically DABS
+Experimenting with databricks workflow specifically DABS and Testing.
+
+😊 Please use the POC as a reference and add to it where improvements will help others 😊 
+
+---
+
+- qqqq link doc files to make this snappier and the PR doc
+
+## Using /addinstructions for PRs
+When raising a pull request (PR), please use the `/addinstructions` command in Databricks AI to add any relevant workspace or user space instructions. This helps reviewers and collaborators understand any special requirements or context for your changes. You can invoke this command directly in the Databricks AI chat or as a PR comment.
+
+---
 
 # Not done
+- read https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/
+- need public repo for branch rules, theyre not tweaked so cant just be exported but
+	- can set deployment rules
+	- and rules per branch .yml file
 - databricks config maybe should some how hide service principle ids and address of catalogue behind secrets
 - github auto merge staging
+- **version numbering**
+- enable copilot auto pr
+	- recommend enable in branch rules
+	- and require one reviewer
+	- /addinstructions as a command in databricks ai can work so can put user space or work space instructions
 
+# Potentially incorrect assumptions
+- gold is for data ready for dashboard, aggrogated
+- silver is cleaned
+- bronze raw unaltered
+but to have a source of truth
+- should we always go to the highest one e.g. gold?
+	- if we dont and then a silver version of a bronze table is added we have two sources of truth so should we always have gold silver bronze, no going direct to gold, and then if silver is improved so is everything depent on it?
+- should gold be aggregated adding value to data and silver be simply clean copies of bronze table e.g. clean then build with clean version?
+- or maybe gold just for aggregated?
 
 # Further Information
 see docs folder
@@ -31,16 +66,24 @@ see docs folder
 	- rerun staging tests
 	- integration tests
 
+## Branching choices
+- Require a pull request before merging (think were ok)
+- Require status checks to pass
+- we can restrict branch names
+
 # Questions
 This poc is to help decision making on what we would benefit from and would implement.
 These questions are to help with that process
 - What is the value of the personal dab?
+	- maybe deploying means variables are in spark so if need them to try something this makes them available
 - How much value is there is dev and staging being seperate
 	- with dev being where analyst combine and experiment with code in a shared space
 	- staging where it mixes with testing process like testers changing data and is exposed to manual testing
 
 
 # Refs
+-   [matches our approach dbx bundle architecture](https://learn.microsoft.com/en-gb/azure/databricks/dev-tools/bundles/)
+- [dbx official blog useful workspace seperation](https://www.databricks.com/blog/2022/03/10/functional-workspace-organization-on-databricks.html)
 - [Official up to step 5](https://docs.databricks.com/aws/en/ldp/convert-to-dab)
 - [follow this too](https://www.evanazevedo.com/blog/databricks-deployment/)
 	- in this auto staging to prod which we dont want
@@ -48,7 +91,16 @@ These questions are to help with that process
 	- our approach local development will be deploying via client in the ui for dev, but staging and prod is deployed by github actions instead
 - also of use [multiple project](https://github.com/datakickstart/datakickstart_dabs/tree/main)
 - [another with loads of examples to drill down to](https://github.com/databricks/bundle-examples)
-
+	[data tests in notebook youtube dbx](https://www.youtube.com/watch?v=RUGNEk89hwc)
+	- Databricks - How to create your Data Quality Checks Notebooks
+	- dbutils call notebook
+	- throw error on run
+	- test built sql
+	- similar to what we are doing for unit
+	- could wrap in py like the sp i expect
+	- nice that its written as a notebook for nicer documentation
+	- youtube show original docs on dbx and has a repo link
+	- can thread it
 # Databricks Structure
 
 [DBX POC](https://adb-295718430158257.17.azuredatabricks.net/browse/folders/2302733728786158?o=295718430158257)/
@@ -121,4 +173,11 @@ project-root/
 [First Structure Confluence for Comparison](https://hee-tis.atlassian.net/wiki/spaces/TP/pages/5201494023/GitHub+Structure)
 
 
-
+# Niceties
+In git ignore so can make a notebook name it and its just yours
+> " Ignore scratch notebooks
+			 so whenever you want to explore something you can do scratch-phil-ods-thingy and it wont be source controlled.
+			scratch-*.dbc
+			scratch-*.ipynb
+			scratch-*.py
+		"

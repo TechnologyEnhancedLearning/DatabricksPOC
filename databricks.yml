@@ -53,6 +53,9 @@ variables:
     default: "d588f2c8-0c0a-4ded-9da2-0663bf8dd994"
   prod_env_sp_id:
     default: "811de200-7873-4ab3-a435-da3cddf13c36"
+  pytest_marks:
+    default: ""
+    description: Pytest marker expression passed by the job see list of marks in tet readme
 
 # We are not making wheels they are recommended for sharing code and may help with pathing and can be deployed to a cluster for efficiency but one step out of scope and may be more useful for sharing with other dbx teams
 # artifacts:
@@ -84,6 +87,7 @@ targets:
       schema_prefix: ${workspace.current_user.short_name}_
       # dev storage account
       storage_account:  unifiedrptdeltalake
+      pytest_marks: "not dev_skip"
     permissions:
     - level: CAN_MANAGE
       user_name: ${workspace.current_user.userName} 
@@ -106,6 +110,7 @@ targets:
       env_name: dev
       catalog: dev_catalog
       storage_account:  unifiedrptdeltalake
+      pytest_marks: "not dev_skip"
     permissions:
       - group_name: dev_env_users
         level: CAN_VIEW
@@ -126,6 +131,7 @@ targets:
       catalog: staging_catalog
       # Staging storage account
       storage_account:  unifiedrptdeltalake
+      pytest_marks: "not staging_skip"
     permissions:
       - group_name: staging_env_users
         level: CAN_VIEW
@@ -158,6 +164,7 @@ targets:
       catalog: prod_catalog
       # Prod storage account
       storage_account: unifiedrptdeltalake
+      # Prod will not have tests in its file system so no pytest_marks here
     permissions:
       - group_name: prod_env_users
         level: CAN_VIEW
