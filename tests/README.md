@@ -1,7 +1,7 @@
 
 # good to know
 look in the top level toml file to see markers in use, add to them, they are good things to agree as a team i expect
-
+- read https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/
 # tests
 - Tests live here
 - Run_Tests allows manual running for devs

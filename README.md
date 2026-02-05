@@ -1,3 +1,9 @@
+
+# Fix
+- this doesnt look like the dab version qqqq
+https://adb-295718430158257.17.azuredatabricks.net/jobs/92701994927170/runs/804972613236146?o=295718430158257
+
+
 # DatabricksPOC
 Experimenting with databricks workflow specifically DABS and Testing.
 
@@ -13,6 +19,7 @@ When raising a pull request (PR), please use the `/addinstructions` command in D
 ---
 
 # Not done
+- read https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/
 - need public repo for branch rules, theyre not tweaked so cant just be exported but
 	- can set deployment rules
 	- and rules per branch .yml file

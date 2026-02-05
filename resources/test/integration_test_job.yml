@@ -12,6 +12,6 @@ resources:
             # as it is this will run unit too atm
             notebook_path: ../../tests/Run_Tests.ipynb
             base_parameters:
-              job.catalog: ${var.catalog},
-              job.env_name:  ${var.env_name},
+              job.catalog: ${var.catalog}
+              job.env_name:  ${var.env_name}
               job.pytest_marks: ${var.pytest_marks}
