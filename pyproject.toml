@@ -83,4 +83,12 @@ addopts = [
 # there is one example in the unit tests of an exclusion (unnecesserily) excluding a test from git
 markers = [
     "databricks: for example we might use this marker to exclude a specific unit test from git env test running so it only run in dbx env",
+    "dev_skip(reason): mark a test to skip in dev environment often for freshness",
+    "freshness(reason): mark a test as a freshness test",
+    "expensive(reason): mark a test as expensive",
+    "staging_skip(reason): mark a test to skip in staging",
+    "manual(reason): marks tests that are manual",
+    "integration_sql(reason): marks SQL integration tests"
+    
+
 ]

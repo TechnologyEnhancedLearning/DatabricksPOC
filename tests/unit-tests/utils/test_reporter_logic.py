@@ -27,21 +27,21 @@ if str(module_path) not in sys.path:
 
 ######################################################
 
-from reporter_logic import compute_is_reporter
+from utils import compute_is_reporter
 
 
 
 def test_is_reporter_basic(spark):
-    # Users
+     # Users
     users = spark.createDataFrame(
-        [(1, 10), (2, 20), (3, 30)],
-        ["UserBK", "UserHK"]
+        [(1,), (2,), (3,)],
+        ["Id"]
     )
 
     # User has location permission
     ual = spark.createDataFrame(
-        [(10,)],
-        ["UserHK"]
+        [(1,)],
+        ["userId"]
     )
 
     # User has group permission
@@ -51,22 +51,11 @@ def test_is_reporter_basic(spark):
     )
 
     # No direct permission
-    # DBX doesnt like an empty dataframe
-    # uru = spark.createDataFrame(
-    #     [],
-    #     ["ReportingUserHK"]
-    # )
-
-    # No direct permission
-    # Define the schema explicitly
     uru_schema = StructType([
-        StructField("ReportingUserHK", LongType(), True)
+        StructField("reportingUserId", LongType(), True)
     ])
 
-    uru = spark.createDataFrame(
-        [],
-        schema=uru_schema  # ✅ Now Spark knows it's a LongType column
-    )
+    uru = spark.createDataFrame([], schema=uru_schema)
 
     result = compute_is_reporter(users, ual, ugr, uru)
 
@@ -75,3 +64,46 @@ def test_is_reporter_basic(spark):
     assert output[1] == 1  # location-based
     assert output[2] == 1  # group-based
     assert output[3] == 0  # no permissions
+    # # Users
+    # users = spark.createDataFrame(
+    #     [(1, 10), (2, 20), (3, 30)],
+    #     ["UserBK", "UserHK"]
+    # )
+
+    # # User has location permission
+    # ual = spark.createDataFrame(
+    #     [(10,)],
+    #     ["UserHK"]
+    # )
+
+    # # User has group permission
+    # ugr = spark.createDataFrame(
+    #     [(2,)],
+    #     ["userId"]
+    # )
+
+    # # No direct permission
+    # # DBX doesnt like an empty dataframe
+    # # uru = spark.createDataFrame(
+    # #     [],
+    # #     ["ReportingUserHK"]
+    # # )
+
+    # # No direct permission
+    # # Define the schema explicitly
+    # uru_schema = StructType([
+    #     StructField("ReportingUserHK", LongType(), True)
+    # ])
+
+    # uru = spark.createDataFrame(
+    #     [],
+    #     schema=uru_schema  # ✅ Now Spark knows it's a LongType column
+    # )
+
+    # result = compute_is_reporter(users, ual, ugr, uru)
+
+    # output = {r.user_id: r.is_reporter for r in result.collect()}
+
+    # assert output[1] == 1  # location-based
+    # assert output[2] == 1  # group-based
+    # assert output[3] == 0  # no permissions

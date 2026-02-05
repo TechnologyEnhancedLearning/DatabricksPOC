@@ -9,11 +9,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: "Linting"
+  fake-lint:
+    name: "FAKE Linting"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
+        if : false
         uses: actions/checkout@v3
 
       - name: Commit lint placeholder

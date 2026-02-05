@@ -1,6 +1,6 @@
 resources:
   jobs:
-    # rename run_unit_integration_test_in_dbx_env or something and update the gitaction calling it
+    # rename run_unit_integration_test_in_dbx_env or something and update the gitaction calling it. Also runs data test now
     integration_test_job:
       name: "[${bundle.target}] Integration & Unit Test Runner"
       tasks:
@@ -13,3 +13,5 @@ resources:
             notebook_path: ../../tests/Run_Tests.ipynb
             base_parameters:
               job.catalog: ${var.catalog}
+              job.env_name:  ${var.env_name}
+              job.pytest_marks: ${var.pytest_marks}
