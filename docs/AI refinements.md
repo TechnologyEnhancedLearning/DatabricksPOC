@@ -1,5 +1,5 @@
 # Notes on what we want from copilot git, and databricks assistant#
-
+qqqq trigger copilot pr
 ## Both
 - recommend spark over using libraries
 - recommend refactoring to python functions and unit tests where appropriate
