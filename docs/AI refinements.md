@@ -1,5 +1,36 @@
 # Notes on what we want from copilot git, and databricks assistant#
-qqqq trigger copilot pr
+
+# ⚠️WARNING⚠️
+- Databricks AI has a low limit for request so 
+   - write a detailed prompt to scaffold
+   - write a detailed prompt to review when done
+   - write in sql and use to translate to python
+   - use other external AI for questions not requiring access to files or our specific prebuilt prompts
+   - prebuilt prompts can be used in external AI aswell
+- Git copilot can be used manually but not as an automatic PR tool **yet** without paying for it (though it is planned to be free)
+   
+ # Using github copilt in the short term  
+   - for now can try [github copilot client](https://github.com/copilot) and select the repo. and use a prompt like
+      > "Please confirm the name of the most recent pull request on this repo. Then using the .github/copilot-instructions.md as your context prompt provide a peer review of the pull requests code changes, by providing file names and lines."
+   - on a second screen you may want to go to the pull request and click the file changes tab
+   - if the bot needs help understanding descibing certain files please consider helping it by adding this to the context file for future, so we can constantly imporve its context
+
+# Tips
+- Do few high quality detailed prompts
+- forward slash offers some prebuilt context options to select
+- using inline ai button will focus on work your on now
+- using it from the side bar means you can get it to find for example the closest example of what your trying to do in the project for reference
+- tell it what you want it to consider, what you want to achieve, how you want it to help, the type of response you want, what your priorities are
+
+# refs
+[copilot in git code review](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review)
+[github custom context repo prompt generator](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions)
+
+# Notes
+We are not standardising commit and then failing them based on name in the repo. But we could still provide guidance as the will aid AI too.
+E.g. [Angular convention](https://www.conventionalcommits.org/en/v1.0.0-beta.4/) could adapt to be relevant to data process.
+
+
 ## Both
 - recommend spark over using libraries
 - recommend refactoring to python functions and unit tests where appropriate

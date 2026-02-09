@@ -1,7 +1,7 @@
 
 # good to know
 look in the top level toml file to see markers in use, add to them, they are good things to agree as a team i expect
-- read https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/
+
 # tests
 - Tests live here
 - Run_Tests allows manual running for devs
@@ -46,7 +46,26 @@ What do we expect of the data
 What do we want to be warned about (we can always change thresholds later)
 You can make manual tests for exploraion and use @python.mark.manual or some other mark we can use to exclude them
 
-# qqqq add a manual test runner so analysts can set parameters and run specific tests easily without affecting automated test running and not needing %skip
+### pipeline data tests and production data test
+- we are excluding testing for prod dab
+  - however we could test as part of pipelines running to ensure they fail if the data provided is bad
+- we could test pipelines before prod as well
+- we could reuse data quality test in testing folder but run them on pipeline data
+- a package like great expectations is better for this in that they are dot notation tests which is easier cleaner than point to existing tests, doing this may require additional setup such as wheels for one.
+- ✅ dlt.expect and using native is what we should do this will be easier to learn as well as AI will be more accurate as it is the native approach
+
+
+# Scratch manual test runner, and manual only run tests
+Template can be trimmed and used without being sourced controlled for disposable tests. 
+Manual only run, are not run by the test runner they are exploratory.
+
+
+# Other
+We can use packages like great expectation (like fluent assertions) for two things
+- within our data-quality tests give us some short hand
+- built into pipelines to fail them early ... think could run specific pytest too if we like
+- some stackoverflow is negative despite actual GE staff trying to contextualise it
+
 
 # useful ref (not used for setup but good)
 
@@ -58,3 +77,5 @@ You can make manual tests for exploraion and use @python.mark.manual or some oth
 
 [notebooks as test runner](Databricks - How to create your Data Quality Checks Notebooks)
 this is a really nice approach and i like it because it is interactive, and it turns a notebook into a runner and is threaded. I havent used it because i want test_ .py files that trigger via pytest for automation. however i like this for data-quality because data quality is often, "alert this looks off" and so then the response is to explore it. by automating it means checks always happen and we aways seem them because the git action will give us a fail and then we need to rewrite the code (or hit merge anyway if it is some specific data thing maybe but this would be a risky habit as tests will start being ignored). But notebooks are more exploritary.
+
+[Great expectations didnt find very useful](https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/)
