@@ -5,10 +5,14 @@ Standardising naming for commits can be useful for autogenerating versioning cha
 [semver example using their git repo for their package](https://github.com/semantic-release/semantic-release)
 This repo explains the commit naming, and demonstrates it. Here is the list of changes theyve made as a generated changelog [semver package releases changelog](https://github.com/semantic-release/semantic-release/releases)
 
-It can be useful when PRing for humans and AI Prs too. 
-We may want to define out own standardisation.
+For branches using jira ticket names and environment names allows git to move tasks across the jira board and to mark if an environment has been successfully deployed.
 
-## Commit names
+It can be useful when PRing for humans and AI Prs too. 
+
+We may want to define out own standardisation which is databrick and data orientated.
+
+
+## Commit names convention example
 fix(pencil): stop graphite breaking when too much pressure applied
 
 ### E.g.

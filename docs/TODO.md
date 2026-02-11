@@ -1,0 +1,9 @@
+- are requirments txt still needed is it due to python version and setup in git pipeline that i am not just using toml?
+- i have 2 dlt pipeline version check which is right its in silver resources
+- check deploys
+- designated test cluster or one per env
+- bundle test runners running old code!
+  - unsure if something to do with sync options
+  - remember develop work a bit different
+  - seems wrong it wouldnt be a fresh copy
+  - seems wrong deploy wouldnt also build a bundle rather tan deploying something old
