@@ -1,7 +1,7 @@
 
 # good to know
 look in the top level toml file to see markers in use, add to them, they are good things to agree as a team i expect
-- read https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/
+
 # tests
 - Tests live here
 - Run_Tests allows manual running for devs
@@ -9,13 +9,12 @@ look in the top level toml file to see markers in use, add to them, they are goo
 - Run_Lint a nicety can manually target your file
 - data-quality-tests check the data e.g. threshold for nulls
 - test-reports currently lint report but future could have test thresholds and reports and gitpage in future
-- integration-test for test that interact with the environment or cant be issolated to a function
+- integration-test for tests that interact with the environment or cant be issolated to a function
 - units-tests refactor as much of our code to reuseable functions and unit tests them (should unit test everything but this would be a good start)
 - Routes handled by conftest and toml
 - @pytest.mark.integration_sql is important some tests like data-quality test may want to be marked as expensive, take a long time to run, staging-only, optional, or maybe even mergeable for ones we know sometimes the data will just be variable but we want to check before merging anyway, so we could run it in a different step if marked
 
-# List of pytest.mark and what they are for should go here
-:)
+
 
 # Spark config variables
 We want spark to have bundle config values. They do for deployed dabs.
@@ -27,26 +26,64 @@ I dont want to duplicate configuration values. Can have a wrapper that provides 
 
 # Which type of test to use
 
+
+
 # How to write tests
+
+Write functions that do one thing only if possible.
+Inject in dependencys as arguments, like spark (so we can test against small static dfs not whole dbs )
 File must start with test_ to be discoverably by pytest
 Use test @pytest.mark markings where we may want exclusion or potential descriptions
 Use classes to group tests
 Use folders to group tests
 Each test should test a single thing
-
+AI writes them well so just check them and guide it to corner cases
+A few unit tests, data-quality tests, and spark expect on pipelines is excellent coverage
+Time taken writing tests is time ensuring code is reuseable next time and can be trusted when reused, they will also aid finding issues quickly
+When querying data for exploration it is worth considering adding this into the shared notebooks, manual tests or automated testing :)
 
 ## Unit Tests
 These are our best test, they run faster, cost less, they are for reuseable functions. If code can be refactored to be function based code it is a gift for the future as it makes it reuseable, and the tests make it reliable.
 
 ## Integration Tests
 The tests cant be run in issolation, they may need IO, database access or may test two things interacting.
+Or to see end to end behaviour e.g. a process that goes from bronze to silver to gold that you want to test end-to-end.
+
 
 ## data quality tests
 What do we expect of the data
 What do we want to be warned about (we can always change thresholds later)
 You can make manual tests for exploraion and use @python.mark.manual or some other mark we can use to exclude them
 
-# qqqq add a manual test runner so analysts can set parameters and run specific tests easily without affecting automated test running and not needing %skip
+## spark expect
+Spark Expect occurs in pipeline code not the test folder. When writing checks into pipelines consider also writing data-quality tests for cicd.
+dlt.expect is built in native so AI will help with it more easily than a package.
+
+
+# Scratch manual test runner, and manual only run tests
+Template can be trimmed and used without being sourced controlled for disposable tests. 
+Manual only run, are not run by the test runner they are exploratory.
+
+
+# Other
+
+## Test Packages
+### Great Expectations
+We can use packages like great expectation (like fluent assertions) for two things
+- nice dot notation
+- within our data-quality tests give us some short hand
+- built into pipelines to fail them early ... think could run specific pytest too if we like
+- some stackoverflow is negative despite actual GE staff trying to contextualise it
+- other nhs teams have similarly mixed feelings
+
+### PyTest
+- is a common test runner package which is why it is used here, there may be more suited ones
+  - notebook based testing did not seem as good
+  - there are others test packages but none stood out
+  - pytest will have lots of documentation and stackoverflow, as it is mature and common
+
+# Trouble shooting
+- please add to this section
 
 # useful ref (not used for setup but good)
 
@@ -58,3 +95,5 @@ You can make manual tests for exploraion and use @python.mark.manual or some oth
 
 [notebooks as test runner](Databricks - How to create your Data Quality Checks Notebooks)
 this is a really nice approach and i like it because it is interactive, and it turns a notebook into a runner and is threaded. I havent used it because i want test_ .py files that trigger via pytest for automation. however i like this for data-quality because data quality is often, "alert this looks off" and so then the response is to explore it. by automating it means checks always happen and we aways seem them because the git action will give us a fail and then we need to rewrite the code (or hit merge anyway if it is some specific data thing maybe but this would be a risky habit as tests will start being ignored). But notebooks are more exploritary.
+
+[Great expectations didnt find very useful](https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/)

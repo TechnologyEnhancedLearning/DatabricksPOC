@@ -35,13 +35,14 @@ pip-selfcheck.json
 # Scratch / experimental folder
 # -----------------------------
 scratch/**            # ignore all files in scratch
-!scratch/README.md    # except placeholder README.md
+!scratch/scratch-README.md    # except placeholder README.md
 
 # Ignore scratch notebooks
 # so whenever you want to explore something you can do scratch-phil-ods-thingy and it wont be source controlled.
 scratch-*.dbc
 scratch-*.ipynb
 scratch-*.py
+Scratch_*.ipynb
 
 ## Data files (we may decide not to do this but will try it early on so its opt in)
 *.csv

@@ -19,6 +19,7 @@ When raising a pull request (PR), please use the `/addinstructions` command in D
 ---
 
 # Not done
+- This document has excellent coverage and should be used to plan next steps and best practice examples [Dataquality](https://www.databricks.com/discover/pages/data-quality-management)
 - read https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/
 - need public repo for branch rules, theyre not tweaked so cant just be exported but
 	- can set deployment rules
@@ -30,6 +31,7 @@ When raising a pull request (PR), please use the `/addinstructions` command in D
 	- recommend enable in branch rules
 	- and require one reviewer
 	- /addinstructions as a command in databricks ai can work so can put user space or work space instructions
+- lakehouse monitoring!
 
 # Potentially incorrect assumptions
 - gold is for data ready for dashboard, aggrogated
