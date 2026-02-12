@@ -4,7 +4,6 @@ Standardising naming for commits can be useful for autogenerating versioning cha
 - for example this git repo is for a tool that does this, on the right hand side you can see for their package they have release versions and clicking on them you can see a changelog
 [semver example using their git repo for their package](https://github.com/semantic-release/semantic-release)
 This repo explains the commit naming, and demonstrates it. Here is the list of changes theyve made as a generated changelog [semver package releases changelog](https://github.com/semantic-release/semantic-release/releases)
-
 For branches using jira ticket names and environment names allows git to move tasks across the jira board and to mark if an environment has been successfully deployed.
 
 It can be useful when PRing for humans and AI Prs too. 
