@@ -11,8 +11,8 @@ resources:
     pipeline_isreporter_live_dlt:
       name: isreporter_live_dlt
       libraries:
-        - glob:
-            include: ../../src/silver/isreporter_dlt.py
+        - glob:      # go up resources/pipelines/silver then down qqqq
+            include: ../../../src/silver/isreporter_dlt.py
       photon: true
       # good practice to specify its something to do with dlt having beta version?
       channel: current

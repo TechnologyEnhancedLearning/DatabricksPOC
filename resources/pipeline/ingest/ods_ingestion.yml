@@ -34,7 +34,7 @@ resources:
       name: ods_ingestion
       libraries:
         - glob:
-            include: ../../src/ingestion/ods_ingest.py
+            include: ../../../src/ingestion/ods_ingest.py
       photon: true
       # good practice to specify its something to do with dlt having beta version?
       channel: current

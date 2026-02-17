@@ -29,8 +29,11 @@ bundle:
   uuid: ba682f8a-5d14-4ae7-a770-d6a359c0e835
 
 include:
-  - resources/*.yml
-  - resources/*/*.yml
+  - resources/**/*.yml
+  - resources/**/**/*.yml
+# ** double astrix doesnt seem to do sub directories
+# poc should show ods ingest, reporting, and tests jobs and pipeline
+
 
 # Variable declarations. 
 # These variables are assigned in the dev/prod targets below.
