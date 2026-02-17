@@ -50,3 +50,5 @@ resources:
       # configuration:
         <<: *bronze-config #config anchor point for bronze layer so all pipelines in this file will have this set of configs
         pipeline.domain: ${var.domain} # if we then want to apply per pipeline variable here
+        # Unset the bad account key so Unity Catalog managed identity is used instead
+        #fs.azure.account.key.unifiedrptdeltalake.dfs.core.windows.net: ""
