@@ -29,6 +29,7 @@ bundle:
   uuid: ba682f8a-5d14-4ae7-a770-d6a359c0e835
 
 include:
+  #   - 'variables/*.yml' if execute in order might be able to put vars in folders based off headings, may affect running in personal area before deploy?
   - resources/**/*.yml
   - resources/**/**/*.yml
 # ** double astrix doesnt seem to do sub directories
