@@ -1,3 +1,4 @@
+# Should actually be in test/jobs TODO
 resources:
   jobs:
     # rename run_unit_integration_test_in_dbx_env or something and update the gitaction calling it. Also runs data test now
@@ -12,22 +13,12 @@ resources:
         #     
         ####################
 
-        # NEW: Run bronze pipeline first
-        - task_key: run_bronze_pipeline
-          pipeline_task:
-            pipeline_id: ${resources.pipelines.pipeline_ods_ingestion.id}
-        
-        # NEW: Run silver pipeline after bronze
-        - task_key: run_silver_pipeline
-          # removed just for now
-          depends_on:
-           - task_key: run_bronze_pipeline
-          pipeline_task:
-            pipeline_id: ${resources.pipelines.pipeline_isreporter_live_dlt.id}
-        #######################
+        - task_key: medallion_refresh
+          run_job_task:
+            job_id: ${resources.jobs.medallion_refresh.id}
 
         - task_key: run_all_tests
-          depends_on: [run_silver_pipeline, run_bronze_pipeline] # For data quality tests we need to run all the pipelines to see the new result from them 
+          depends_on: [medallion_refresh] # For data quality tests we need to run all the pipelines to see the new result from them 
           # serverless instead # job_cluster_key: test_cluster
           notebook_task:
             # DAB knows to look relative to the YAML file location

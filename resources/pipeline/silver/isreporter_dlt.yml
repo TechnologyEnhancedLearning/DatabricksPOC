@@ -1,11 +1,4 @@
-variables:
-  layer:
-    default: silver # silver because not raw and not just for a single specific analytical but question but the argument for gold would be it is not just cleaned but value added as combined? I think it should have been gold 95% sure
-    description: bronze, silver, transfrormations etc
-  domain: # makes more sense for ingestion this is for 3 dbs so cross_domina, unified, or what it does reporting?
-    default: reporting
-    description: what is the correct buisness domain
-
+# dont define variables here they are global anyway so set in dab
 resources:
   pipelines:
     pipeline_isreporter_live_dlt:
@@ -19,7 +12,7 @@ resources:
       continuous: true # maybe triggered for POC once works
       # By defining catalog here we set it for all jobs in the pipeline without needing to specify it with the variable when defining a table
       catalog: ${var.catalog}
-      target: ${var.schema_prefix}${var.layer}_${var.domain}
+      target: ${var.schema_prefix}${var.layer_silver}_${var.domain_reporting}
       serverless: true
      # configuration:
         ############### Resource yml files for set of pipelines #################
