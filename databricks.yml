@@ -154,7 +154,7 @@ targets:
       schema_prefix: ${workspace.current_user.short_name}_
       # dev storage account
       storage_account:  unifiedrptdeltalake
-      pytest_marks: "not dev_skip"
+      pytest_marks: "not dev_skip and not freshness and not manual"
     permissions:
     - level: CAN_MANAGE
       user_name: ${workspace.current_user.userName} 
@@ -177,7 +177,7 @@ targets:
       env_name: dev
       catalog: dev_catalog
       storage_account:  unifiedrptdeltalake
-      pytest_marks: "not dev_skip"
+      pytest_marks: "not dev_skip and not freshness and not manual"
     permissions:
       - group_name: dev_env_users
         level: CAN_VIEW
@@ -198,7 +198,7 @@ targets:
       catalog: staging_catalog
       # Staging storage account
       storage_account:  unifiedrptdeltalake
-      pytest_marks: "not staging_skip"
+      pytest_marks: "not staging_skip and not freshness and not manual"
     permissions:
       - group_name: staging_env_users
         level: CAN_VIEW
