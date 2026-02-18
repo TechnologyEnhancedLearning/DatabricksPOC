@@ -1,5 +1,4 @@
 # test_working_days_monthly.py
-# qqqq retrospect pyspark test may be better
 import sys
 import pytest
 from pyspark.sql import SparkSession
