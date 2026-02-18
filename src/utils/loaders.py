@@ -1,7 +1,6 @@
 """Data loading utilities for Databricks pipelines"""
-# i dont think we will want these as a package just as a module we wont be 
-# expoting and its just and extra steps for analyst which currently i do not think will provide value until 
-# # they request it and will get in their way
+# spark is injectable so we can do testing
+# the function should do only one thing so it can be testable
 def load_csv_table(spark, base_path, csv_filename):
     """Load CSV from Azure storage with standard options
     
@@ -14,6 +13,7 @@ def load_csv_table(spark, base_path, csv_filename):
     """
     import os
     full_path = os.path.join(base_path, csv_filename)
+    print(full_path)
     return (
         spark.read.format("csv")
         .option("header", "true")

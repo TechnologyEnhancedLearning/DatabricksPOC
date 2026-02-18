@@ -58,6 +58,7 @@ File structure
 - thoughts on naming, can J provide domain names etc if its a good idea
 - are examples of using two cloud regions for backups and security seperations I assume not relevant?
   - out data also lives elsewhere
+  
 ## Proposed Next Steps
 - need involvement
 - need more nitty gritty going through with Jeremy

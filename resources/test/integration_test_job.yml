@@ -1,10 +1,25 @@
+# Should actually be in test/jobs TODO
 resources:
   jobs:
     # rename run_unit_integration_test_in_dbx_env or something and update the gitaction calling it. Also runs data test now
+    # this file should of been in the resources folder
     integration_test_job:
       name: "[${bundle.target}] Integration & Unit Test Runner"
       tasks:
+        ##############################################
+        ####################
+        #
+        # FYI - Pipelines do not rerun on bundle deploy or on code change, so to ensure data tests work pipelines must be run after code changes
+        #     
+        ####################
+
+        - task_key: medallion_refresher
+          run_job_task:
+            job_id: ${resources.jobs.medallion_refresh.id}
+          timeout_seconds: 1800  # fail after 30 min instead of hanging
+
         - task_key: run_all_tests
+          depends_on: [medallion_refresher] # For data quality tests we need to run all the pipelines to see the new result from them 
           # serverless instead # job_cluster_key: test_cluster
           notebook_task:
             # DAB knows to look relative to the YAML file location

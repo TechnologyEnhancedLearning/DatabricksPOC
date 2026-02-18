@@ -1,9 +1,4 @@
 
-# Fix
-- this doesnt look like the dab version qqqq
-https://adb-295718430158257.17.azuredatabricks.net/jobs/92701994927170/runs/804972613236146?o=295718430158257
-
-
 # DatabricksPOC
 Experimenting with databricks workflow specifically DABS and Testing.
 
@@ -11,14 +6,12 @@ Experimenting with databricks workflow specifically DABS and Testing.
 
 ---
 
-- qqqq link doc files to make this snappier and the PR doc
+- qqqqq link doc files to make this snappier and the PR doc
 
-## Using /addinstructions for PRs
-When raising a pull request (PR), please use the `/addinstructions` command in Databricks AI to add any relevant workspace or user space instructions. This helps reviewers and collaborators understand any special requirements or context for your changes. You can invoke this command directly in the Databricks AI chat or as a PR comment.
-
----
 
 # Not done
+- explore what black does in toml
+- This document has excellent coverage and should be used to plan next steps and best practice examples [Dataquality](https://www.databricks.com/discover/pages/data-quality-management)
 - read https://blogs.perficient.com/2025/03/19/delta-live-tables-and-great-expectations/
 - need public repo for branch rules, theyre not tweaked so cant just be exported but
 	- can set deployment rules
@@ -30,6 +23,9 @@ When raising a pull request (PR), please use the `/addinstructions` command in D
 	- recommend enable in branch rules
 	- and require one reviewer
 	- /addinstructions as a command in databricks ai can work so can put user space or work space instructions
+- lakehouse monitoring!
+- seperated tests requiring rerunning pipelines from those that dont (data quality, sql sp)
+- different job per test type
 
 # Potentially incorrect assumptions
 - gold is for data ready for dashboard, aggrogated
@@ -49,22 +45,8 @@ see docs folder
     - target the host instance not catalogs
 
 # Branching/Environments
+See Enviroments in docs folder
 
-- Personal
-	- develop on databricks in own repo folder username area
-	- deploy via ui bundle in your area
-- Dev Branch
-	- require pr
-	- on opening PR into the branch triggers tests
-	- on merging deploy dab into shared dev space for Analysts
-- staging
-	- require pr with auto merge on success (not currently automerge needs adding via branch rules)
-	- on opening PR into the branch triggers tests
-	- on merging deploy dab into shared dev space for Analysts and Testers
-- main/prod
-	- manual merge
-	- rerun staging tests
-	- integration tests
 
 ## Branching choices
 - Require a pull request before merging (think were ok)

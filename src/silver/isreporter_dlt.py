@@ -5,15 +5,6 @@
 import sys
 from pathlib import Path
 
-########### qqqq previous approach worked but not with git etc #####
-## this worked but suspicious of it in dabs staging github etc
-#import os
-# sys.path.append(os.path.abspath('..')) 
-#  with utils.loaders from loaders import load_csv_table 
-# and the init was from .loaders import load_csv_table  __all__ = ["load_csv_table"]
-# # from utils.loaders import load_csv_table  # worked
-##############
-
 
 ############### Make Modules Available  #############
 current_dir = Path.cwd()
@@ -63,7 +54,7 @@ def is_reporter_silver():
     
     TODO: Consider moving to gold_reporting layer as this is cross-domain aggregation
     """
-    # we would do all logic in one pipeline or have the dependent tables cdc too i expect but for the scope of the poc we will just read
+
     users = (spark.read.table(f"{external_catalog_for_expedience}.bronze_learning_hub.hub_user").filter(~F.col("Deleted")))
     
     ual = (spark.read.table(f"{external_catalog_for_expedience}.bronze_learning_hub.elfh_useradminlocationtbl")

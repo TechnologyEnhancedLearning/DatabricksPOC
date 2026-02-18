@@ -29,39 +29,106 @@ bundle:
   uuid: ba682f8a-5d14-4ae7-a770-d6a359c0e835
 
 include:
-  - resources/*.yml
-  - resources/*/*.yml
+  #   - 'variables/*.yml' if execute in order might be able to put vars in folders based off headings, may affect running in personal area before deploy?
+  - resources/**/*.yml
+  - resources/**/**/*.yml
+# ** double astrix doesnt seem to do sub directories
+# poc should show ods ingest, reporting, and tests jobs and pipeline
 
-# Variable declarations. 
-# These variables are assigned in the dev/prod targets below.
-# Then made available to python scriplts via spark.conf.get("bundle.<variable_name>") once exposed by the yml running that file
+# When this list get unmanageable we may want to consider a constants file but for similicity here is best for now
 variables:
+  # ============================================================
+  # Environment Configuration
+  # Values that differ per deployment target (personal, dev,
+  # staging, prod). These control namespace and isolation.
+  # ============================================================
+
   catalog:
-    description: Envirnoment specific catalog name
+    description: Environment-specific Unity Catalog name
+
   schema_prefix:
-    default: "" # to be used in dev only so staging prod have no prefix value
-    description: To prefix dev user schema names to allow multiple dev users to use same catalog with their own different schema names for development
+    default: ""  # Used in dev only; staging and prod should remain empty
+    description: Prefix applied to developer schemas to allow multiple dev users to share the same catalog safely
+
   env_name:
-    description: The environment name (personal, dev, staging, prod)
+    description: Deployment environment name (personal, dev, staging, prod)
+
+
+
+  # ============================================================
+  # Infrastructure Configuration
+  # Underlying storage and identity configuration tied to
+  # workspace-level resources.
+  # ============================================================
+
   storage_account:
-    description: Seperate databricks workspaces dedicated storage (dev, staging, prod)
-  # Storage principles id is used for name field in databricks.yml name the sp variable: <sp_name>_id
-  # qqqq be nice to hide these in the cfg, github has these in vars anyway not seen this done tried cfg file and not tried a config.yml [example proj with {{ dev_sp }}](https://github.com/evanaze/dbx-asset-bundle-deployment/blob/main/databricks.yml) ... not seeing databricks bundle deploy -t staging --var dev_sp= being specified in the cicd
+    description: Databricks workspace-dedicated storage account (dev, staging, prod)
+
+
+
+  # ============================================================
+  # Service Principal Identity
+  # Azure AD application (client) IDs used for authentication
+  # per environment.
+  # Naming convention: <environment>_env_sp_id
+  # ============================================================
+
   dev_env_sp_id:
     default: "b0326488-f6b0-4c0f-bf20-a091224bad83"
+    description: Service Principal client ID for dev environment
+
   staging_env_sp_id:
     default: "d588f2c8-0c0a-4ded-9da2-0663bf8dd994"
+    description: Service Principal client ID for staging environment
+
   prod_env_sp_id:
     default: "811de200-7873-4ab3-a435-da3cddf13c36"
+    description: Service Principal client ID for production environment
+
+
+
+  # ============================================================
+  # Data Architecture Constants
+  # Structural identifiers for medallion layers and logical domains.
+  # These should remain stable across environments.
+  # ============================================================
+
+  # ---- Medallion Layers ----
+
+  layer_bronze:
+    default: "bronze"
+    description: Bronze layer identifier for raw ingested data
+
+  layer_silver:
+    default: "silver"
+    description: Silver layer identifier for cleansed and enriched data
+
+  layer_gold:
+    default: "gold"
+    description: Gold layer identifier for curated and business-ready data
+
+
+  # ---- Data Domains ----
+
+  domain_ods:
+    default: "ods"
+    description: Operational Data Store domain for source-aligned datasets
+
+  domain_reporting:
+    default: "reporting"
+    description: Reporting domain for aggregated and analytics-ready datasets
+
+
+
+  # ============================================================
+  # Testing Configuration
+  # Controls automated test behavior during job execution.
+  # ============================================================
+
   pytest_marks:
     default: ""
-    description: Pytest marker expression passed by the job see list of marks in tet readme
+    description: Pytest marker expression passed by the job; see test README for available markers
 
-# We are not making wheels they are recommended for sharing code and may help with pathing and can be deployed to a cluster for efficiency but one step out of scope and may be more useful for sharing with other dbx teams
-# artifacts:
-#   python_artifact:
-#     type: whl
-#     build: uv build --wheel
 
 # Deployment environments
 targets:
@@ -87,7 +154,7 @@ targets:
       schema_prefix: ${workspace.current_user.short_name}_
       # dev storage account
       storage_account:  unifiedrptdeltalake
-      pytest_marks: "not dev_skip"
+      pytest_marks: "not dev_skip and not freshness and not manual"
     permissions:
     - level: CAN_MANAGE
       user_name: ${workspace.current_user.userName} 
@@ -110,7 +177,7 @@ targets:
       env_name: dev
       catalog: dev_catalog
       storage_account:  unifiedrptdeltalake
-      pytest_marks: "not dev_skip"
+      pytest_marks: "not dev_skip and not freshness and not manual"
     permissions:
       - group_name: dev_env_users
         level: CAN_VIEW
@@ -131,7 +198,7 @@ targets:
       catalog: staging_catalog
       # Staging storage account
       storage_account:  unifiedrptdeltalake
-      pytest_marks: "not staging_skip"
+      pytest_marks: "not staging_skip and not freshness and not manual"
     permissions:
       - group_name: staging_env_users
         level: CAN_VIEW
@@ -170,3 +237,57 @@ targets:
         level: CAN_VIEW
       - service_principal_name: "${var.prod_env_sp_id}" 
         level: CAN_MANAGE
+
+# delete below
+# Variable declarations. 
+# These variables are assigned in the dev/prod targets below.
+# Then made available to python scriplts via spark.conf.get("bundle.<variable_name>") once exposed by the yml running that file
+# variables:
+#   # Environmental variables
+#   catalog:
+#     description: Envirnoment specific catalog name
+#   schema_prefix:
+#     default: "" # to be used in dev only so staging prod have no prefix value
+#     description: To prefix dev user schema names to allow multiple dev users to use same catalog with their own different schema names for development
+#   env_name:
+#     description: The environment name (personal, dev, staging, prod)
+
+#   # Const values
+#   storage_account:
+#     description: Seperate databricks workspaces dedicated storage (dev, staging, prod)
+#   # Storage principles id is used for name field in databricks.yml name the sp variable: <sp_name>_id
+#   # qqqq be nice to hide these in the cfg, github has these in vars anyway not seen this done tried cfg file and not tried a config.yml [example proj with {{ dev_sp }}](https://github.com/evanaze/dbx-asset-bundle-deployment/blob/main/databricks.yml) ... not seeing databricks bundle deploy -t staging --var dev_sp= being specified in the cicd
+
+#   # Service principle values
+#   dev_env_sp_id:
+#     default: "b0326488-f6b0-4c0f-bf20-a091224bad83"
+#   staging_env_sp_id:
+#     default: "d588f2c8-0c0a-4ded-9da2-0663bf8dd994"
+#   prod_env_sp_id:
+#     default: "811de200-7873-4ab3-a435-da3cddf13c36"
+
+#   # Test values
+#   pytest_marks:
+#     default: ""
+#     description: Pytest marker expression passed by the job see list of marks in tet readme
+
+#   # Structure layer values
+#   layer_bronze:
+#     default: "bronze"
+#   layer_silver:
+#     default: "silver"
+#   layer_gold:
+#     default: "gold"
+
+#   # Structure domain values
+#   domain_ods:
+#     default: "ods"
+#   domain_reporting:
+#     default: "reporting"
+
+
+# We are not making wheels they are recommended for sharing code and may help with pathing and can be deployed to a cluster for efficiency but one step out of scope and may be more useful for sharing with other dbx teams
+# artifacts:
+#   python_artifact:
+#     type: whl
+#     build: uv build --wheel
