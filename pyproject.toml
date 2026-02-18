@@ -32,7 +32,7 @@ dev = [
 #requires = ["hatchling"]
 #build-backend = "hatchling.build"
 
-# Wheel packing came in the template :) qqqq
+# Wheel packing came in the template :) 
 #[tool.hatch.build.targets.wheel]
 #packages = ["src"]
 

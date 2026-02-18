@@ -4,7 +4,7 @@ resources:
     pipeline_isreporter_live_dlt:
       name: isreporter_live_dlt
       libraries:
-        - glob:      # go up resources/pipelines/silver then down qqqq
+        - glob:      # go up resources/pipelines/silver then down
             include: ../../../src/silver/isreporter_dlt.py
       photon: true
       # good practice to specify its something to do with dlt having beta version?

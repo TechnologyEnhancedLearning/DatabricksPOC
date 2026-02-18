@@ -3,4 +3,4 @@
 *.ipynb filter=nbstripout
 *.ipynb diff=ipynb
 
-#qqqq requires pip install nbstripout, nbstripout --install
+# requires pip install nbstripout, nbstripout --install
