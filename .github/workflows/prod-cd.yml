@@ -30,7 +30,7 @@ jobs:
         run: databricks bundle deploy -t prod --auto-approve
 
 
-        # qqqq add version and changelog creation step, and give a dab version matching repo version
+        #  add version and changelog creation step, and give a dab version matching repo version
         # - uses: actions/checkout@v4
         # - uses: databricks/setup-cli@main
         # - name: Deploy bundle
