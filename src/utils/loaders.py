@@ -13,6 +13,7 @@ def load_csv_table(spark, base_path, csv_filename):
     """
     import os
     full_path = os.path.join(base_path, csv_filename)
+    print(full_path)
     return (
         spark.read.format("csv")
         .option("header", "true")

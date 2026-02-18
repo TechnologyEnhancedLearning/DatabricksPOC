@@ -50,10 +50,11 @@ The tests cant be run in issolation, they may need IO, database access or may te
 Or to see end to end behaviour e.g. a process that goes from bronze to silver to gold that you want to test end-to-end.
 
 
-## data quality tests
+## data quality tests (needs seperating as requires pipelines to run and cost)
 What do we expect of the data
 What do we want to be warned about (we can always change thresholds later)
 You can make manual tests for exploraion and use @python.mark.manual or some other mark we can use to exclude them
+Pipelines will need rerunning so data is generated from the updated logic, there is a job/utis full_data_refresh job for this. If adding pipelines, this file will need adding to aswell so we can test on upto date data
 
 ## spark expect
 Spark Expect occurs in pipeline code not the test folder. When writing checks into pipelines consider also writing data-quality tests for cicd.
@@ -66,6 +67,7 @@ Manual only run, are not run by the test runner they are exploratory.
 
 
 # Other
+- to improve the cicd test runner we could use subprocess, print errors under each cell but also store them and put them in the end step, this would allow us to print in github the specific failures. Not just the groups.
 
 ## Test Packages
 ### Great Expectations

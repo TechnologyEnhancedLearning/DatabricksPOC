@@ -15,7 +15,7 @@
 -- ============================================================================
 
 
--- qqqq Careful this applied it to all databricks
+-- Careful this applied it to all databricks
 -- there is this
 -- ISOLATION MODE ISOLATED    -- this line is the magic
   -- COMMENT 'POC-only – never visible outside this workspace';
