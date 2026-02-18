@@ -1,3 +1,16 @@
+**try moving vars to const files etc and out of bundle**
+include:
+    - 'variables/*.yml' if execute in order might be able to put vars in folders based off headings, may affect running in personal area before deploy?
+
+
+- seperating dabs
+  - can do bronze, silver, gold etc
+  - means modular deployment
+  - cicd would need to detect changes in folders in order to know which dab to deploy
+  - wheels again may be needed for code between dabs but maybe not
+  - cluster dealing with smaller sizes
+  - how to test
+
 - are requirments txt still needed is it due to python version and setup in git pipeline that i am not just using toml?
 - i have 2 dlt pipeline version check which is right its in silver resources
 - check deploys

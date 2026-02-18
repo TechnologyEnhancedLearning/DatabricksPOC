@@ -6,6 +6,7 @@ Go to bottom for pull request template to complete
 - everyone should get to be reviewed
 - everyone should get to review others
 - hierachyless
+- questions and answers equally useful, answering a question helps you concrete own understanding too through having to articulate it
 
 ## What it should be
 - Collaborative :) :)
