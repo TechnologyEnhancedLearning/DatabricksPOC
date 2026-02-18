@@ -59,7 +59,7 @@ class TestContactDetailsFreshness:
 
 class TestContactDetailsTelephoneFormat:
     """Validate telephone number formats"""
-    @pytest.mark.staging_skip(reason="Just to see job is passing the value")
+    @pytest.mark.dev_skip(reason="Skip because we dont want to resolve the fail its an example, Uuse this to see a fail in action")
     def test_tel_is_numeric_when_not_null(self, contact_details_table):
         """Tel column should only contain digits when populated"""
         invalid_tel = contact_details_table.filter(
@@ -74,7 +74,8 @@ class TestContactDetailsTelephoneFormat:
             invalid_tel.select("OrganisationId", "Tel").show(10, truncate=False)
         
         assert invalid_count == 0, f"Found {invalid_count} telephone numbers with non-numeric characters"
-    
+
+    @pytest.mark.dev_skip(reason="Skip because we dont want to resolve the fail its an example, Uuse this to see a fail in action")
     def test_tel_has_valid_uk_length(self, contact_details_table):
         """UK telephone numbers should be 10-11 digits"""
         invalid_length = contact_details_table.filter(
@@ -103,6 +104,7 @@ class TestContactDetailsTelephoneFormat:
 class TestContactDetailsCompleteness:
     """Check data completeness"""
     
+    @pytest.mark.staging_skip(reason="Just to see job is passing the value")
     def test_organisation_id_not_null(self, contact_details_table):
         """OrganisationId is a required field"""
         null_count = contact_details_table.filter(

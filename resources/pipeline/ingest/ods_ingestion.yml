@@ -10,13 +10,7 @@
 # bundle for vars originating from databricks.ymly
 # I am naming vars pipeline. from pipeline files
 
-variables:
-  layer:
-    default: bronze
-    description: bronze, silver, transfrormations etc
-  domain:
-    default: ods
-    description: pipeline per domain I expect
+# dont define variables here they are global anyway so set in dab
 
 # can group vars into anchors to reuse them
 # naming vars with bundle. so they are clear as from databricks.yml
@@ -24,9 +18,9 @@ variables:
 x-bronze-config: &bronze-config
   bundle.env_name: ${var.env_name}
   bundle.storage_account: ${var.storage_account} #storage is environment specific so defined in databricks.yml
-  pipeline.layer: ${var.layer} # if we are doing layer based resource files get from var
+  pipeline.layer: ${var.layer_bronze} # if we are doing layer based resource files get from var
   # f"{ADLS_PROTOCOL}{container}@{storage_account}{ADLS_SUFFIX}/        -> py adds {folder_name}/"
-  pipeline.storage_container_path: "abfss://${var.layer}@${var.storage_account}.dfs.core.windows.net/"
+  pipeline.storage_container_path: "abfss://${var.layer_bronze}@${var.storage_account}.dfs.core.windows.net/"
 
 resources:
   pipelines:
@@ -34,13 +28,13 @@ resources:
       name: ods_ingestion
       libraries:
         - glob:
-            include: ../../src/ingestion/ods_ingest.py
+            include: ../../../src/ingestion/ods_ingest.py
       photon: true
       # good practice to specify its something to do with dlt having beta version?
       channel: current
       # By defining catalog here we set it for all jobs in the pipeline without needing to specify it with the variable when defining a table
       catalog: ${var.catalog}
-      target: ${var.schema_prefix}${var.layer}_${var.domain}
+      target: ${var.schema_prefix}${var.layer_bronze}_${var.domain_ods}
       serverless: true
       configuration:
         ############### Resource yml files for set of pipelines #################
@@ -49,4 +43,6 @@ resources:
         # bundle.layer_name: bronze -> #schema_layer = "bronze_" -> # schema_layer = spark.conf.get("bundle.layer_name")
       # configuration:
         <<: *bronze-config #config anchor point for bronze layer so all pipelines in this file will have this set of configs
-        pipeline.domain: ${var.domain} # if we then want to apply per pipeline variable here
+        pipeline.domain: ${var.domain_ods} # if we then want to apply per pipeline variable here
+        # Unset the bad account key so Unity Catalog managed identity is used instead
+        #fs.azure.account.key.unifiedrptdeltalake.dfs.core.windows.net: ""

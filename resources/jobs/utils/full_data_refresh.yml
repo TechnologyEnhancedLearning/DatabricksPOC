@@ -1,0 +1,16 @@
+# This is called by the test job for the benefit of data quality tests however if it calls something that is running it will fail. Which could happen due to other triggers. A better approach to look into would be only running jobs when there isnt a current task in progresss
+resources:
+  jobs:
+    medallion_refresh:
+      name: "[${bundle.target}] medallion_refresh"
+      tasks:
+        - task_key: run_bronze_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.pipeline_ods_ingestion.id}
+            
+        # Exclude streaming if they are triggered whilst active an error occurs
+        # - task_key: run_silver_pipeline
+        #   depends_on:
+        #     - task_key: run_bronze_pipeline
+        #   pipeline_task:
+        #     pipeline_id: ${resources.pipelines.pipeline_isreporter_live_dlt.id}
