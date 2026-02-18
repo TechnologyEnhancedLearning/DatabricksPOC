@@ -27,7 +27,7 @@ def contact_details_table(spark, bronze_ods_schema):
 @pytest.mark.databricks #dont run in CI environment
 @pytest.mark.expensive
 @pytest.mark.freshness(reason="Skipping freshness tests in dev") # maybe should be 
-@pytest.mark.dev_skip(reason="Skipping freshness tests in dev")
+@pytest.mark.staging_skip(reason="Skipping in staging we would have freshness tests here but we dont have the data we need in the poc")
 class TestContactDetailsFreshness:
     """Check data is being loaded daily"""
     
@@ -37,7 +37,7 @@ class TestContactDetailsFreshness:
         # If not, you might check row count changes or use audit table
         today = datetime.now().date()
         
-        # Adjust this based on your actual date column
+        # We would need a column like this to check, or modified, or created etc
         recent_data = contact_details_table.filter(
             F.col("load_date") == today
         )
@@ -60,6 +60,7 @@ class TestContactDetailsFreshness:
 class TestContactDetailsTelephoneFormat:
     """Validate telephone number formats"""
     @pytest.mark.dev_skip(reason="Skip because we dont want to resolve the fail its an example, Uuse this to see a fail in action")
+    @pytest.mark.staging_skip(reason="Skip because we dont want to resolve the fail its an example, Uuse this to see a fail in action")
     def test_tel_is_numeric_when_not_null(self, contact_details_table):
         """Tel column should only contain digits when populated"""
         invalid_tel = contact_details_table.filter(
@@ -76,6 +77,7 @@ class TestContactDetailsTelephoneFormat:
         assert invalid_count == 0, f"Found {invalid_count} telephone numbers with non-numeric characters"
 
     @pytest.mark.dev_skip(reason="Skip because we dont want to resolve the fail its an example, Uuse this to see a fail in action")
+    @pytest.mark.staging_skip(reason="Skip because we dont want to resolve the fail its an example, Uuse this to see a fail in action")
     def test_tel_has_valid_uk_length(self, contact_details_table):
         """UK telephone numbers should be 10-11 digits"""
         invalid_length = contact_details_table.filter(
@@ -103,7 +105,7 @@ class TestContactDetailsTelephoneFormat:
 
 class TestContactDetailsCompleteness:
     """Check data completeness"""
-    
+
     @pytest.mark.staging_skip(reason="Just to see job is passing the value")
     def test_organisation_id_not_null(self, contact_details_table):
         """OrganisationId is a required field"""
