@@ -1,0 +1,31 @@
+variables:
+  # ============================================================
+  # Data Architecture Constants
+  # Structural identifiers for medallion layers and logical domains.
+  # These should remain stable across environments.
+  # ============================================================
+
+  # ---- Medallion Layers ----
+
+  layer_bronze:
+    default: "bronze"
+    description: Bronze layer identifier for raw ingested data
+
+  layer_silver:
+    default: "silver"
+    description: Silver layer identifier for cleansed and enriched data
+
+  layer_gold:
+    default: "gold"
+    description: Gold layer identifier for curated and business-ready data
+
+
+  # ---- Data Domains ----
+
+  domain_ods:
+    default: "ods"
+    description: Operational Data Store domain for source-aligned datasets
+
+  domain_reporting:
+    default: "reporting"
+    description: Reporting domain for aggregated and analytics-ready datasets
