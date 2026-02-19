@@ -30,6 +30,7 @@ bundle:
 
 include:
   #   - 'variables/*.yml' if execute in order might be able to put vars in folders based off headings, may affect running in personal area before deploy?
+  - resources/variables/*.yml
   - resources/**/*.yml
   - resources/**/**/*.yml
 # ** double astrix doesnt seem to do sub directories
@@ -84,40 +85,6 @@ variables:
   prod_env_sp_id:
     default: "811de200-7873-4ab3-a435-da3cddf13c36"
     description: Service Principal client ID for production environment
-
-
-
-  # ============================================================
-  # Data Architecture Constants
-  # Structural identifiers for medallion layers and logical domains.
-  # These should remain stable across environments.
-  # ============================================================
-
-  # ---- Medallion Layers ----
-
-  layer_bronze:
-    default: "bronze"
-    description: Bronze layer identifier for raw ingested data
-
-  layer_silver:
-    default: "silver"
-    description: Silver layer identifier for cleansed and enriched data
-
-  layer_gold:
-    default: "gold"
-    description: Gold layer identifier for curated and business-ready data
-
-
-  # ---- Data Domains ----
-
-  domain_ods:
-    default: "ods"
-    description: Operational Data Store domain for source-aligned datasets
-
-  domain_reporting:
-    default: "reporting"
-    description: Reporting domain for aggregated and analytics-ready datasets
-
 
 
   # ============================================================
