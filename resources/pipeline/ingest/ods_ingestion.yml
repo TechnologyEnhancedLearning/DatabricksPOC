@@ -1,13 +1,13 @@
 ###############################
 ## notes
 ###############################
+
+## ⚠️ WARNING this job will fail if pipelines are running already ⚠️
+
 ## We should think about these resource files I think potentially a .yml per layer bronze.yml may make sense
 ## We will not define schemas here
-## We use this file to expose from databricks.yml the variables we need to set up the pipeline
-## We will define too variables just for the set of pipelines here too if we start running layer based .ymls then we would have layer level variables here
+
 ###############################
-# If we are running multlipe pipelines we may define all their vars at the top
-# bundle for vars originating from databricks.ymly
 # I am naming vars pipeline. from pipeline files
 
 # dont define variables here they are global anyway so set in dab
@@ -21,6 +21,7 @@ x-bronze-config: &bronze-config
   pipeline.layer: ${var.layer_bronze} # if we are doing layer based resource files get from var
   # f"{ADLS_PROTOCOL}{container}@{storage_account}{ADLS_SUFFIX}/        -> py adds {folder_name}/"
   pipeline.storage_container_path: "abfss://${var.layer_bronze}@${var.storage_account}.dfs.core.windows.net/"
+
 
 resources:
   pipelines:
