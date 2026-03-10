@@ -9,7 +9,7 @@ resources:
       photon: true
       # good practice to specify its something to do with dlt having beta version?
       channel: current
-      continuous: true # maybe triggered for POC once works
+      continuous: triggered # maybe triggered for POC once works
       # By defining catalog here we set it for all jobs in the pipeline without needing to specify it with the variable when defining a table
       catalog: ${var.catalog}
       target: ${var.schema_prefix}${var.layer_silver}_${var.domain_reporting}
