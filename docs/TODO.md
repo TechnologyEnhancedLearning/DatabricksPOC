@@ -1,3 +1,7 @@
+# Changes to make for the POC review
+- get input on adhoc analysis template and file naming
+- add adhoc read me to someone feedback objectives
+
 # Not covered in POC
 - **try moving vars to const files etc and out of bundle**
 include:

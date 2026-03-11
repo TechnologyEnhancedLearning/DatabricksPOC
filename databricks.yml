@@ -54,6 +54,9 @@ variables:
   env_name:
     description: Deployment environment name (personal, dev, staging, prod)
 
+  is_continuous:
+    default: "false"
+    description: Set to true for continuous DLT pipeline mode. Staging and prod run continuous to mirror production behaviour. Personal and dev run triggered to save cost.
 
 
   # ============================================================
@@ -126,6 +129,7 @@ targets:
       schema_prefix: ${workspace.current_user.short_name}_
       # dev storage account
       storage_account:  unifiedrptdeltalake
+      is_continuous: false
       pytest_marks: "not dev_skip and not freshness and not manual"
     permissions:
     - level: CAN_MANAGE
@@ -149,6 +153,7 @@ targets:
       env_name: dev
       catalog: dev_catalog
       storage_account:  unifiedrptdeltalake
+      is_continuous: false
       pytest_marks: "not dev_skip and not freshness and not manual"
     permissions:
       - group_name: dev_env_users
@@ -169,6 +174,7 @@ targets:
       env_name: staging
       catalog: staging_catalog
       # Staging storage account
+      # commenting for safety# is_continuous: true    #! ⚠️warning cost check behaviour before prod
       storage_account:  unifiedrptdeltalake
       pytest_marks: "not staging_skip and not freshness and not manual"
     permissions:
@@ -202,6 +208,7 @@ targets:
       env_name: prod 
       catalog: prod_catalog
       # Prod storage account
+      # commenting for safety# is_continuous: true    #!⚠️ warning cost check behaviour before prod
       storage_account: unifiedrptdeltalake
       # Prod will not have tests in its file system so no pytest_marks here
     permissions:
