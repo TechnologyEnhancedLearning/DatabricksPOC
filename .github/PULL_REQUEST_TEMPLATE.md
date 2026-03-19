@@ -57,6 +57,7 @@ These ar not show stoppers just good to check
 - searched for any personal codes you use to leave notes for yourself when developing e.g. "zzzz" to help you tidy up
 - If big table creation or change has Analyze Table been included to improve cost/efficiency. (for pipelines not exploratory notebooks etc)
 
+
 ### Contribute to code quality and the future
 - lint (Run_lint targeted files and make improvements)
 - tests (Run tests in dbx, write test)
@@ -152,6 +153,7 @@ Having approved the feature branch owner to merge, or merging the branch as part
 - [ ] [Dev dashboard](https://adb-3560006266579683.3.azuredatabricks.net/sql/dashboardsv3/01f11c8a7b89118788f1391e0e6afe7f/pages/19beeac3?o=3560006266579683)
 - [ ] [Dev pipelines and jobs](https://adb-295718430158257.17.azuredatabricks.net/jobs?o=295718430158257)
 - [ ] [Git actions](https://github.com/TechnologyEnhancedLearning/DatabricksPOC/actions)
+- [ ] Checked Dev email address post deployment (qqqq would be good if deployment emailed the address so has a before and after)
 
 ## Staging
 - Does have continuous processes (see databricks.yml setup differences)
@@ -161,6 +163,7 @@ Having approved the feature branch owner to merge, or merging the branch as part
 - [ ] [Staging dashboard](https://adb-3642283292081870.10.azuredatabricks.net/sql/dashboardsv3/01f11c8a699f1cfd981cc67dd50ab74f/pages/b36dd0e6?o=3642283292081870)
 - [ ] [staging pipelines and jobs](https://adb-3642283292081870.10.azuredatabricks.net/jobs?o=3642283292081870)
 - [ ] [Git actions](https://github.com/TechnologyEnhancedLearning/DatabricksPOC/actions)
+- [ ] Checked Staging email address post deployment (qqqq would be good if deployment emailed the address so has a before and after)
 
 ## Prod
 - Prod doesnt run test
@@ -170,6 +173,6 @@ Having approved the feature branch owner to merge, or merging the branch as part
 - [ ] [Prod dashboard](https://adb-7405617206100704.4.azuredatabricks.net/sql/dashboardsv3/01f12394d70414b8935a1d8390041e0f?o=7405617206100704)
 - [ ] [Prod pipelines and jobs](https://adb-7405617206100704.4.azuredatabricks.net/jobs?o=7405617206100704)
 - [ ] [Git actions](https://github.com/TechnologyEnhancedLearning/DatabricksPOC/actions)
-
+- [ ] Checked Prod email address post deployment (qqqq would be good if deployment emailed the address so has a before and after)
 
 

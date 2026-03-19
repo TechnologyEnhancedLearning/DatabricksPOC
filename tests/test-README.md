@@ -50,6 +50,20 @@ These are our best test, they run faster, cost less, they are for reuseable func
 The tests cant be run in issolation, they may need IO, database access or may test two things interacting.
 Or to see end to end behaviour e.g. a process that goes from bronze to silver to gold that you want to test end-to-end.
 
+## E2E (end to end testing)
+- full pipelines for example to **concider later currently out of scope**
+- full pipeline
+- run real thing not a test thing
+- no mocking
+- check end result not intemediatory steps
+- need try and finally in case a fail causes clean up to be skipped
+
+## UAT (User acceptance testing)
+- **concider later automation currently out of scope**
+- currently mixture of manual, colaborative, dev and analyst input
+- recommend jira ticket review before behaviour testing.
+- for buisness requirements
+- buisness requirements
 
 ## data quality tests (needs seperating as requires pipelines to run and cost)
 What do we expect of the data
@@ -66,6 +80,18 @@ dlt.expect is built in native so AI will help with it more easily than a package
 Template can be trimmed and used without being sourced controlled for disposable tests. 
 Manual only run, are not run by the test runner they are exploratory.
 
+
+
+# Microsoft Learn Databrick Test Resources and Notes
+[Microsoft Learn aligns strongly with our process](https://learn.microsoft.com/en-us/training/wwl-databricks/implement-development-lifecycle-processes-in-azure-databricks/4-implement-testing-strategy)
+- our focus should just be unit first and alot of it
+- when considering integration test we need to ensure we refactor everything to python and unit test it first, integration testing is not there to enable unit testing of sql, its for interaction
+- for us user acceptance testing should first be built into jira ticket templates, with testers stating what they will look for, and B.A.s providing acceptance criteria. Then manual and automated testing can be concidered against these.
+
+![Microsoft Learn aligns strongly with our process test triangle](https://learn.microsoft.com/en-us/training/wwl-databricks/implement-development-lifecycle-processes-in-azure-databricks/media/4-understand-test-pyramid.png)
+
+[microsoft learn dbx git testing strategy](https://learn.microsoft.com/en-us/training/wwl-databricks/implement-development-lifecycle-processes-in-azure-databricks/4-implement-testing-strategy)
+- this suggests test catalogues and schemas, the value of this is the catalogues dev, staging and personal schema should be data, not just test data. By using test catalogues and schemas its a closer comparison when does integration and e2e, (with a try catch finally to ensure per test suite data clean up). This approach is a step out of scope for now and the example in the PoC shows an integration test for csv using a temp volume area and clean up instead. As testing advance dev_test, staging_test, catalogues should be considered but the initially focus should be functional python unit tests.
 
 # Other
 - to improve the cicd test runner we could use subprocess, print errors under each cell but also store them and put them in the end step, this would allow us to print in github the specific failures. Not just the groups.
@@ -92,7 +118,8 @@ We can use packages like great expectation (like fluent assertions) for two thin
 [NHS docs on unit tests, what to test, names etc ](https://nhsdigital.github.io/rap-community-of-practice/training_resources/python/unit-testing/)
 - provides good guidance
 
-- qqqq put microsoft learn here for context on the testing pyramid dbx
+
+
 
 [dbx docs basic unit tests ok](https://docs.databricks.com/aws/en/notebooks/testing?language=SQL)
 
