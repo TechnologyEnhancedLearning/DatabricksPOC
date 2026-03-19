@@ -1,0 +1,5 @@
+# Only include packages used in requirements-dev.txt that Prod needs, using the same versions
+# Excluding unneeded packages such as testing and linting will make prod lighter
+
+
+# Packages used in production will go here

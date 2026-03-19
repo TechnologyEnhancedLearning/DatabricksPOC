@@ -24,8 +24,6 @@ and the conftest.py so really we want to deploy or strip vars from databricks.ym
 you can make a wrapper that uses personal values if there is not a dab deployment.
 I dont want to duplicate configuration values. Can have a wrapper that provides hard code value if not set by databricks but unsure how would get personal area.
 
-# Which type of test to use
-
 
 
 # How to write tests
@@ -41,6 +39,9 @@ AI writes them well so just check them and guide it to corner cases
 A few unit tests, data-quality tests, and spark expect on pipelines is excellent coverage
 Time taken writing tests is time ensuring code is reuseable next time and can be trusted when reused, they will also aid finding issues quickly
 When querying data for exploration it is worth considering adding this into the shared notebooks, manual tests or automated testing :)
+
+[An example of some tests in NHS repo](https://github.com/nhsengland/NHSE_probabilistic_linkage/blob/main/tests/DAE_only_tests.py)
+[An example of some tests in NHS repo2](https://github.com/nhsengland/NHSE_probabilistic_linkage/tree/main/tests)
 
 ## Unit Tests
 These are our best test, they run faster, cost less, they are for reuseable functions. If code can be refactored to be function based code it is a gift for the future as it makes it reuseable, and the tests make it reliable.
@@ -88,6 +89,10 @@ We can use packages like great expectation (like fluent assertions) for two thin
 - please add to this section
 
 # useful ref (not used for setup but good)
+[NHS docs on unit tests, what to test, names etc ](https://nhsdigital.github.io/rap-community-of-practice/training_resources/python/unit-testing/)
+- provides good guidance
+
+- qqqq put microsoft learn here for context on the testing pyramid dbx
 
 [dbx docs basic unit tests ok](https://docs.databricks.com/aws/en/notebooks/testing?language=SQL)
 

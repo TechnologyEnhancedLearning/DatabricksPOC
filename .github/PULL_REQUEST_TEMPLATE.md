@@ -38,6 +38,7 @@ And if this happens teams dont get the benefit of others practice, knowledge of 
 ## refs
 [first google but its ok its tips on good peer reviews](https://smartbear.com/learn/code-review/best-practices-for-peer-code-review/)
 
+[How to refactor](https://nhsdigital.github.io/rap-community-of-practice/training_resources/coding_tips/refactoring-guide/)
 
 # Pull Request Guidance
 - You can open pull requests as drafts if you like
@@ -52,6 +53,7 @@ These ar not show stoppers just good to check
   - commit naming convention followed
 - branch correctly named
 - searched for any personal codes you use to leave notes for yourself when developing e.g. "zzzz" to help you tidy up
+- If big table creation or change has Analyze Table been included to improve cost/efficiency. (for pipelines not exploratory notebooks etc)
 
 ### Contribute to code quality and the future
 - lint (Run_lint targeted files and make improvements)
