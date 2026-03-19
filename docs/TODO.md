@@ -34,6 +34,7 @@
 
 - config in the workspace level outside of git
   - this may be how we should manage the config
+- J suggests https://www.databricks.com/discover/pages/access-control
 
 # something here may help seperating unit integration etc tests
   [An example of some tests in NHS repo](https://github.com/nhsengland/NHSE_probabilistic_linkage/blob/main/tests/DAE_only_tests.py)
