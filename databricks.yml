@@ -89,7 +89,6 @@ variables:
     default: "811de200-7873-4ab3-a435-da3cddf13c36"
     description: Service Principal client ID for production environment
 
-
   # ============================================================
   # Testing Configuration
   # Controls automated test behavior during job execution.
