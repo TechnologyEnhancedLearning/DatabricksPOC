@@ -1,5 +1,9 @@
-# qqqq Feedback
-- If providing feedback, recommendations for how we can get this down to 5 sections or whatever you recommend as the sweet spot between useful reminder, helping AI find data, and not being onerous for analsts
+# Contribution Required JJJJ
+- ⚠️This is purely an example template to provoke discussion it should be replaced with a document authored by the team 
+- Recommendations
+  - what is the shortest, simplest, least onerous version of this we come up with?
+  - what would you find most useful from this document, what is most useful to remind you at a glance about the work
+  - some thought is required to ensure it is useful for AI too, as being able to ask AI to find out if there is similar work already in the repo would be useful
 
 # Copy Paste this Readme
 Then rename the file TD-<ticket number>-mmYY-README.md

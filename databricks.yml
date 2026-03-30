@@ -22,8 +22,7 @@
 #######################################
 ## ref [Evanaze example repo](https://github.com/evanaze/dbx-asset-bundle-deployment)
 ########################################
-# qqqq provide and example of - Bundle_Var_api_key in this fle
-# qqqq use secret or outside of git variables for emails and then set in github env secret like service principles alert_emails: BUNDLE_VAR_staging_alert_emails_qqqq
+
 
 bundle:
   name: DatabricksPOC
