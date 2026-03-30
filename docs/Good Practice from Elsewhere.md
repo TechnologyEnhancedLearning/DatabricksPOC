@@ -17,6 +17,6 @@
 	- they have some automated tests and coding standard naming convention
 
 
-  ## CICD Similar approaches to ours 
+## CICD Similar approaches to ours 
 - [dlt cicd similar setup with docs](https://github.com/alexott/dlt-files-in-repos-demo)
 - [dbx approachable test article for setup](https://www.databricks.com/blog/applying-software-development-devops-best-practices-delta-live-table-pipelines)

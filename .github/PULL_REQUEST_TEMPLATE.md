@@ -56,7 +56,7 @@ These ar not show stoppers just good to check
 - branch correctly named
 - searched for any personal codes you use to leave notes for yourself when developing e.g. "zzzz" to help you tidy up
 - If big table creation or change has Analyze Table been included to improve cost/efficiency. (for pipelines not exploratory notebooks etc)
-
+- Run new jobs and pipelines in personal after deploying the dab, check compute/query time to build up an expectation for what a suboptimal time looks like, include the time in the PR comment so reviewers can offer input. (Can do this in jobs and pipelines or clicking see performance in sql query cells)
 
 ### Contribute to code quality and the future
 - lint (Run_lint targeted files and make improvements)
@@ -81,6 +81,8 @@ These ar not show stoppers just good to check
 ---
 
 # Pull Request Form (Please Complete)
+🙂🙂🙂🙂🙂🙂      **Beginning Pull Request form**                       🙂🙂🙂🙂🙂🙂
+
 *based on https://github.com/TechnologyEnhancedLearning/LearningHub.Nhs.WebUI/blob/master/.github/pull_request_template.md?plain=1*
 
 
@@ -131,6 +133,9 @@ Recommendation may be for future practice, for future refactor tasks, or just go
 - [ ] Agreed additional commits/Approved and let author know
 - [ ] Added any additional insight to the jira ticket for the testers
 
+
+🙂🙂🙂🙂🙂🙂 **End of Pull Request Form** 🙂🙂🙂🙂🙂🙂
+
 ---
 
 # After Merging to an Environment Branch
@@ -139,10 +144,10 @@ Having approved the feature branch owner to merge, or merging the branch as part
 
 ## Checks for all environments
 [Check git deployment action for that environment succeeded](https://github.com/TechnologyEnhancedLearning/DatabricksPOC/actions)
-- Check the environment deployed to
-- Check jobs and pipelines they should all pass though occasionally fails can happen that only require restart, unless expected they rarely should run more than a minute or two
+- [ ] Check the environment deployed to
+- [ ] Check jobs and pipelines they should all pass though occasionally fails can happen that only require restart, unless expected they rarely should run more than a minute or two
   - remember to check all pages
-- Check dashboards for usage, and recheck after an hour or day, for any unexpected behaviours such as step changes
+- [ ] Check dashboards for usage, and recheck after an hour or day, for any unexpected behaviours such as step changes
 
 
 ## Dev
@@ -174,5 +179,7 @@ Having approved the feature branch owner to merge, or merging the branch as part
 - [ ] [Prod pipelines and jobs](https://adb-7405617206100704.4.azuredatabricks.net/jobs?o=7405617206100704)
 - [ ] [Git actions](https://github.com/TechnologyEnhancedLearning/DatabricksPOC/actions)
 - [ ] Checked Prod email address post deployment (qqqq would be good if deployment emailed the address so has a before and after)
+
+*Having deployed to Prod a manual release version and description may be desired e.g. [github release page for poc](https://github.com/TechnologyEnhancedLearning/DatabricksPOC/releases/tag/manul-tag)*
 
 

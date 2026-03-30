@@ -1,29 +1,27 @@
 
 # Python
-
+*Python is strongly recommended in DBX and microsoft docs for use in databricks*
 - reuseable
 - testable
-- SQL gets unreadable and hard to pr quickly with nested queries and window functions
-- pyspark works for sql but more functionality for python in long run
+- Whereas SQL gets unreadable and hard to pr quickly with nested queries and window functions
 - advantages of package ecosystem
-  - Python handles complex calculations, conditional logic, string manipulations, and date arithmetic more cleanly than SQL.
+- Python handles complex calculations, conditional logic, string manipulations, and date arithmetic more cleanly than SQL.
 
 ## Making python easy
 
-- AI to translate
-- Databricks built in to this proc context instructions vs /addinstructions
+- AI to translate (specific context has been provided in assistant AI context files)
 - do most repeatable logic first
-- do easiest tasks in python get more complex over time
-- see other nhs dbx projects on databricks and github for similar example
+- do easiest tasks in python use it for increasingly complex tasks over time
+- see other nhs dbx projects on databricks and github (see refs below and [list of RAP projects](https://github.com/NHSDigital/data-analytics-services?tab=readme-ov-file#rap-publication-repositories))
 - use pull request ai
-- ask other dbx teams for review
+- ask other dbx teams for review and knowledge share
 - co-code it with someone else
 - use unit tested existing python code as a reference
-- also lots of fun online data specific courses available most likely
+
 
 ## SQL
-- one off queries which wont as a whole or its individual parts be reused
-- writing then translating to python
+- still ideal for reads on gold
+- for one off queries which wont be reused in any way (queries may have parts to them that could in fact be useful python functions)
 
 
 # Refs

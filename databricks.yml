@@ -22,7 +22,8 @@
 #######################################
 ## ref [Evanaze example repo](https://github.com/evanaze/dbx-asset-bundle-deployment)
 ########################################
-
+# qqqq provide and example of - Bundle_Var_api_key in this fle
+# qqqq use secret or outside of git variables for emails and then set in github env secret like service principles alert_emails: BUNDLE_VAR_staging_alert_emails_qqqq
 
 bundle:
   name: DatabricksPOC
@@ -68,7 +69,13 @@ variables:
   storage_account:
     description: Databricks workspace-dedicated storage account (dev, staging, prod)
 
+  # ============================================================
+  # Notification Configuration
+  # ============================================================
 
+#qqqq implement these with vars that are not exposed to git
+  alert_emails:
+    description: List of email addresses for failure notifications
 
   # ============================================================
   # Service Principal Identity
@@ -130,6 +137,7 @@ targets:
       storage_account:  unifiedrptdeltalake
       is_continuous: false
       pytest_marks: "not dev_skip and not freshness and not manual"
+      alert_emails: qqqq.can.i.grab.user.email.com
     permissions:
     - level: CAN_MANAGE
       user_name: ${workspace.current_user.userName} 
@@ -154,6 +162,7 @@ targets:
       storage_account:  unifiedrptdeltalake
       is_continuous: false
       pytest_marks: "not dev_skip and not freshness and not manual"
+      alert_emails: BUNDLE_VAR_dev_alert_emails_qqqq
     permissions:
       - group_name: dev_env_users
         level: CAN_VIEW
@@ -176,6 +185,7 @@ targets:
       # commenting for safety# is_continuous: true    #! ⚠️warning cost check behaviour before prod
       storage_account:  unifiedrptdeltalake
       pytest_marks: "not staging_skip and not freshness and not manual"
+      alert_emails: BUNDLE_VAR_staging_alert_emails_qqqq
     permissions:
       - group_name: staging_env_users
         level: CAN_VIEW
@@ -209,6 +219,7 @@ targets:
       # Prod storage account
       # commenting for safety# is_continuous: true    #!⚠️ warning cost check behaviour before prod
       storage_account: unifiedrptdeltalake
+      alert_emails: BUNDLE_VAR_staging_alert_emails_qqqq
       # Prod will not have tests in its file system so no pytest_marks here
     permissions:
       - group_name: prod_env_users
