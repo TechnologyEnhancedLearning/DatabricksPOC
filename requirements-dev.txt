@@ -1,3 +1,12 @@
-pytest
-pyspark
-databricks-labs-pylint
+# Personal Dev Staging packages
+# Pin versions
+
+# For automated testing
+pytest==9.0.2
+
+# Enables running code check to identify improvements and standardisations
+databricks-labs-pylint==0.5.0
+
+# Provided automatically in dbx clusters but needed in github environment unit test runs
+# PySpark needs to be pinned losely its an exception
+pyspark==4.*

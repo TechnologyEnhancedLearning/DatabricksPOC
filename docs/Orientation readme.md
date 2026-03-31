@@ -1,8 +1,9 @@
 # Orientation Readme
 
 ## Whats in the project
-- <foldername>-readme.md files for explaining what folders are for to keep them tidy it will help ai in future to
+- \<foldername>-readme.md files for explaining what folders are for keeping them tidy it and helping ai in future too
 - notebooks folder for shareable source controlled exploratory notebooks (they do not get deployed to staging prod)
+  - also for adhoc analysis to be exported out of databricks
 - scratch folder
   - the content is gitignored except the readme so this if for disposable code (also scratch- is gitignored so you can write scratch anywhere with scratch- as a file prepend)
 - resources are for jobs and pipelines

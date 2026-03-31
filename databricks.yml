@@ -54,6 +54,9 @@ variables:
   env_name:
     description: Deployment environment name (personal, dev, staging, prod)
 
+  is_continuous:
+    default: "false"
+    description: Set to true for continuous DLT pipeline mode. Staging and prod run continuous to mirror production behaviour. Personal and dev run triggered to save cost.
 
 
   # ============================================================
@@ -65,7 +68,13 @@ variables:
   storage_account:
     description: Databricks workspace-dedicated storage account (dev, staging, prod)
 
+  # ============================================================
+  # Notification Configuration
+  # ============================================================
 
+#qqqq implement these with vars that are not exposed to git
+  alert_emails:
+    description: List of email addresses for failure notifications
 
   # ============================================================
   # Service Principal Identity
@@ -125,7 +134,9 @@ targets:
       schema_prefix: ${workspace.current_user.short_name}_
       # dev storage account
       storage_account:  unifiedrptdeltalake
+      is_continuous: false
       pytest_marks: "not dev_skip and not freshness and not manual"
+      alert_emails: qqqq.can.i.grab.user.email.com
     permissions:
     - level: CAN_MANAGE
       user_name: ${workspace.current_user.userName} 
@@ -148,7 +159,9 @@ targets:
       env_name: dev
       catalog: dev_catalog
       storage_account:  unifiedrptdeltalake
+      is_continuous: false
       pytest_marks: "not dev_skip and not freshness and not manual"
+      alert_emails: BUNDLE_VAR_dev_alert_emails_qqqq
     permissions:
       - group_name: dev_env_users
         level: CAN_VIEW
@@ -168,8 +181,10 @@ targets:
       env_name: staging
       catalog: staging_catalog
       # Staging storage account
+      # commenting for safety# is_continuous: true    #! ⚠️warning cost check behaviour before prod
       storage_account:  unifiedrptdeltalake
       pytest_marks: "not staging_skip and not freshness and not manual"
+      alert_emails: BUNDLE_VAR_staging_alert_emails_qqqq
     permissions:
       - group_name: staging_env_users
         level: CAN_VIEW
@@ -201,7 +216,9 @@ targets:
       env_name: prod 
       catalog: prod_catalog
       # Prod storage account
+      # commenting for safety# is_continuous: true    #!⚠️ warning cost check behaviour before prod
       storage_account: unifiedrptdeltalake
+      alert_emails: BUNDLE_VAR_staging_alert_emails_qqqq
       # Prod will not have tests in its file system so no pytest_marks here
     permissions:
       - group_name: prod_env_users

@@ -5,7 +5,7 @@
 - Versioning <- recommend manual
 - multi environments (uses catalogs for poc)
 - doc how to write tests
-- git poc connection is pat not federated, may need entra may not?
+
 
 
 ## Features
@@ -56,19 +56,5 @@ File structure
 - why dabs
   - simple automated deployment across environments with advantages of git backbone
 - thoughts on naming, can J provide domain names etc if its a good idea
-- are examples of using two cloud regions for backups and security seperations I assume not relevant?
-  - out data also lives elsewhere
+
   
-## Proposed Next Steps
-- need involvement
-- need more nitty gritty going through with Jeremy
-- joint documenting of the folders with tiny readmes inside them and update the folder structure tree to ensure it is in intuitive and so it doesnt not blur in future
-- review tasks
-  - e.g this doc says how to write tests is it clear what else would be nice to know
-    - so docs get read at least once and to get orientated with the project
-- versioning
-  - guidance doc for branch, commit names it especially if semver
-- maybe to move comments out for some files databricks-yml.md explaining the file for example and general tidy if sure it will be used and doc will be useful
-- how to apply POC
-  - gui made pipelines may require potentially [convert pipeline](https://learn.microsoft.com/en-gb/azure/databricks/ldp/convert-to-dab)
-    - does this mean devs can make pipelines via gui then deploy personal location to make the yml???
