@@ -9,6 +9,7 @@ resources:
       photon: true
       # good practice to specify its something to do with dlt having beta version?
       channel: current
+      # would use is_continuous a databrick yml variable so staging prod was continuous if doing this outside poc
       continuous: false # maybe triggered for POC once works
       # By defining catalog here we set it for all jobs in the pipeline without needing to specify it with the variable when defining a table
       catalog: ${var.catalog}

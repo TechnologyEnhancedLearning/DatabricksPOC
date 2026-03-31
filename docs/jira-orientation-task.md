@@ -1,3 +1,6 @@
+qqqq update based of J's jira task edits 
+[Example Jira Task](https://hee-tis.atlassian.net/browse/TD-6922)
+
 
 # Specific tasks
 
@@ -6,7 +9,7 @@
 
 **look through** literally to the detail that is useful, i may have put in some question prompts to help
 
-**Add to your doc notes for** because we will be looking at the same files for comment on files you are not contributing to, follow the instruction for making a doc, in docs with your name and just list file route and observations :)
+**Add to your doc notes** because we will be looking at the same files for comment on files you are not contributing to, follow the instruction for making a doc, in docs with your name and just list file route and observations :)
 
 
 - X review (make one little change to) 
@@ -19,7 +22,10 @@
 - X review (make one little change to) 
 	- **look through** the project docs generally
 	- **look through** github/workflow folder
-	- **contribute to** project-architecture.md
+	- **Read** 
+		1. read pull request doc in in .github/
+		2. Docs reviewed by
+		3. Rest of docs folder .md files
 	- **contribute to** tests/test-readme.md
 - Phil
 	- review the poc against any nhs githubs we can access

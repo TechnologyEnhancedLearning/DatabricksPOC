@@ -51,6 +51,11 @@ See Enviroments in docs folder
 	- youtube show original docs on dbx and has a repo link
 	- can thread it
 
+## Refs Infastructure Architecture
+[dbx official blog useful workspace seperation](https://www.databricks.com/blog/2022/03/10/functional-workspace-organization-on-databricks.html)
+
+[matches our approach dbx bundle architecture](https://learn.microsoft.com/en-gb/azure/databricks/dev-tools/bundles/)
+
 # Databricks Structure
 
 [DBX POC](https://adb-295718430158257.17.azuredatabricks.net/browse/folders/2302733728786158?o=295718430158257)/
