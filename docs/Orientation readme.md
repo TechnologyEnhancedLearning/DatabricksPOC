@@ -24,10 +24,10 @@
     - look at the python file it references
       - src/utils/loaders.py
     - resources/pipeline/ingest/ods_ingestion.yml
-      - look at resources top level and in pipeline
+      - look at resources top level and in pipeline (JB 04/03 reword)
       - notice how vars are passed
       - notice the anchor
-  - dlt example (there arnt bronze stream tables so this isnt streaming sadly)
+  - dlt example (there are not any bronze stream tables so this isn't streaming sadly)
     - resources/pipeline/silver/isreporter_dlt.yml
     - src/silver/isreporter_dlt.py
     - src/utils/reporter_logic.py
@@ -40,5 +40,4 @@
 - .bundle in workspace
 - https://github.com/TechnologyEnhancedLearning/DatabricksPOC
 - https://github.com/TechnologyEnhancedLearning/DatabricksPOC/actions
-
 
