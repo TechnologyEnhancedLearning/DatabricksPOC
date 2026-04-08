@@ -23,6 +23,7 @@
 ## ref [Evanaze example repo](https://github.com/evanaze/dbx-asset-bundle-deployment)
 ########################################
 
+# TODO for any values exstract them to variable files maybe just service principles to the resource/environments/ folder
 
 bundle:
   name: DatabricksPOC
@@ -31,6 +32,7 @@ bundle:
 include:
   #   - 'variables/*.yml' if execute in order might be able to put vars in folders based off headings, may affect running in personal area before deploy?
   - resources/variables/*.yml
+  - resources/environments/*.yml
   - resources/**/*.yml
   - resources/**/**/*.yml
 # ** double astrix doesnt seem to do sub directories
