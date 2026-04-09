@@ -31,8 +31,8 @@ bundle:
 
 include:
   #   - 'variables/*.yml' if execute in order might be able to put vars in folders based off headings, may affect running in personal area before deploy?
-  - resources/variables/serverless_usage_policy_constants.yml
-  - resources/variables/env_serverless_usage_policy_constants.yml
+  # - resources/variables/serverless_usage_policy_constants.yml
+  # - resources/variables/env_serverless_usage_policy_constants.yml
   - resources/variables/*.yml
   - resources/environments/*.yml
   - resources/**/*.yml
@@ -43,10 +43,10 @@ include:
 # When this list get unmanageable we may want to consider a constants file but for similicity here is best for now
 variables:
     # qqqq redeclaring so it loads them?
-  serverless_usage_policies:
-    type: complex
-  env_serverless_usage_policies:
-    type: complex
+  # serverless_usage_policies:
+  #   type: complex
+  # env_serverless_usage_policies:
+  #   type: complex
 
 
   # ============================================================
@@ -151,13 +151,12 @@ targets:
       alert_emails: qqqq.can.i.grab.user.email.com
       #qqqq unclear whether seeing uses same stuff these should be own vars or dev ones
       env_serverless_usage_policies:
-        env_test_all_id: ${var.serverless_usage_policies.dev_test_all_id}
-        # Renable once got working example qqqq
-        # env_test_dq_id: ${var.serverless_usage_policies.dev_test_dq_id}
-        # env_test_int_id: ${var.serverless_usage_policies.dev_test_int_id}
-        # env_test_unit_id: ${var.serverless_usage_policies.dev_test_unit_id}
-        # env_analysis_batch_id: ${var.serverless_usage_policies.dev_analysis_batch_id}
-        # env_lh_live_id: ${var.serverless_usage_policies.dev_lh_live_id}
+          env_test_all_id: ${var.serverless_usage_policies.dev_test_all_id}
+          env_test_dq_id: ${var.serverless_usage_policies.dev_test_dq_id}
+          env_test_int_id: ${var.serverless_usage_policies.dev_test_int_id}
+          env_test_unit_id: ${var.serverless_usage_policies.dev_test_unit_id}
+          env_analysis_batch_id: ${var.serverless_usage_policies.dev_analysis_batch_id}
+          env_lh_live_id: ${var.serverless_usage_policies.dev_lh_live_id}
     permissions:
     - level: CAN_MANAGE
       user_name: ${workspace.current_user.userName} 
@@ -185,12 +184,11 @@ targets:
       alert_emails: BUNDLE_VAR_dev_alert_emails_qqqq
       env_serverless_usage_policies:
         env_test_all_id: ${var.serverless_usage_policies.dev_test_all_id}
-        # Renable once got working example qqqq
-        # env_test_dq_id: ${var.serverless_usage_policies.dev_test_dq_id}
-        # env_test_int_id: ${var.serverless_usage_policies.dev_test_int_id}
-        # env_test_unit_id: ${var.serverless_usage_policies.dev_test_unit_id}
-        # env_analysis_batch_id: ${var.serverless_usage_policies.dev_analysis_batch_id}
-        # env_lh_live_id: ${var.serverless_usage_policies.dev_lh_live_id}
+        env_test_dq_id: ${var.serverless_usage_policies.dev_test_dq_id}
+        env_test_int_id: ${var.serverless_usage_policies.dev_test_int_id}
+        env_test_unit_id: ${var.serverless_usage_policies.dev_test_unit_id}
+        env_analysis_batch_id: ${var.serverless_usage_policies.dev_analysis_batch_id}
+        env_lh_live_id: ${var.serverless_usage_policies.dev_lh_live_id}
     permissions:
       - group_name: dev_env_users
         level: CAN_VIEW
@@ -216,12 +214,11 @@ targets:
       alert_emails: BUNDLE_VAR_staging_alert_emails_qqqq
       env_serverless_usage_policies:
         env_test_all_id: ${var.serverless_usage_policies.staging_test_all_id}
-        # Renable once got working example qqqq
-        # env_test_dq_id: ${var.serverless_usage_policies.staging_test_dq_id}
-        # env_test_int_id: ${var.serverless_usage_policies.staging_test_int_id}
-        # env_test_unit_id: ${var.serverless_usage_policies.staging_test_unit_id}
-        # env_analysis_batch_id: ${var.serverless_usage_policies.staging_analysis_batch_id}
-        # env_lh_live_id: ${var.serverless_usage_policies.staging_lh_live_id}
+        env_test_dq_id: ${var.serverless_usage_policies.staging_test_dq_id}
+        env_test_int_id: ${var.serverless_usage_policies.staging_test_int_id}
+        env_test_unit_id: ${var.serverless_usage_policies.staging_test_unit_id}
+        env_analysis_batch_id: ${var.serverless_usage_policies.staging_analysis_batch_id}
+        env_lh_live_id: ${var.serverless_usage_policies.staging_lh_live_id}
     permissions:
       - group_name: staging_env_users
         level: CAN_VIEW
@@ -257,10 +254,9 @@ targets:
       storage_account: unifiedrptdeltalake
       alert_emails: BUNDLE_VAR_staging_alert_emails_qqqq
       # Prod will not have tests in its file system so no pytest_marks here
-      #env_serverless_usage_policy:
-        # Renable once got working example qqqq
-        # env_analysis_batch_id: ${var.serverless_usage_policies.prod_analysis_batch_id}
-        # env_lh_live_id: ${var.serverless_usage_policies.prod_lh_live_id}
+      env_serverless_usage_policies:
+        env_analysis_batch_id: ${var.serverless_usage_policies.prod_analysis_batch_id}
+        env_lh_live_id: ${var.serverless_usage_policies.prod_lh_live_id}
         # Note: You can leave test IDs blank here or map them to a default 
         # since Prod doesn't have test policies.
     permissions:
