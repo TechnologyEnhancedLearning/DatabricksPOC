@@ -29,25 +29,19 @@ bundle:
   name: DatabricksPOC
   uuid: ba682f8a-5d14-4ae7-a770-d6a359c0e835
 
+exclude:
+  - exclude-me-poc-test/*.yml
 include:
-  #   - 'variables/*.yml' if execute in order might be able to put vars in folders based off headings, may affect running in personal area before deploy?
-  # - resources/variables/serverless_usage_policy_constants.yml
-  # - resources/variables/env_serverless_usage_policy_constants.yml
   - resources/variables/*.yml
   - resources/environments/*.yml
   - resources/**/*.yml
   - resources/**/**/*.yml
+
 # ** double astrix doesnt seem to do sub directories
 # poc should show ods ingest, reporting, and tests jobs and pipeline
 
 # When this list get unmanageable we may want to consider a constants file but for similicity here is best for now
 variables:
-    # qqqq redeclaring so it loads them?
-  # serverless_usage_policies:
-  #   type: complex
-  # env_serverless_usage_policies:
-  #   type: complex
-
 
   # ============================================================
   # Environment Configuration
@@ -128,7 +122,6 @@ targets:
 ############## DBX UI and from local machine deploys
 
   personal: 
-   
     mode: development
     # Deploy under own user not service principle
     default: true
@@ -257,12 +250,14 @@ targets:
       env_serverless_usage_policies:
         env_analysis_batch_id: ${var.serverless_usage_policies.prod_analysis_batch_id}
         env_lh_live_id: ${var.serverless_usage_policies.prod_lh_live_id}
+        
         # Note: You can leave test IDs blank here or map them to a default 
         # since Prod doesn't have test policies. However frustratingly despite excluding resource/test the bundle validation check it anyway
-        env_test_all_id: "NA"
-        env_test_dq_id: "NA"
-        env_test_int_id: "NA"
-        env_test_unit_id: "NA"
+        
+        env_test_all_id: ${var.serverless_usage_policies.DUMMY_POLICY_FOR_BUNDLE_ID}
+        env_test_dq_id: ${var.serverless_usage_policies.DUMMY_POLICY_FOR_BUNDLE_ID}
+        env_test_int_id: ${var.serverless_usage_policies.DUMMY_POLICY_FOR_BUNDLE_ID}
+        env_test_unit_id: ${var.serverless_usage_policies.DUMMY_POLICY_FOR_BUNDLE_ID}
     permissions:
       - group_name: prod_env_users
         level: CAN_VIEW
