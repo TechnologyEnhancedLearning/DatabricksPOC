@@ -7,7 +7,9 @@ resources:
         - task_key: run_bronze_pipeline
           pipeline_task:
             pipeline_id: ${resources.pipelines.pipeline_ods_ingestion.id}
-            
+      # not included serverless policy as this gets run by tests for the DQ tests, the best approach would be policy per task in the job calling this, and seperate the notebooks so each test task can be seperate [Not sure can do it task based](https://learn.microsoft.com/en-us/azure/databricks/admin/usage/budget-policies?source=recommendations#assign-permissions-on-a-policy)
+
+
         # Exclude streaming if they are triggered whilst active an error occurs
         # - task_key: run_silver_pipeline
         #   depends_on:
