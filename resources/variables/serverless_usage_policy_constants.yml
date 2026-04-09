@@ -1,0 +1,49 @@
+# resources/variables/policies.yml
+
+variables:
+  serverless_usage_policies:
+    description: "Map of Databricks Serverless Usage Policy IDs for cost attribution"
+    type: complex
+    default:
+
+      # ---------------------------------------------------------------------------
+      # Default / Cross-Environment Policies
+      # ---------------------------------------------------------------------------
+      #phil_default_id: "5a8c7331-d103-48f3-a510-162f7fc6da2c"           # 00_All_All_Phil_Default
+      #personall_default_id: "d54a435c-faa6-4b43-a216-7350bde59b3b"      # 01_All_All_PersonAll_Default
+      all_adhoc_analysis_all_id: "55d1254d-209d-4182-a1d3-ce048b59e2fe"         # All_AdhocAnalysis_All
+
+      # ---------------------------------------------------------------------------
+      # Service Principal Default Policies
+      # ---------------------------------------------------------------------------
+      00_dev_dev_sp_default_id: "3fe249c8-007d-4871-96ae-439a7c38065f"         # 00_Dev_Dev_SP_Default
+      00_staging_staging_sp_default_id: "c0cac0ae-1e56-42b8-b5ed-e074429a0d5a"     # 00_Staging_Staging_SP_Default
+      00_prod_prod_sp_default_id: "e50b1986-c6ab-451d-b62a-1dda021da767"        # 00_Prod_Prod_SP_Default
+
+      # ---------------------------------------------------------------------------
+      # Dev Environment Policies
+      # ---------------------------------------------------------------------------
+      dev_analysis_batch_id: "9740970b-7ebf-4e35-a4e5-235ba089a810"     # Dev_Analysis_Batch
+      dev_lh_live_id: "a3ec222b-36b3-4762-a2c8-adcf3a4cba51"            # Dev_LH_Live
+      dev_test_all_id: "5d08e583-374e-46f3-bfa5-dfed89c65e76"           # Dev_Test_All
+      dev_test_dq_id: "41905dc1-4c58-4677-abc0-23f8e57c6d5f"            # Dev_Test_DQ
+      dev_test_int_id: "35f844af-581b-4b32-b7c6-2ef0c43abef2"           # Dev_Test_Int
+      dev_test_unit_id: "0fbe85e8-7a3a-4c3e-a755-5326b3e2d853"          # Dev_Test_Unit
+
+      # ---------------------------------------------------------------------------
+      # Staging Environment Policies
+      # ---------------------------------------------------------------------------
+      staging_analysis_batch_id: "676dd606-4809-40f3-aa47-6a02adf3a8b1"  # Staging_Analysis_Batch
+      staging_lh_live_id: "1efa98ad-17c2-41af-8777-0082a9cffaea"         # Staging_LH_Live
+      staging_test_all_id: "0786f438-3bd0-4242-aaf7-8b712d498ef2"        # Staging_Test_All
+      staging_test_dq_id: "cae7be61-6274-4275-b4ea-04611905ffd4"         # Staging_Test_DQ
+      staging_test_int_id: "8e745d32-a2f4-425f-9c2c-22c4413e65d5"        # Staging_Test_Int
+      staging_test_unit_id: "559ffe1f-1146-4dc8-a01c-2e033cd2aeaa"       # Staging_Test_Unit
+
+      # ---------------------------------------------------------------------------
+      # Prod Environment Policies
+      # ---------------------------------------------------------------------------
+      prod_analysis_batch_id: "4c5ce407-5e44-4dbe-a615-e8610f15b817"     # Prod_Analysis_Batch
+      prod_lh_live_id: "7e8ddf22-b6b1-442d-a27b-f2e02cdf3835"            # Prod_LH_Live
+      # Prod has not test policy as shouldbt be running them
+
