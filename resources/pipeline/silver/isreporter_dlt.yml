@@ -3,6 +3,7 @@ resources:
   pipelines:
     pipeline_isreporter_live_dlt:
       name: isreporter_live_dlt
+      usage_policy_id: ${var.env_serverless_usage_policies.env_lh_live_id}
       libraries:
         - glob:      # go up resources/pipelines/silver then down
             include: ../../../src/silver/isreporter_dlt.py
