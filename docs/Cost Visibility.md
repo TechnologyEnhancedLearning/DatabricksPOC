@@ -12,6 +12,10 @@ budget policys good for, sql would be used for stored procs if we continue using
 ## How to view visibility
 Todo: link dashboards etc encourage/invite looking at, improvements
 
+# FYI
+[budget policies limitations and delay](https://learn.microsoft.com/en-us/azure/databricks/admin/usage/budget-policies)
+- Updates to tags won't be reflected in new pipeline updates if the pipeline is in Development mode. The changes take 24 hours to propagate.
+- Pipelines triggered by jobs do not inherit the job's serverless budget policy. Users must set the pipeline's policy.
 
 # What you dont need to know
 
