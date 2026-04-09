@@ -258,7 +258,11 @@ targets:
         env_analysis_batch_id: ${var.serverless_usage_policies.prod_analysis_batch_id}
         env_lh_live_id: ${var.serverless_usage_policies.prod_lh_live_id}
         # Note: You can leave test IDs blank here or map them to a default 
-        # since Prod doesn't have test policies.
+        # since Prod doesn't have test policies. However frustratingly despite excluding resource/test the bundle validation check it anyway
+        env_test_all_id: "NA"
+        env_test_dq_id: "NA"
+        env_test_int_id: "NA"
+        env_test_unit_id: "NA"
     permissions:
       - group_name: prod_env_users
         level: CAN_VIEW
