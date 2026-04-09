@@ -27,7 +27,7 @@ resources:
   pipelines:
     pipeline_ods_ingestion:
       name: ods_ingestion
-      usage_policy_id: ${var.env_serverless_usage_policies.env_}
+      usage_policy_id: ${var.env_serverless_usage_policies.env_analysis_batch_id}
       libraries:
         - glob:
             include: ../../../src/ingestion/ods_ingest.py
