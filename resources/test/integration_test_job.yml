@@ -9,6 +9,12 @@ resources:
   
       usage_policy_id: ${var.env_serverless_usage_policies.env_test_all_id}  
 
+      # Custom tags (if conflicting with budget policy tags, the policy tags override custom tags)
+    custom_tags:
+      env: Should-be-overriden-${var.bundle.target}
+      test: Should-be-overriden-${var.bundle.name}
+      myCustomTag: myCustomTagValue                         
+        
       tasks:
         ##############################################
         ####################
