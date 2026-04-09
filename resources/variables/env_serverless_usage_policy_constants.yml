@@ -1,0 +1,13 @@
+variables:
+    env_serverless_usage_policies:
+      type: complex
+      default:
+        #----------------------------------------------------------
+        # Assigned by databricks.yml
+        #---------------------------------------------------------------
+        env_test_all_id: ""
+        env_test_dq_id: ""
+        env_test_int_id: ""
+        env_test_unit_id: ""
+        env_analysis_batch_id: ""
+        env_lh_live_id: ""

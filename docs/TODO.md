@@ -13,6 +13,9 @@
 - black linting
 
 # Should do!
+- take names out of poc
+- change from service principle PATs -> Research OAuth M2M via ENTRAID
+- had a fail on the manual dev staging prod validation only in dev and staging seems something has expired so is there a connector or better option than expiring PAT
 - **IMP** seperated tests requiring rerunning pipelines from those that dont (data quality, sql sp)
   - different job per test type and different notebook
 - email addresses

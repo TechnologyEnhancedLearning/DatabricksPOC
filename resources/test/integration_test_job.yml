@@ -5,6 +5,10 @@ resources:
     # this file should of been in the resources folder
     integration_test_job:
       name: "[${bundle.target}] Integration & Unit Test Runner"
+##qqqqqq does it work
+  
+      usage_policy_id: ${var.env_serverless_usage_policies.env_test_all_id}  
+
       tasks:
         ##############################################
         ####################
