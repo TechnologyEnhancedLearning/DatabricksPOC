@@ -1,0 +1,268 @@
+# https://learn.microsoft.com/en-gb/azure/databricks/dev-tools/bundles/permissions
+
+# in future when this is out of preview giving service principles permissions to use policys via the dab would be nice but currently doesnt seem to be an option or is badly documented
+
+# permissions:
+#   # ---------------------------------------------------------------------------
+#   # --- DEV PERMISSIONS ---
+#   # --------------------------------------------------------------------------
+# targets:
+#   dev:
+#     # We use 'grants' as it is the most compatible 
+#     # way to apply ACLs to existing objects by ID
+#     grants:
+#       - cluster_policy_id: ${var.serverless_usage_policies.00_dev_dev_sp_default_id}
+#     access_control_list:
+#       - service_principal_name: ${var.dev_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.all_adhoc_analysis_all_id}
+#     access_control_list:
+#       - service_principal_name: ${var.dev_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.dev_analysis_batch_id}
+#     access_control_list:
+#       - service_principal_name: ${var.dev_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.dev_lh_live_id}
+#     access_control_list:
+#       - service_principal_name: ${var.dev_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.dev_test_all_id}
+#     access_control_list:
+#       - service_principal_name: ${var.dev_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.dev_test_dq_id}
+#     access_control_list:
+#       - service_principal_name: ${var.dev_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.dev_test_int_id}
+#     access_control_list:
+#       - service_principal_name: ${var.dev_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.dev_test_unit_id}
+#     access_control_list:
+#       - service_principal_name: ${var.dev_env_sp_id}
+#         level: CAN_USE
+
+#   # ---------------------------------------------------------------------------
+#   # --- STAGING PERMISSIONS ---
+#   # ---------------------------------------------------------------------------
+#   - cluster_policy_id: ${var.serverless_usage_policies.00_staging_staging_sp_default_id}
+#     access_control_list:
+#       - service_principal_name: ${var.staging_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.all_adhoc_analysis_all_id}
+#     access_control_list:
+#       - service_principal_name: ${var.staging_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.staging_analysis_batch_id}
+#     access_control_list:
+#       - service_principal_name: ${var.staging_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.staging_lh_live_id}
+#     access_control_list:
+#       - service_principal_name: ${var.staging_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.staging_test_all_id}
+#     access_control_list:
+#       - service_principal_name: ${var.staging_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.staging_test_dq_id}
+#     access_control_list:
+#       - service_principal_name: ${var.staging_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.staging_test_int_id}
+#     access_control_list:
+#       - service_principal_name: ${var.staging_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.staging_test_unit_id}
+#     access_control_list:
+#       - service_principal_name: ${var.staging_env_sp_id}
+#         level: CAN_USE
+
+#   # ---------------------------------------------------------------------------
+#   # --- PROD PERMISSIONS ---
+#   # ---------------------------------------------------------------------------
+#   - cluster_policy_id: ${var.serverless_usage_policies.00_prod_prod_sp_default_id}
+#     access_control_list:
+#       - service_principal_name: ${var.prod_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.all_adhoc_analysis_all_id}
+#     access_control_list:
+#       - service_principal_name: ${var.prod_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.prod_analysis_batch_id}
+#     access_control_list:
+#       - service_principal_name: ${var.prod_env_sp_id}
+#         level: CAN_USE
+
+#   - cluster_policy_id: ${var.serverless_usage_policies.prod_lh_live_id}
+#     access_control_list:
+#       - service_principal_name: ${var.prod_env_sp_id}
+#         level: CAN_USE
+
+# # ### Because this is a preview feature it may be best to resort to the ui for now
+# # targets:
+# #   dev:
+# #     resources:
+# #       cluster_policies:
+# #         # 1. Dev SP Default
+# #         dev_sp_default:
+# #           policy_id: ${var.serverless_usage_policies.00_dev_dev_sp_default_id}
+# #           permissions:
+# #             - service_principal_name: ${var.dev_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 2. All Adhoc Analysis
+# #         adhoc_analysis:
+# #           policy_id: ${var.serverless_usage_policies.all_adhoc_analysis_all_id}
+# #           permissions:
+# #             - service_principal_name: ${var.dev_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 3. Dev Analysis Batch
+# #         dev_analysis_batch:
+# #           policy_id: ${var.serverless_usage_policies.dev_analysis_batch_id}
+# #           permissions:
+# #             - service_principal_name: ${var.dev_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 4. Dev LH Live
+# #         dev_lh_live:
+# #           policy_id: ${var.serverless_usage_policies.dev_lh_live_id}
+# #           permissions:
+# #             - service_principal_name: ${var.dev_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 5. Dev Test All
+# #         dev_test_all:
+# #           policy_id: ${var.serverless_usage_policies.dev_test_all_id}
+# #           permissions:
+# #             - service_principal_name: ${var.dev_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 6. Dev Test DQ
+# #         dev_test_dq:
+# #           policy_id: ${var.serverless_usage_policies.dev_test_dq_id}
+# #           permissions:
+# #             - service_principal_name: ${var.dev_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 7. Dev Test Int
+# #         dev_test_int:
+# #           policy_id: ${var.serverless_usage_policies.dev_test_int_id}
+# #           permissions:
+# #             - service_principal_name: ${var.dev_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 8. Dev Test Unit
+# #         dev_test_unit:
+# #           policy_id: ${var.serverless_usage_policies.dev_test_unit_id}
+# #           permissions:
+# #             - service_principal_name: ${var.dev_env_sp_id}
+# #               level: CAN_USE
+# #     #######################################  Staging
+
+# #         # 1. Staging SP Default
+# #         staging_sp_default:
+# #           policy_id: ${var.serverless_usage_policies.00_staging_staging_sp_default_id}
+# #           permissions:
+# #             - service_principal_name: ${var.staging_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 2. All Adhoc Analysis (Shared across envs)
+# #         staging_adhoc_analysis:
+# #           policy_id: ${var.serverless_usage_policies.all_adhoc_analysis_all_id}
+# #           permissions:
+# #             - service_principal_name: ${var.staging_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 3. Staging Analysis Batch
+# #         staging_analysis_batch:
+# #           policy_id: ${var.serverless_usage_policies.staging_analysis_batch_id}
+# #           permissions:
+# #             - service_principal_name: ${var.staging_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 4. Staging LH Live
+# #         staging_lh_live:
+# #           policy_id: ${var.serverless_usage_policies.staging_lh_live_id}
+# #           permissions:
+# #             - service_principal_name: ${var.staging_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 5. Staging Test All
+# #         staging_test_all:
+# #           policy_id: ${var.serverless_usage_policies.staging_test_all_id}
+# #           permissions:
+# #             - service_principal_name: ${var.staging_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 6. Staging Test DQ
+# #         staging_test_dq:
+# #           policy_id: ${var.serverless_usage_policies.staging_test_dq_id}
+# #           permissions:
+# #             - service_principal_name: ${var.staging_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 7. Staging Test Int
+# #         staging_test_int:
+# #           policy_id: ${var.serverless_usage_policies.staging_test_int_id}
+# #           permissions:
+# #             - service_principal_name: ${var.staging_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 8. Staging Test Unit
+# #         staging_test_unit:
+# #           policy_id: ${var.serverless_usage_policies.staging_test_unit_id}
+# #           permissions:
+# #             - service_principal_name: ${var.staging_env_sp_id}
+# #               level: CAN_USE
+
+# #     ############################################ Prod
+
+
+# #         # 1. Prod SP Default
+# #         prod_sp_default:
+# #           policy_id: ${var.serverless_usage_policies.00_prod_prod_sp_default_id}
+# #           permissions:
+# #             - service_principal_name: ${var.prod_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 2. All Adhoc Analysis
+# #         prod_adhoc_analysis:
+# #           policy_id: ${var.serverless_usage_policies.all_adhoc_analysis_all_id}
+# #           permissions:
+# #             - service_principal_name: ${var.prod_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 3. Prod Analysis Batch
+# #         prod_analysis_batch:
+# #           policy_id: ${var.serverless_usage_policies.prod_analysis_batch_id}
+# #           permissions:
+# #             - service_principal_name: ${var.prod_env_sp_id}
+# #               level: CAN_USE
+
+# #         # 4. Prod LH Live
+# #         prod_lh_live:
+# #           policy_id: ${var.serverless_usage_policies.prod_lh_live_id}
+# #           permissions:
+# #             - service_principal_name: ${var.prod_env_sp_id}
+# #               level: CAN_USE
+
