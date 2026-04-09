@@ -41,6 +41,8 @@ qqqq maybe owner names and groups need to become the same. YES
 
 Unfortunately currently dab is not setting permissions for sps to use the serverless policys so they have to be set through the UI
 
+*Maybe we should have tags in Staging_Analysis_Batch for ingestion or medallion, but until we have some good queries and dashboards the most useful tags to have wont be clear*
+
 | Policy Name | Env | CostCentre | Test / Owner | 
 |---|---|---|---|
 |-------Numbered / General Policies-------| |||
