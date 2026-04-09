@@ -5,7 +5,14 @@ variables:
     description: "Map of Databricks Serverless Usage Policy IDs for cost attribution"
     type: complex
     default:
-
+      #----------------------------------------------------------
+      #-------#    Ugly Bundle Validate Handling    #--------
+      #---------------------------------------------------------
+      # Without having a databricks.yml per environment we need
+      # a dummy id because despite sync/exclude bundle validate will check
+      # for the value
+      #---------------------------------------------------------------
+      DUMMY_POLICY_FOR_BUNDLE_ID : "dd654d53-01e4-4fcf-b480-a17642b75fa4"
       # ---------------------------------------------------------------------------
       # Default / Cross-Environment Policies
       # ---------------------------------------------------------------------------

@@ -1,0 +1,12 @@
+resources:
+  jobs:
+    fake_excluded_job:
+      name: "[${bundle.target}] fake exclude job"
+
+      usage_policy_id: ${var.env_serverless_usage_policies.fake_policy_id}       
+        
+      tasks:
+        - task_key: medallion_refresher
+          run_job_task:
+            job_id: ${resources.jobs.medallion_refresh.id}
+          timeout_seconds: 1800  # fail after 30 min instead of hanging
