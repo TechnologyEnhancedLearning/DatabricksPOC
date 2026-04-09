@@ -46,6 +46,8 @@ Unfortunately currently dab is not setting permissions for sps to use the server
 | 00_Staging_Staging_SP_Default | Staging | Staging | SP_Staging  |  
 | 01_All_All_PersonAll_Default | All | All | Person_All |  
 | All_AdhocAnalysis_All | All | AdhocAnalysis | All  |  
+|-------Personal Policies-------| |||
+| Personal_Test_All | Personal | Test | All |  |
 |-------Staging Policies-------| |||
 | Staging_Analysis_Batch | Staging | Analysis |  |  |
 | Staging_LH_Live | Staging | LH |  |  |
