@@ -4,6 +4,13 @@ resources:
     pipeline_isreporter_live_dlt:
       name: isreporter_live_dlt
       usage_policy_id: ${var.env_serverless_usage_policies.env_lh_live_id}
+      # Tags set by the budget policy, though doesnt seem to provide tags for the ui qqqq check - it does turn up in workflow ui
+      tags:
+        env: "Report-shouldBeOverWrittenWithPolicy-${var.env_name}"
+        costCentre: "Report-shouldBeOverWrittenWithPolicy-${var.env_name}"
+        test: "Report-shouldBeOverWrittenWithPolicy-all"
+        detail: "checkUIflowPickedUp"
+      ###
       libraries:
         - glob:      # go up resources/pipelines/silver then down
             include: ../../../src/silver/isreporter_dlt.py
@@ -16,6 +23,11 @@ resources:
       catalog: ${var.catalog}
       target: ${var.schema_prefix}${var.layer_silver}_${var.domain_reporting}
       serverless: true
+
+
+
+
+
      # configuration:
         ############### Resource yml files for set of pipelines #################
         # If we do bronze, silver ... tranformation based layers with own yml files will define layer level vars here
