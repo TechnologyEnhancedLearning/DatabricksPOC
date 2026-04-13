@@ -4,6 +4,7 @@
 Todo: how to assign tagging
 Todo: add reminder in pull request template
 For every notebook, a tag or query? to identify it???  
+Drop down databricks instances, settings, to usage is how to connect the policyies to azure
 
 ## Approaches
 Todo: table, dashboard, budget tagging, and where triggered, when to pick the tag, what the tage means
@@ -18,6 +19,13 @@ Todo: link dashboards etc encourage/invite looking at, improvements
 - Pipelines triggered by jobs do not inherit the job's serverless budget policy. Users must set the pipeline's policy.
 
 # What you dont need to know
+
+## Azure
+- Budgets minimum gradularity is 1 month
+
+## Budget calculation limitations
+[Microsoft link serverless budgets](https://learn.microsoft.com/en-us/azure/databricks/admin/account-settings/budgets#known-limitations)
+> Budgets do not factor in any billing credits or negotiated discounts your account might have. The spent amount is calculated by multiplying usage by the SKU list price.
 
 ## Setup Budget Policys
 
