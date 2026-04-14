@@ -142,7 +142,7 @@ targets:
       is_continuous: false
       pytest_marks: "not dev_skip and not freshness and not manual"
       alert_emails: qqqq.can.i.grab.user.email.com
-      #qqqq unclear whether seeing uses same stuff these should be own vars or dev ones
+      #qqqq unclear whether personal environment should use personal vars or dev vars
       env_serverless_usage_policies:
           env_test_all_id: ${var.serverless_usage_policies.dev_test_all_id}
           env_test_dq_id: ${var.serverless_usage_policies.dev_test_dq_id}
