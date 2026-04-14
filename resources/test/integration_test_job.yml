@@ -7,12 +7,6 @@ resources:
       name: "[${bundle.target}] Integration & Unit Test Runner"
 
       usage_policy_id: ${var.env_serverless_usage_policies.env_test_all_id}       
-      # Tags set by the budget policy, though doesnt seem to provide tags for the ui qqqq check
-      tags:
-        env: ${var.env_name}
-        costCentre: ""
-        test: "shouldbeoall"
-        detail: "checkUIflowPickedUp"
       tasks:
         ##############################################
         ####################
