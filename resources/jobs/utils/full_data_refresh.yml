@@ -17,8 +17,8 @@ resources:
         #   pipeline_task:
         #     pipeline_id: ${resources.pipelines.pipeline_isreporter_live_dlt.id}
 
-        # qqqq want to be set by job calling it
-      #usage_policy_id: ${var.env_serverless_usage_policies.env_lh_live_id}
+        # qqqq want to be set by job calling it - it only is in budget table
+      usage_policy_id: "8e5d359d-d7d0-4d66-ab6f-3db725fb66d0"
       # Tags set by the budget policy, though doesnt seem to provide tags for the ui qqqq check - it does turn up in workflow ui
       tags:
         env: "Med-shouldBeOverWrittenWithPolicy-${var.env_name}"
