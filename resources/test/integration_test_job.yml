@@ -7,7 +7,6 @@ resources:
       name: "[${bundle.target}] Integration & Unit Test Runner"
 
       usage_policy_id: ${var.env_serverless_usage_policies.env_test_all_id}       
-        
       tasks:
         ##############################################
         ####################

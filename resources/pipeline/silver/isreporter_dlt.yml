@@ -16,6 +16,7 @@ resources:
       catalog: ${var.catalog}
       target: ${var.schema_prefix}${var.layer_silver}_${var.domain_reporting}
       serverless: true
+
      # configuration:
         ############### Resource yml files for set of pipelines #################
         # If we do bronze, silver ... tranformation based layers with own yml files will define layer level vars here
