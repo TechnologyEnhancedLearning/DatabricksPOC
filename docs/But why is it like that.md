@@ -18,6 +18,3 @@ from teamname_functions import core_func as core
 ## DUMMY_POLICY_FOR_BUNDLE_ID
 
 Without having databricks.yml per target the bundle validate validates all yml included files at the top level, even if they are sync excluded e.g. prod excluding test files. So this policy should not show up in usage. It also mean we need to declare IDs for policys we are not using 
-
-## Tags AND budget policy tags??
-Policys automatically apply multiple tags to jobs and pipelines, connect tags to budget data and surface them to azure. But they are not searchable within the databricks UI. So having both budget policys and tags is useful, despite budget policys overwritting the tags when it comes to budget tables etc. If databricks improves its ui behaviour tags might only be used to capture specific things, with tags set by budget policy being the default.

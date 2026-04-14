@@ -1,9 +1,16 @@
 # Tags and Policy Budgets
 
-Tags and cost visibility go together in this document. This is because the budget policys allow us to track serverless costs, and tags allow us to sort pipelines and jobs in the databricks UI amongst other things. The severless budget policys override the tags set in jobs and pipelines for budget tables, and allow us to capture serverless costs. However we see them in seperate sections when opening jobs in job * pipelines, jobs details, They also are not searchable in this ui. 🤷 Databricks Serverless Budget is still in preview so documentation may be changing, or it may be that they are overwritten at the azure level.
+Tags and cost visibility go together in this document. This is because the budget policys allow us to track serverless costs, and tags allow us to sort pipelines and jobs in the databricks UI amongst other things. 
+
+Having tags set in the tags section, and tags in serverless budget policys could get confusing. So serverless budget policys should be for every job, pipeline and notebook, tags should be occassionaly applied where different or more granuality is required.
+
+The severless budget policys override the tags set in jobs  and pipelines for budget tables (where they match), and allow us to capture serverless costs. 
+
+Tags set in the tag section are nice because the UI use them and not the policy set ones currently.
 
 ##  Policy and Tags Reference
 
+⚠️ This is the first thought for budget policy strategy this is worth some thought: Should we track data coming in/out, who is consuming it, batch or live consumed, etc.
 
 *Maybe we should have tags in Staging_Analysis_Batch for ingestion or medallion, but until we have some good queries and dashboards we wont know what the most useful tags are*
 

@@ -3,26 +3,15 @@ resources:
   jobs:
     medallion_refresh:
       name: "[${bundle.target}] medallion_refresh"
+      # Let policy be set by the calling task
       tasks:
         - task_key: run_bronze_pipeline
           pipeline_task:
             pipeline_id: ${resources.pipelines.pipeline_ods_ingestion.id}
       # not included serverless policy as this gets run by tests for the DQ tests, the best approach would be policy per task in the job calling this, and seperate the notebooks so each test task can be seperate [Not sure can do it task based](https://learn.microsoft.com/en-us/azure/databricks/admin/usage/budget-policies?source=recommendations#assign-permissions-on-a-policy)
-
-
         # Exclude streaming if they are triggered whilst active an error occurs
         # - task_key: run_silver_pipeline
         #   depends_on:
         #     - task_key: run_bronze_pipeline
         #   pipeline_task:
         #     pipeline_id: ${resources.pipelines.pipeline_isreporter_live_dlt.id}
-
-        # qqqq want to be set by job calling it - it only is in budget table
-      usage_policy_id: "8e5d359d-d7d0-4d66-ab6f-3db725fb66d0"
-      # Tags set by the budget policy, though doesnt seem to provide tags for the ui qqqq check - it does turn up in workflow ui
-      tags:
-        env: "Med-shouldBeOverWrittenWithPolicy-${var.env_name}"
-        # qqqq want to be set by job calling it
-        # costCentre: "Med-shouldBeOverWrittenWithPolicy-${var.env_name}"
-        # test: "Med-shouldBeOverWrittenWithPolicy-all"
-        detail: "MEd-checkUIflowPickedUp"
