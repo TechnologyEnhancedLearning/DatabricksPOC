@@ -15,9 +15,9 @@ Tags set in the tag section are nice because the UI use them and not the policy 
 *Maybe we should have tags in Staging_Analysis_Batch for ingestion or medallion, but until we have some good queries and dashboards we wont know what the most useful tags are*
 
 Policy naming 
-```<number (if you want it to default to a certain order)>-<Env>-<CostCentre>-<Test or Owner (which ever most useful to know)>``` 
+```<number (if you want it to default to a certain order)>-<Env>-<CostCentre>-< Description>``` 
 you may add DEFAULT on the end it is a policy to fallback on when one isnt assigned.
-
+Description is for example :  Test or Owner (which ever most useful to know)
 
 | Policy Name | Env | CostCentre | Test / Owner | 
 |---|---|---|---|
