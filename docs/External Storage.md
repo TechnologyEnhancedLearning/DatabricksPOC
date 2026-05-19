@@ -61,6 +61,32 @@ The ideal is
 - table with a cloud is an external table we want to avoid this
 - lightning bolt table is a streaming table the ideal is event triggered over cron jobs, but cron jobs fine
 - **star schema** : one table that refernce all the other for joins like the centre of the stars
+- we dont want to use UI to make the tables because its bad for RAP we want to see whats been done so would make a notebook like:
+```
+%py
+# Your external location path
+base_path = "abfss://bronzedev@teldeltalakedevtest.dfs.core.windows.net/ods/"
+#abfss://bronzedev@teldeltalakedevtest.dfs.core.windows.net/
+
+# Create the schema if it doesn't exist
+spark.sql("CREATE SCHEMA IF NOT EXISTS connection_test.ods")
+
+# List all files in the container
+files = dbutils.fs.ls(base_path)
+
+# Loop through each CSV and create a table
+for file in files:
+    if file.name.endswith('.csv'):
+        table_name = file.name.replace('.csv', '')
+        
+        spark.read \
+            .option("header", True) \
+            .option("inferSchema", True) \
+            .csv(file.path) \
+            .write \
+            .mode("overwrite") \
+            .saveAsTable(f"connection_test.ods.{table_name}")
+```
 
 ## Errors
 - Error loading files.

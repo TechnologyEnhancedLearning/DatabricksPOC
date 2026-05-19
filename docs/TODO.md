@@ -9,6 +9,9 @@
 - ~~version numbering~~ we can do release versioning manually makes more sense for us but it is not vital
 - ~~enable copilot auto pr~~
 
+# To Research
+- guidance on when to use which storage types like storageV2 for queuing or blob block for 3x speed direct query
+
 # Team input in future
 - black linting
 
