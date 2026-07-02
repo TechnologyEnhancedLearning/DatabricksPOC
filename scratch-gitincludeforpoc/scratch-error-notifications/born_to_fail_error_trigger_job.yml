@@ -1,0 +1,26 @@
+resources:
+  jobs:
+    teams_notification_poc_test:
+      name: "POC - Teams Notification Failure Test"
+      
+      email_notifications:
+        on_start:
+          - "543ee2ca.nhs.onmicrosoft.com@uk.teams.ms"
+          - "philip.tate@nhs.net"
+        on_success:
+          - "543ee2ca.nhs.onmicrosoft.com@uk.teams.ms"
+        on_failure:
+          - "543ee2ca.nhs.onmicrosoft.com@uk.teams.ms"
+          - "philip.tate@nhs.net"
+      tasks:
+        - task_key: Break_Stuff
+          notebook_task:
+            # Clean relative path since the notebook is in the same folder as this YML
+            notebook_path: ./born_to_fail_error_trigger
+            
+            # Change source to BUNDLE so Databricks looks at your local folder files
+            source: BUNDLE
+            
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
